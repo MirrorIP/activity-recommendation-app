@@ -1,0 +1,1295 @@
+/* HTML element settings */
+
+body {
+	font: 130%/1.5 Verdana, Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-repeat: no-repeat;
+	font-size: 10pt;
+	color: #2b2b2b;
+}
+
+/* page layout*/
+
+.page {
+	width: 960px;
+	padding: 10px 20px;
+	margin-left: auto;
+	margin-right: auto;
+	display: none;
+}
+
+#login {
+	height: 420px;
+	width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 220px;
+}
+
+#loginMask {
+	/*height: 190px;*/
+	width: 380px;
+	margin-top: auto;
+	margin-bottom: auto;
+	background-color: #ebf3f9;
+	padding: 10px;
+}
+
+#loginMask > .errorMessage {
+	margin: 0px 0px 0px 0.5em;
+	color: #FF0000;
+	display: none;
+}
+
+#loginMask > .errorMessage.activeItem {
+	display: block;
+}
+
+#upperLogo {
+	height: 40px;
+	background: url('../img/logo_mirror.png') no-repeat;
+	background-position: center;
+}
+
+#lowerLogo {
+	width: auto;
+	height: 40px;
+	background: url('../img/logo_ar.png') no-repeat;
+	background-position: center;
+}
+
+.transparent {
+	background: rgba(0, 0, 0, 0.2);
+}
+
+.loader {
+	background-image: url('../img/loader.gif');
+	background-repeat: no-repeat;
+	background-position: center 350px;
+}
+
+#header {
+	height: 50px;
+	text-align: center;
+}
+
+#leftHeader {
+	float: left;
+	height: 50px;
+	width: 250px;
+	text-align: left;
+	background-repeat: no-repeat;
+	background-position: top left;
+	background: url('../img/logo_ar.png') no-repeat;
+}
+
+#centerHeader {
+	display: inline-block;
+	height: 50px;
+	width: 250px;
+	background-image: url('../img/logo_mirror.png');
+	background-repeat: no-repeat;
+	background-position: top center;
+}
+
+#rightHeader {
+	float: right;
+	height: 40px;
+	width: 200px;
+	background-image: url('../img/signOut.png');
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+#userInfo {
+	text-align: left;
+	margin-right: 50px;
+	color: #0876ba;
+}
+
+.tabsTable {
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	border-collapse: separate;
+	border-spacing: 10px 0px;
+	cursor: pointer;
+}
+
+.tabsTable td {
+	text-align: center;
+	width: 120px;
+	height: 40px;
+	background-image: url('../img/tab_grey.png');
+	background-repeat: no-repeat;
+	color: #ffffff;
+	font-weight: bold;
+}
+
+.tabsTable .activeItem {
+	background-image: url('../img/tab_blue.png');
+	display: table-cell;
+}
+
+.content {
+	padding: 10px;
+	background-color: #EBF3F9;
+	border-top: 3px solid #0876ba;
+	display: none;
+}
+
+.topPanel {
+	height: 50px;
+	background-color: #ffffff;
+	margin-bottom: 10px;
+}
+
+.leftPanel {
+	float: left;
+	width: 200px;
+	background-color: #ffffff;
+	height: 501px;
+}
+
+.leftPanel > .recommendationList {
+	height: 471px;
+}
+
+.rightPanel {
+	margin-left: 210px;
+	display: none;
+}
+
+.filterTable {
+	padding-left: 10px;
+}
+
+.filterTable td {
+	padding-right: 10px;
+}
+
+.filterTable thead {
+	color: #dadada;
+	font-size: 8pt;
+	font-weight: bold;
+	line-height: 12px;
+}
+
+.filterTable tbody input {
+	height: 17px;
+	border-color: #02314f;
+	vertical-align: top;
+	width: 156px;
+}
+
+.filterTable tbody select {
+	border-color: #02314f;
+	width: 150px;
+}
+
+.styledSelect, .styledSearch, .styledInput {
+	border: inset 2px;
+	background: #FFFFFF;
+	height: 21px;
+}
+
+.styledSelect > select {
+	float: left;
+	cursor: pointer;
+	border: none;
+	background: transparent;
+	height: 23px;
+	vertical-align: top;
+	width: 100%;
+}
+
+.styledSelect > select > option {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.styledSelect > select > option.user {
+	padding-left: 25px;
+	background: url('../img/user.png') no-repeat 3px 3px;
+}
+
+.styledSelect > select > option.space {
+	padding-left: 25px;
+	background: #eeeeee url('../img/group.png') no-repeat 3px 3px;
+}
+
+.styledSearch > input {
+	float: left;
+	cursor: text;
+	border: none;
+	background: transparent;
+}
+
+.styledInput > input {
+	float: left;
+	cursor: text;
+	border: none;
+	background: transparent;
+	width: 100%;
+}
+
+.styledSearch > button {
+	float: right;
+}
+
+.styledSelect > span {
+	background: url('../img/dropdown.png') no-repeat right;
+	float: right;
+	height: 23px;
+	width: 26px;
+	margin-left: -26px;
+	pointer-events: none;
+}
+
+.searchButton {
+	background-image: url('../img/search.png');
+	background-repeat: no-repeat;
+	background-color: transparent;
+	width: 26px;
+	height: 23px;
+	border: none;
+	vertical-align: top;
+	cursor: pointer;
+}
+
+.accordion {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	height: 501px;
+}
+
+.accordion > .sectionTitle {
+	color: #ffffff;
+	font-weight: bold;
+	background-image: url('../img/list.png');
+	height: 28px;
+	border-bottom: 3px solid;
+	border-color: #dadada;
+	padding: 7px 5px 0px;
+	cursor: pointer;
+}
+
+.accordion > .sectionBody {
+	height: 387px;
+	display: none;
+}
+
+.accordion > .activeItem {
+	display: block;
+}
+
+.recommendationList {
+	list-style: none;
+	width: 200px;
+	margin: 0;
+	padding: 0;
+	height: 380px;
+	overflow-y: auto;
+}
+
+.recommendationList li {
+	height: 40px;
+	border-bottom: 3px solid;
+	border-color: #dadada;
+	padding-left: 2px;
+	padding-right: 5px;
+	cursor: pointer;
+}
+
+.recommendationList li:first-child {
+	border-top: 3px solid;
+	border-color: #dadada;
+}
+
+#contentCapture .recommendationList li {
+
+	border-top: none;
+}
+
+.recommendationList li > .icon {
+	width: 25px;
+	height: 25px;
+	margin-right: 5px;
+	background-repeat: no-repeat;
+	float: left;
+	margin-top: 6px;
+}
+
+.recommendationList li > .title {
+	display: inline-block;
+	margin-top: 3px;
+	overflow-x: hidden;
+	width: 110px;
+	height: 35px;
+	font-size: 11px;
+}
+
+.recommendationList li > .titleDiscussion {
+	width: 200px;
+}
+
+.recommendationList li > .arrow {
+	width: 25px;
+	height: 25px;
+	background-repeat: no-repeat;
+	float: right;
+	margin-top: 6px;
+}
+
+.recommendationList li > span.arrow {
+	background-image: url('../img/arrow_grey.png');
+}
+
+.recommendationList > .activeItem {
+	background-color: #ebf3f9;
+}
+
+.recommendationList > .activeItem > span.arrow {
+	background-image: url('../img/arrow_blue.png');
+}
+
+.recommendationList > .activityItem > span.icon {
+	background-image: url('../img/activity.png');
+}
+
+.recommendationList > .behaviorItem > span.icon {
+	background-image: url('../img/behavior.png');
+}
+
+.recommendationList > .learningItem > span.icon {
+	background-image: url('../img/learning.png');
+}
+
+.recommendationDetails {
+	float: left;
+	width: 520px;
+	margin-right: 10px;
+	background-color: #ebf3f9;
+	min-height: 501px;
+}
+
+.recommendationDetails p {
+	padding-left: 5px;
+	margin-top: 2px;
+}
+
+.recommendationDetails > .recommendationTitle {
+	text-align: center;
+	font-size: 13pt;
+	width: 520px;
+	border-bottom: 3px solid;
+	border-color: #dadada;
+	height: 35px;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.recommendationDetails > .recommendationInfoBody {
+	padding-top: 5px;
+	overflow-x: auto;
+}
+
+.block {
+	margin: 0.2em 0 1em;
+	padding-left: 5px;
+}
+
+.block > label {
+	text-transform: uppercase;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #02314f;
+	margin-bottom: 3px;
+}
+
+.block .blockButtons {
+	text-align: center;
+	margin-top: 5px;
+}
+
+.block > .editableContent > .editView {
+	display: none;
+}
+
+.block > .editableContent .textEdit {
+	width: 99%;
+}
+
+.block > .editableContent .blockButtons {
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+
+.block > .editableContent.editState > .displayView {
+	display: none;
+}
+
+.block > .editableContent.editState > .editView {
+	display: block;
+}
+
+.block .labeledInput > label {
+	vertical-align: top;
+	color: #999;
+}
+
+.block .labeledInput > span {
+	width: 150px;
+	display: inline-block;
+}
+
+.block .labeledInput select {
+	height: 23px;
+	width: 100%;
+}
+
+.block .labeledInput input {
+	width: 140px;
+}
+
+.blockDivider {
+	border-bottom: 3px solid #DADADA;
+	margin: 5px 10px 10px;
+}
+
+.titleLabel {
+	font-size: 8pt;
+	font-weight: bold;
+	color: #02314f;
+	padding-left: 5px;
+}
+
+.recommendationDetails > .recommendationInfoTable > .tableBody {
+	background-color: #ffffff;
+	border-top: 3px solid #0876ba !important;
+	border: 3px solid #dadada;
+	display: none;
+}
+
+.recommendationDetails > .recommendationInfoTable > .tabsTable td {
+	font-size: 8pt;
+	height: 35px;
+	text-align: center;
+}
+
+.recommendationDetails > .recommendationInfoTable > .tableBody input {
+	margin-left: 5px;
+}
+
+.recommendationDetails > .recommendationInfoTable > .activeItem {
+	display: block;
+}
+
+.defaultButton {
+	cursor: pointer;
+	width: 120px;
+	height: 20px;
+	border: none;
+	background-color: #02314F;
+	color: #FFFFFF;
+	font-size: 8.5px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	padding: 0px;
+}
+
+.bigButton {
+	height: 30px;
+	background-color: #02314F;
+	border: none;
+	cursor: pointer;
+	color: #FFFFFF;
+	font-size: 17px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	width: 120px;
+}
+
+.editButton {
+	width: 40px;
+	height: 35px;
+	background: url('../img/editicon.png') no-repeat;
+	border: none;
+	cursor: pointer;
+}
+
+.newButton {
+	background-image: url('../img/createnew.png');
+	width: 200px;
+}
+
+.buttonRow {
+	margin: 5px;
+}
+
+.noItemSelectedInfo {
+	background: url('../img/arrow-left_blue.png') no-repeat left center;
+}
+
+.noItemsAvailableInfo {
+	background: url('../img/bang.png') no-repeat left center;
+}
+
+.infoPanel {
+	height: 400px;
+	padding-top: 120px;
+	padding-left: 50px;
+}
+
+.infoPanel > div {
+	padding-left: 40px;
+}
+
+#captureCaptureExperienceCommentInput {
+	width: 496px;
+	min-height: 77px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+}
+
+#captureCaptureExperienceEvidencesNumber {
+	display: inline-block;
+	width: 250px;
+}
+
+.blockTable {
+	font-size: 8pt;
+	text-align: center;
+	line-height: auto;
+	display: block;
+	overflow-y: auto;
+	overflow-x: hidden;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.blockTable > thead {
+	font-size: 8pt;
+	font-weight: bold;
+	color: #02314f;
+	background-color: #EBF3F9;
+	text-align: center;
+}
+
+.blockTable > thead label {
+	font-size: 8pt;
+	font-weight: bold;
+	color: #02314f;
+}
+
+.blockTable td {
+	border: 1px solid #dadada;
+}
+
+.tableBody .blockTable {
+	height: 200px;
+	width: 495px;
+}
+
+.recommendationInfoBody .blockTable {
+	background-color: #FFFFFF;
+	margin-top: 5px;
+	height: 150px;
+	width: 515px;
+}
+
+#captureMyExperiencesExperiences > .blockTable td:first-child {
+	width: 120px;
+}
+
+.clickable  tbody tr:hover {
+	background-color: #ebf3f9;
+	cursor: pointer;
+}
+
+#captureMyExperiencesExperiences > .blockTable td:first-child + td {
+	width: 80px;
+}
+
+#captureMyExperiencesExperiences > .blockTable tbody  td + td + td {
+	text-align: left;
+}
+
+#manageViewExperiencesExperiences > .blockContent {
+	display: inline;
+}
+
+#manageViewExperiencesExperiences > .blockTable td:first-child {
+	width: 120px;
+}
+
+#manageViewExperiencesExperiences > .blockTable td:first-child + td {
+	width: 70px;
+}
+
+#manageViewExperiencesExperiences > .blockTable td:first-child + td + td {
+	width: 120px;
+	text-align: left;
+}
+
+#manageViewExperiencesExperiences > .blockTable td:first-child + td + td + td {
+	width: 175px;
+	text-align: left;
+}
+
+#manageProgressUserStatusInformation > .blockTable td:first-child {
+	width: 150px;
+	text-align: left;
+}
+
+#manageProgressUserStatusInformation > .blockTable td:first-child + td {
+	width: 80px;
+}
+
+#manageProgressUserStatusInformation > .blockTable td:first-child + td + td {
+	width: 265px;
+}
+
+#manageEvidencesAttachedEvidences > .blockTable td {
+	height: 30px;
+	text-align: left;
+	border: none;
+}
+
+#manageEvidencesAttachedEvidences > .blockTable td:first-child {
+	width: 30px;
+}
+
+#manageEvidencesAttachedEvidences > .blockTable td:first-child + td {
+	width: 325px;
+}
+
+#manageEvidencesAttachedEvidences > .blockTable td:first-child + td + td {
+	width: 150px;
+}
+
+#manageMinutesList > .blockTable td {
+	border: none;
+	text-align: left;
+	padding-bottom: 5px;
+	vertical-align: top;
+}
+
+#manageMinutesList > .blockTable td:first-child {
+	width: 125px;
+	background: url('../img/arrow.png') no-repeat;
+	background-position: 100% 2px;
+	color: #02314F;
+}
+
+#manageMinutesList > .blockTable td:first-child + td {
+	width: 375px;
+	padding-left: 10px;
+}
+
+#discussionMinutes > .blockTable td {
+	border: none;
+	text-align: left;
+	padding-bottom: 5px;
+	vertical-align: top;
+}
+
+#discussionMinutes > .blockTable td:first-child {
+	width: 125px;
+	background: url('../img/arrow.png') no-repeat;
+	background-position: 100% 2px;
+	color: #02314F;
+}
+
+#discussionMinutes > .blockTable td:first-child + td {
+	width: 385px;
+	padding-left: 10px;
+}
+
+.sideBar {
+	float: right;
+	width: 200px;
+	background-color: #ebf3f9;
+	height: 496px;
+	padding-top: 5px;
+}
+
+.sideBar > .summaryTitle {
+}
+
+.sideBar > .summaryTitle > .activityIcon {
+	background-image: url('../img/activity.png');
+}
+
+.sideBar > .summaryTitle > div {
+	display: none;
+}
+
+.sideBar > .summaryTitle > div > .icon {
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+	background-repeat: no-repeat;
+	display: inline-block;
+	margin-top: 6px;
+}
+
+.sideBar > .summaryTitle > div > label {
+	display: inline-block;
+	padding-top: 10px;
+}
+
+.sideBar > .summaryTitle > .activityType > .icon {
+	background-image: url('../img/activity.png');
+}
+
+.sideBar > .summaryTitle > .learningType > .icon {
+	background-image: url('../img/learning.png');
+}
+
+.sideBar > .summaryTitle > .behaviorType > .icon {
+	background-image: url('../img/behavior.png');
+}
+
+.sideBar > .summaryTitle > .activeType {
+	display: block;
+}
+
+.commandButtons {
+	margin-top: 10px;
+	margin-left: 40px;
+}
+
+.commandButtons button {
+	margin: 5px;
+}
+
+.starRating > span {
+	width: 29px;
+	height: 30px;
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-image: url('../img/ratingStarEmpty.png');
+	cursor: pointer;
+}
+
+table .starRating > span {
+	width: 20px;
+	height: 20px;
+	background-size: 100%;
+}
+
+.starRating > span.starFilled {
+	background-image: url('../img/ratingStarFilled.png');
+}
+
+.starRating > label {
+	position: relative;
+	top: 6px;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #02314f;
+	margin-left: 10px
+}
+
+#contentDiscussionSession {
+	background-color: #EBF3F9;
+}
+
+#contentDiscussionSession > .leftPanel {
+	height: 551px;
+	background-color: #EBF3F9;
+	float: left;
+	width: 200px;
+}
+
+#discussionSessionParticipantsList > .blockButtons > .defaultButton {
+
+	margin-bottom: 5px;
+}
+
+#discussionSessionParticipantsList > .blockContent {
+	list-style: none;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 3px 3px 3px 0px;
+	max-height: 120px;
+	overflow-y: auto;
+}
+
+#discussionSessionParticipantsList > .blockContent > li {
+	height: 1.3em;
+}
+
+#discussionSessionParticipantsList > .blockContent > .moderator {
+	font-weight: bold;
+	font-style: italic;
+}
+
+#discussionSessionTargetGroups .blockTable {
+	background-color: #ffffff;
+	height: 150px;
+	border: solid 3px #dadada;
+	overflow-y: auto;
+}
+
+#discussionSessionTargetGroups .blockTable td {
+	height: 20px;
+	text-align: left;
+	border: none;
+}
+
+#discussionSessionTargetGroups > .blockTable td:first-child {
+	width: 20px;
+}
+
+#discussionSessionTargetGroups > .blockTable td:first-child + td {
+	width: 160px;
+}
+
+#discussionSessionTargetGroups ul.blockContent {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+	max-height: 120px;
+	min-height: 50px;
+	overflow-y: auto;
+}
+
+#discussionSessionTargetGroups ul.blockContent > li {
+	height: 1.3em;
+}
+
+#discussionSessionTargetGroups #discussionSessionTargetGroupsCreateSpaceButton {
+	width: 194px;
+}
+
+#contentDiscussionSession .recommendationDetails {
+	width: 730px;
+}
+
+#discussionSessionTitle {
+	width: 730px;
+}
+
+.block > .editableContent > div.displayView {
+	display: block;
+}
+
+.block > .editableContent .defaultButton {
+	width: 80px;
+}
+
+#discussionSessionIssue > .editableContent {
+	min-height: 82px;
+}
+
+#discussionSessionSolution > .editableContent {
+	min-height: 82px;
+}
+
+.recommendationDetails .block > .editableContent > div.displayView > .blockContent {
+	display: inline-block;
+	width: 670px;
+	max-height: 100px;
+	overflow-y: auto;
+}
+
+.recommendationDetails .block > .editableContent > div.displayView > .blockButtons {
+	float: right;
+}
+
+.recommendationInfoTable .block > .editableContent > div.displayView > .blockContent {
+	display: inline-block;
+	width: 665px;
+	max-height: 100px;
+	overflow-y: auto;
+}
+
+
+#contentDiscussionSession .recommendationInfoTable > .tableBody {
+	margin: 0px 5px;
+}
+
+#contentDiscussionSession .recommendationInfoTable > .tableBody .blockTable {
+	width: 695px;
+}
+
+#discussionSessionMinutesList > .blockTable tr {
+	height: 25px;
+	vertical-align: top;
+}
+
+#discussionSessionMinutesList > .blockTable td {
+	text-align: left;
+	border: none;
+}
+
+#discussionSessionMinutesList > .blockTable td:first-child {
+	width: 50px;
+	background: url('../img/minutes-list-item.png') no-repeat 0px 1px;
+	color: #ffffff;
+	padding-left: 3px;
+	font-weight: bold;
+}
+
+#discussionSessionMinutesList > .blockTable td:first-child + td {
+	width: 650px;
+}
+
+#discussionSessionMinutesList > .blockTable td:first-child+td > div {
+	display: inline;
+}
+
+#discussionSessionMinutesList > .blockTable td:first-child+td > button {
+	width: 16px;
+	height: 16px;
+	background: url('../img/closeicon.png') no-repeat top center;
+	border: none;
+	float: right;
+	cursor: pointer;
+	display: none;
+}
+
+#discussionSessionMinutesList > .blockTable td:first-child+td:hover {
+	background-color: #dadada;
+}
+
+#discussionSessionMinutesList > .blockTable td:first-child+td:hover > button {
+	display: inline;
+}
+
+#discussionSessionEvidencesAttachedEvidences > .blockTable tr {
+	height: 30px;
+	border-bottom: solid 1px #dadada;
+}
+
+#discussionSessionEvidencesAttachedEvidences > .blockTable td {
+	border: none;
+	text-align: left;
+}
+
+#discussionSessionEvidencesAttachedEvidences > .blockTable td:first-child {
+	width: 30px;
+}
+
+#discussionSessionEvidencesAttachedEvidences > .blockTable td:first-child + td {
+	width: 330px;
+}
+
+#discussionSessionEvidencesAttachedEvidences > .blockTable td:first-child + td + td {
+	width: 150px;
+}
+
+#discussionSessionEvidencesAttachedEvidences > .blockTable td:first-child + td + td + td {
+	width: 130px;
+}
+
+#discussionSessionEvidencesAttachedEvidences > .blockTable td:first-child + td + td + td + td {
+	background: url('../img/closeicon.png') no-repeat center right;
+	width: 20px;
+}
+
+#discussionSessionEvaluation textarea {
+	width: 695px;
+}
+
+#discussionSessionEvaluationRatingText > .editableContent {
+	min-height: 40px;
+}
+
+#publishRecommendationButton {
+	width: 200px;
+	height: 60px;
+}
+
+#recommendationSummaryAgreement > .blockTable {
+	height: auto;
+}
+
+#recommendationSummaryAgreement > .blockTable td {
+	width: 100px;
+	text-align: center;
+}
+
+#recommendationSummaryComment textarea {
+	width: 100%;
+}
+
+#recommendationSummaryAgreementPoll > .blockTable {
+	height: auto;
+}
+
+#recommendationSummaryAgreementPoll > .blockTable td {
+	width: 100px;
+	text-align: center;
+}
+
+.viewDependent {
+	display: none;
+}
+
+#recommendationSummaryPopup.moderatorView #recommendationSummaryReleaseRecommendation {
+	display: block;
+}
+
+#recommendationSummaryPopup.moderatorView #recommendationSummaryAgreement {
+	display: block;
+}
+
+#recommendationSummaryPopup.moderatorView #recommendationSummaryComment {
+	display: block;
+}
+
+#recommendationSummaryPopup.moderatorView #publisherButtons {
+	display: block;
+}
+
+#recommendationSummaryPopup.participantView #participantButtons {
+	display: block;
+}
+
+#recommendationSummaryPopup.participantView #recommendationSummaryParticipantHint {
+	display: block;
+}
+
+.popup {
+	display: none;
+	padding: 20px;
+	background-color: #ffffff;
+}
+
+.popup.singleColumn {
+	width: 300px;
+}
+
+.popup.doubleColumn {
+	width: 600px;
+}
+
+.popup.tripleColumn {
+	width: 900px;
+}
+
+.popup > .popupColumn {
+	width: 290px;
+	background-color: #ffffff;
+	padding: 5px;
+	float: left;
+}
+
+.popup > .popupColumn .styledSearch input {
+	width: 250px;
+}
+
+.popup > .popupTitle {
+	font-size: 8pt;
+	font-weight: bold;
+	color: #02314f;
+	text-transform: uppercase;
+	margin-bottom: 3px;
+	text-align: center;
+}
+
+.popup > .popupHint {
+	color: #02314f;
+	margin: 5px 5px 10px;
+	background-color: #EBF3F9;
+	padding: 0px 3px 3px;
+}
+
+.popup > .errorMessage {
+	color: #FF0000;
+	margin: 5px 5px 10px;
+	padding: 0px 3px 3px;
+	display: none;
+}
+
+.popup > .errorMessage.activeItem {
+	display: block;
+}
+
+.popup > .buttonRow {
+	clear: both;
+	float: right;
+	margin: 5px 0px;
+}
+
+.popup > .buttonRow > button {
+	margin-left: 10px;
+}
+
+.popup .starRating > span {
+	width: 20px;
+	height: 20px;
+	background-size: 100%;
+}
+
+.popup .blockTable td {
+	border: none;
+	padding: 3px;
+	text-align: left;
+}
+
+.popup .blockTable tr {
+	border-bottom: solid 1px #dadada;
+}
+
+.popup .blockTable td:last-child {
+	width: 100%;
+}
+
+.popup .blockTable {
+	border: solid 3px #dadada;
+	margin-top: 5px;
+	height: 250px;
+	width: 100%;
+	overflow-y: auto;
+}
+
+#captureExperiencesEvidencesList .blockTable tbody {
+	width: 100% !important;
+}
+#captureExperiencesEvidencesList > .blockTable {
+
+	background-color: #ffffff;
+	border: 3px solid;
+	border-color: #dadada;
+}
+
+#captureExperiencesEvidencesList > .blockTable tr {
+	border-bottom: solid 1px #dadada;
+}
+
+#captureExperiencesEvidencesList > .blockTable td {
+	height: 30px;
+	border: none;
+}
+
+#captureExperiencesEvidencesList > .blockTable td:first-child {
+	width: 30px;
+}
+
+#captureExperiencesEvidencesList > .blockTable td:first-child + td {
+	text-align: left;
+	width: 150px;
+}
+
+#captureExperiencesEvidencesList > .blockTable td:first-child + td + td {
+	text-align: left;
+	width: 80px;
+}
+
+#captureExperiencesEvidencesList > .blockTable td:first-child + td + td + td {
+	width: 20px;
+	cursor: pointer;
+	background: url('../img/closeicon.png') no-repeat center center;
+}
+
+#usageExperiencedetailsAttachedEvidences > .blockTable td:first-child {
+	width: 30px;
+}
+
+#usageExperiencedetailsAttachedEvidences > .blockTable td:first-child + td {
+	width: 170px;
+}
+
+#usageExperiencedetailsAttachedEvidences > .blockTable td:first-child + td + td {
+	width: 80px;
+}
+
+#browseSpacesPopupDataObjectList > .blockTable {
+	height: 340px;
+}
+
+#browseSpacesPopupDataObjectList > .blockTable td:first-child {
+	width: 20px;
+}
+
+#browseSpacesPopupDataObjectList > .blockTable td:first-child+td {
+	width: 23px;
+}
+
+#browseSpacesPopupDataObjectList > .blockTable td:first-child+td+td {
+	width: 150px;
+}
+
+#browseSpacesPopupDataObjectList > .blockTable td:first-child+td+td+td {
+	width: 75px;
+}
+
+#createNewEvidencePopupDescriptionInput {
+	width: 280px;
+}
+
+#createNewEvidencePopupDescriptionInput {
+	height: 200px;
+}
+
+#createNewEvidencePopupAttachment div {
+	display: inline-block;
+}
+
+#createNewEvidencePopupAttachment > .blockContent {
+	width: 200px;
+}
+
+#updateRecommendationPopup .block > .editableContent > div.displayView > .blockButtons {
+	float: right;
+}
+
+#updateRecommendationPopup .block > .editableContent > div.displayView > .blockContent {
+	display: inline-block;
+	width: 245px;
+	max-height: 100px;
+	overflow-y: auto;
+}
+
+#invitedPersonsPopupPersons > .blockTable td {
+	width: 150px;
+	text-align: left;
+}
+
+#invitedPersonsPopupPersons > .blockTable .moderator {
+	font-weight: bold;
+	font-style: italic;
+}
+
+#createSpacePopupMembersList > .blockTable td:first-child {
+	width: 33%;
+}
+
+#createSpacePopupMembersList > .blockTable td:first-child+td {
+	width: 33%;
+}
+
+#createSpacePopupMembersList > .blockTable td:last-child {
+	width: 16px;
+}
+
+#createSpacePopupMembersList > .blockTable td:last-child > button {
+	width: 16px;
+	height: 16px;
+	background: url('../img/closeicon.png') no-repeat top center;
+	border: none;
+	float: right;
+	cursor: pointer;
+	display: inline;
+}
+
+
+#loginButton {
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/* Keep this item last to overwrite all previous rules. */
+
+.activeItem {
+
+	display: block;
+}

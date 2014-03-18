@@ -1,0 +1,1988 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Activity Recommendation</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<link reL="shortcut icon" href="favicon.ico">
+    	<script type="text/javascript" language="javascript" src="arapp/arapp.nocache.js"></script>
+
+	</head>
+	<body>
+		<div id="main" class="page">
+			<div id="header">
+				<div id="leftHeader">
+					&nbsp;
+				</div>
+				<div id="centerHeader">
+					&nbsp;
+				</div>
+				<div id="rightHeader">
+					<div id="userInfo">
+					</div>
+				</div>
+			</div>
+
+			<div id="mainTabs">
+				<table class="tabsTable">
+					<tr>
+						<td id="tabCapture" class="activeItem">CAPTURE</td>
+						<td id="tabManage">MANAGE</td>
+						<td id="tabDiscussion">DISCUSSION</td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="contentCapture" class="content activeItem">
+				<div class="topPanel">
+					<table class="filterTable">
+						<thead>
+							<tr>
+								<td>SEARCH</td>
+								<td>TYPE</td>
+								<td>PUBLISHER</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+								<div class="styledSearch">
+									<input type="text" id="captureSearchInput" />
+									<button id="captureSearchInputButton" class="searchButton">
+										&nbsp;
+									</button>
+								</div></td>
+								<td>
+								<div class="styledSelect">
+									<select id="captureTypeSelect" size="1">
+										<option>All</option>
+										<option>Activity Task</option>
+										<option>Behavior Task</option>
+										<option>Learning Task</option>
+									</select>
+									<span>&nbsp;</span>
+								</div></td>
+								<td>
+								<div class="styledSelect">
+									<select id="capturePublisherSelect" size="1">
+										<option>All</option>
+									</select>
+									<span>&nbsp;</span>
+								</div></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="leftPanel">
+					<ul class="accordion">
+						<li id="captureActiveSectionHeader" class="sectionTitle">
+							ACTIVE
+						</li>
+						<li id="captureActiveSection" class="sectionBody activeItem">
+							<ul class="recommendationList">
+							</ul>
+						</li>
+
+						<li class="sectionTitle" id="captureSolvedSectionHeader">
+							SOLVED
+						</li>
+						<li id="captureSolvedSection" class="sectionBody">
+							&nbsp;
+						</li>
+						<li class="sectionTitle" id="captureIgnoredSectionHeader">
+							IGNORED
+						</li>
+						<li id="captureIgnoredSection" class="sectionBody">
+							&nbsp;
+						</li>
+					</ul>
+				</div>
+				<div id="captureNoItemSelectedInfoPanel" class="rightPanel infoPanel">
+					<div class="block noItemSelectedInfo">
+						<label> NO RECOMMENDATION SELECTED </label>
+						<div>
+							Select a recommendation from the list.
+						</div>
+					</div>
+				</div>
+				<div id="captureNoItemsAvailableInfoPanel" class="rightPanel infoPanel activeItem">
+					<div class="block noItemsAvailableInfo">
+						<label> NO RECOMMENDATIONS AVAILABLE </label>
+						<div>
+							No recommendations meet the given criteria.
+						</div>
+					</div>
+				</div>
+				<div id="captureRecommendationPanel" class="rightPanel">
+					<div id="capture" class="recommendationDetails">
+						<div class="recommendationTitle">
+							<label id="captureRecommendationTitle"></label>
+						</div>
+
+						<div class="recommendationInfoBody">
+
+							<div id="captureIssue" class="block">
+								<label>ISSUE</label>
+								<div class="blockContent">
+								</div>
+							</div>
+
+							<div id="captureSolution" class="block">
+								<label>RECOMMENDED SOLUTION</label>
+								<div class="blockContent">
+								</div>
+							</div>
+						</div>
+
+						<div class="recommendationInfoTable">
+							<table class="tabsTable">
+								<tr>
+									<td id="tabCaptureCaptureExperience" class="activeItem">CAPTURE EXPERIENCES</td>
+									<td id="tabCaptureMyExperiences">MY EXPERIENCES</td>
+								</tr>
+							</table>
+
+							<div id="captureCaptureExperience" class="tableBody activeItem">
+								<div id="captureCaptureExperienceRating" class="block">
+									<label>RATING</label>
+									<div class="descriptionText">
+										How is your general experience with the recommended solution?
+									</div>
+									<div class="starRating">
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+									</div>
+								</div>
+								<div id="captureCaptureExperienceEffort" class="block">
+									<label>EFFORT</label>
+									<div class="descriptionText">
+									</div>
+									<input type="text" id="captureCaptureExperienceEffortInput">
+									<label class="unitText"></label>
+								</div>
+								<div id="captureCaptureExperienceBenefit" class="block">
+									<label>BENEFIT</label>
+									<div class="descriptionText">
+									</div>
+									<input type="text" id="captureCaptureExperienceBenefitInput">
+									<label class="unitText"></label>
+								</div>
+
+								<div id="captureCaptureExperienceComment" class="block">
+									<label>COMMENT</label>
+									<textarea id="captureCaptureExperienceCommentInput">&nbsp;</textarea>
+								</div>
+
+								<div class="buttonRow">
+									<button class="defaultButton" id="captureCaptureExperienceEvidencesButton">
+										Evidences
+									</button>
+									<div id="captureCaptureExperienceEvidencesNumber">
+										0 evidences are attached
+									</div>
+									<button class="defaultButton" id="captureCaptureExperienceSubmitButton">
+										Submit
+									</button>
+								</div>
+
+							</div>
+							<div id="captureMyExperiences" class="tableBody">
+								<div id="captureMyExperiencesRating" class="block">
+									<label>AVERAGE RATING</label>
+									<div class="descriptionText">
+										Now that you used it, how well did it work this time?
+									</div>
+									<div class="starRating">
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<label>(0)</label>
+									</div>
+								</div>
+								<div id="captureMyExperiencesEffort" class="block">
+									<label>EFFORT</label>
+									<div class="descriptionText">
+									</div>
+									<div class="block" style="padding-left:0px;">
+									</div>
+								</div>
+								<div id="captureMyExperiencesBenefit" class="block">
+									<label>BENEFIT</label>
+									<div class="descriptionText">
+									</div>
+									<div class="block" style="padding-left:0px;">
+									</div>
+								</div>
+								<div id="captureMyExperienceRatioPanel" class="block">
+									<label>BENEFIT-EFFORT-RATIO</label>
+									<div class="descriptionText">
+										Ratio between Benefit and Effort.
+									</div>
+									<div class="block" style="padding-left:0px;">
+										<span>Benefit/Effort</span>
+										<span>&nbsp;&nbsp;</span>
+										<span id="captureMyExperienceRatio"></span>
+									</div>
+								</div>
+								<div id="captureMyExperiencesExperiences" class="block">
+									<label>EXPERIENCES</label>
+									<div class="descriptionText">(0 total, 0 comments)</div>
+									<table class="blockTable clickable">
+										<thead>
+											<tr>
+												<td>RATING</td>
+												<td>DATE</td>
+												<td>COMMENT</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+												<div class="starRating">
+													<span class="starFilled">&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+												</div></td>
+												<td>31.10.2013 14:35</td>
+												<td>This is not as easy as it sounds. Most of the paperwork...</td>
+											</tr>
+											<tr>
+												<td>
+												<div class="starRating">
+													<span class="starFilled">&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+												</div></td>
+												<td>31.10.2013 14:34</td>
+												<td>My desk is totally clean. I'll ignore this.</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="sideBar">
+						<div id="captureSummaryType" class="summaryTitle">
+							<div class="block activityType activeType" >
+								<div class="icon">
+									&nbsp;
+								</div>
+								<label> ACTIVITY TASK </label>
+							</div>
+							<div class="block learningType">
+								<div class="icon">
+									&nbsp;
+								</div>
+								<label> LEARNING TASK </label>
+							</div>
+							<div class="block behaviorType">
+								<div class="icon">
+									&nbsp;
+								</div>
+								<label> BEHAVIOR TASK </label>
+							</div>
+						</div>
+
+						<div id="captureSummaryPublisher" class="block">
+							<label>PUBLISHER</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div id="captureSummaryDate" class="block">
+							<label>PUBLISHING DATE</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div id="captureSummaryProgress" class="block">
+							<label>MY PROGRESS</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div id="captureSummaryLastExperience" class="block">
+							<label>LAST EXPERIENCE CAPTURED</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div id="captureSummaryGroupInfo" class="block">
+							<label>GROUP INFORMATION</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div class="commandButtons">
+							<button class="defaultButton" id="captureMarkAsSolvedButton">
+								Mark as Solved
+							</button>
+							<button class="defaultButton" id="captureIgnoreButton">
+								Ignore
+							</button>
+						</div>
+					</div>
+					<div style="clear: both;"> </div>
+				</div>
+			</div>
+
+			<div id="contentManage" class="content">
+				<div class="topPanel">
+					<table class="filterTable">
+						<thead>
+							<tr>
+								<td>SEARCH</td>
+								<td>TYPE</td>
+								<td>TARGET</td>
+								<td>PUBLISHER</td>
+								<td>STATUS</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+								<div class="styledSearch">
+									<input type="text" id="manageSearchInput"/>
+									<button id="manageSearchInputButton" class="searchButton">
+										&nbsp;
+									</button>
+								</div><td>
+								<div class="styledSelect">
+									<select id="manageTypeSelect" size="1">
+										<option>All</option>
+										<option>Activity Task</option>
+										<option>Behavior Task</option>
+										<option>Learning Task</option>
+									</select>
+									<span>&nbsp;</span>
+								</div></td>
+								<td>
+								<div class="styledSelect">
+									<select id="manageTargetPersonSelect" size="1">
+									</select>
+									<span>&nbsp;</span>
+								</div></td>
+								<td>
+								<div class="styledSelect">
+									<select id="managePublisherSelect" size="1">
+									</select>
+									<span>&nbsp;</span>
+								</div></td>
+								<td>
+								<div class="styledSelect">
+									<select id="manageStatusSelect" size="1">
+										<option>All</option>
+										<option selected="selected">Active</option>
+										<option>Inactive</option>
+									</select>
+									<span>&nbsp;</span>
+								</div></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				<div class="leftPanel ">
+					<ul class="recommendationList">
+					</ul>
+
+					<div>
+						<button class="bigButton newButton" id="manageCreateNewButton">
+							&nbsp;
+						</button>
+					</div>
+				</div>
+				<div id="manageNoItemSelectedInfoPanel" class="rightPanel infoPanel">
+					<div class="block noItemSelectedInfo">
+						<label> NO RECOMMENDATION SELECTED </label>
+						<div>
+							Select a recommendation from the list.
+						</div>
+					</div>
+				</div>
+				<div id="manageNoItemsAvailableInfoPanel" class="rightPanel infoPanel activeItem">
+					<div class="block noItemsAvailableInfo">
+						<label> NO RECOMMENDATIONS AVAILABLE </label>
+						<div>
+							No recommendations meet the given criteria.
+						</div>
+					</div>
+				</div>
+				<div id="manageRecommendationPanel" class="rightPanel">
+					<div class="recommendationDetails">
+						<div class="recommendationTitle">
+							<label id="manageRecommendationTitle"></label>
+						</div>
+
+						<div id="manageIssue" class="block">
+							<label>ISSUE</label>
+							<div class="blockContent">
+							</div>
+						</div>
+						<div id="manageSolution" class="block">
+							<label>RECOMMENDED SOLUTION</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div class="recommendationInfoTable">
+							<table class="tabsTable">
+								<tr>
+									<td id="tabManageViewExperiences">VIEW EXPERIENCES</td>
+									<td id="tabManageProgress">PROGRESS</td>
+									<td id="tabManageEvidences">EVIDENCES</td>
+									<td id="tabManageMinutes" class="activeItem">MINUTES</td>
+								</tr>
+							</table>
+							<div id="manageViewExperiences" class="tableBody">
+								<div id="manageViewExperiencesRating" class="block">
+									<label>AVERAGE RATING</label>
+									<div class="descriptionText">
+										Now that you used it, how well did it work this time?
+									</div>
+									<div class="starRating">
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<label>(0)</label>
+									</div>
+								</div>								
+								<div id="manageViewExperiencesEffort" class="block">
+									<label>EFFORT</label>
+									<div class="descriptionText">
+									</div>
+									<div class="block" style="padding-left:0px;">
+									</div>
+								</div>
+								<div id="manageViewExperiencesBenefit" class="block">
+									<label>BENEFIT</label>
+									<div class="descriptionText">
+									</div>
+									<div class="block" style="padding-left:0px;">
+									</div>
+								</div>
+								<div id="manageViewExperiencesRatioPanel" class="block">
+									<label>BENEFIT-EFFORT-RATIO</label>
+									<div class="descriptionText">
+										Ratio between Benefit and Effort.
+									</div>
+									<div class="block" style="padding-left:0px;">
+										<span>Benefit/Effort</span>
+										<span>&nbsp;&nbsp;</span>
+										<span id="manageViewExperiencesRatio">average: 0 | total: 0</span>
+									</div>
+								</div>
+								<div id="manageViewExperiencesExperiences" class="block">
+									<label>EXPERIENCES</label>
+									<div class="blockContent">
+										(0 total, 0 comments)
+									</div>
+									<table class="blockTable clickable">
+										<thead>
+											<tr>
+												<td>RATING</td>
+												<td>DATE</td>
+												<td>USER</td>
+												<td>COMMENT</td>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div id="manageProgress" class="tableBody">
+								<div id="manageProgressGeneralStatistics" class="block">
+									<label>General Statistics</label>
+									<div class="blockContent">
+										0 of 0 person solved this task
+										<br>
+										0 of 0 person solved this task
+									</div>
+								</div>
+								<div id="manageProgressUserStatusInformation" class="block">
+									<label>User Status Information</label>
+									<table class="blockTable">
+										<thead>
+											<tr>
+												<td>USER</td>
+												<td>STATUS</td>
+												<td>LAST UPDATE</td>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div id="manageEvidences" class="tableBody">
+								<div id="manageEvidencesAttachedEvidences" class="block">
+									<label>Attached Evidences</label>
+									<div class="blockContent">
+										0 evidences are available
+									</div>
+									<table class="blockTable clickable">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div id="manageMinutes" class="tableBody activeItem">
+								<div id="manageMinutesList" class="block">
+									<table class="blockTable">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="sideBar">
+						<div id="manageSummaryType" class="summaryTitle">
+							<div class="block activityType activeType" >
+								<div class="icon">
+									&nbsp;
+								</div>
+								<label> ACTIVITY TASK </label>
+							</div>
+							<div class="block learningType">
+								<div class="icon">
+									&nbsp;
+								</div>
+								<label> LEARNING TASK </label>
+							</div>
+							<div class="block behaviorType">
+								<div class="icon">
+									&nbsp;
+								</div>
+								<label> BEHAVIOR TASK </label>
+							</div>
+						</div>
+
+						<div id="manageSummaryPublisher" class="block">
+							<label>PUBLISHER</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div id="manageSummaryDate" class="block">
+							<label>PUBLISHING DATE</label>
+							<div class="blockContent">
+							</div>
+						</div>
+						<div id="manageSummaryVersion" class="block">
+							<label>VERSION</label>
+							<div class="styledSelect">
+								<select id="manageSummaryVersionSelect" size="1">
+									<option>Current</option>
+								</select>
+								<span>&nbsp;</span>
+							</div>
+						</div>
+
+						<div class="blockDivider"> </div>
+
+						<div id="manageChangeStatus" class="block">
+							<label>CHANGE STATUS</label>
+							<div class="styledSelect">
+								<select id="manageChangeStatusSelect" size="1">
+									<option>Active</option>
+									<option>Inactive</option>
+								</select>
+								<span>&nbsp;</span>
+							</div>
+						</div>
+						<div class="commandButtons">
+							<button class="defaultButton" id="manageUpdateButton">
+								Update
+							</button>
+							<button class="defaultButton" id="manageDiscussButton">
+								Discuss
+							</button>
+							<button class="defaultButton" id="manageRemoveRecommendationButton">
+								Remove
+							</button>
+						</div>
+					</div>
+					<div style="clear: both;"> </div>
+				</div>
+			</div>
+
+			<div id="contentDiscussion" class="content">
+				<div class="topPanel">
+					<table class="filterTable">
+						<thead>
+							<tr>
+								<td>SEARCH</td>
+								<td>MODERATOR</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+								<div class="styledSearch">
+									<input type="text" id="discussionSearchInput"/>
+									<button id="discussionSearchInputButton" class="searchButton">
+										&nbsp;
+									</button>
+								</div></td>
+								<td>
+								<div class="styledSelect">
+									<select id="discussionModeratorSelect" size="1">
+									</select>
+									<span>&nbsp;</span>
+								</div></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				<div class="leftPanel">
+					<ul class="recommendationList">
+					</ul>
+
+					<div>
+						<button class="bigButton newButton" id="discussionCreateNewButton">
+							&nbsp;
+						</button>
+					</div>
+
+				</div>
+				<div id="discussionNoItemSelectedInfoPanel" class="rightPanel infoPanel ">
+					<div class="block noItemSelectedInfo">
+						<label> NO DISCUSSION SELECTED </label>
+						<div>
+							Select a discussion from the list.
+						</div>
+					</div>
+				</div>
+				<div id="discussionNoItemsAvailableInfoPanel" class="rightPanel infoPanel activeItem">
+					<div class="block noItemsAvailableInfo">
+						<label> NO DISCUSSION AVAILABLE </label>
+						<div>
+							Click on CREATE to open a new discussion.
+						</div>
+					</div>
+				</div>
+
+				<div id="discussionDetailPanel" class="rightPanel">
+					<div class="recommendationDetails">
+						<div class="recommendationTitle">
+							<label id="discussionRecommendationTitle">H</label>
+						</div>
+						<div class="recommendationInfoBody">
+							<div id="discussionIssue" class="block">
+								<label>Issue</label>
+								<div class="blockContent">
+								</div>
+							</div>
+							<div id="discussionDiscussionGroups" class="block">
+								<label>Discussion Groups</label>
+								<div class="blockContent">
+								</div>
+							</div>
+							<div id="discussionCurrentParticipants" class="block">
+								<label>Current Participants</label>
+								<div class="blockContent">
+								</div>
+							</div>
+							<div id="discussionMinutes" class="block">
+								<label>Current Minutes</label>
+								<table class="blockTable">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<button id="discussionJoinButton" class="bigButton">
+									Join
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="sideBar">
+						<div id="discussionSummaryModerator" class="block">
+							<label>MODERATOR</label>
+							<div class="blockContent">
+							</div>
+						</div>
+
+						<div id="discussionSummaryCreated" class="block">
+							<label>CREATED</label>
+							<div>
+							</div>
+						</div>
+					</div>
+					<div style="clear: both;"> </div>
+				</div>
+			</div>
+
+			<div id="contentDiscussionSession" class="content">
+				<div class="leftPanel">
+					<div id="discussionSessionDiscussionGroup" class="block">
+						<label>DISCUSSION GROUP</label>
+						<div class="blockContent">
+						</div>
+						<div class="blockButtons">
+							<button id="discussionSessionShowInvitedPersonsPopupButton" class="defaultButton">
+								Participants
+							</button>
+						</div>
+					</div>
+					<div id="discussionSessionParticipantsList" class="block">
+						<label>PARTICIPANTS</label>
+						<ul class="blockContent">
+						</ul>
+						<div class="blockButtons">
+							<button class="defaultButton" id="discussionSessionManageButton">
+								Manage
+							</button>
+							<button class="defaultButton" id="discussionSessionTargetGroupsLeaveButton">
+								Leave
+							</button>
+						</div>
+					</div>
+
+					<div class="blockDivider"> </div>
+
+					<div id="discussionSessionRecommendationType" class="block">
+						<label>Recommendation Type</label>
+						<div class="styledSelect">
+							<select id="discussionSessionRecommendationTypeSelect">
+								<option>Activity Task</option>
+								<option selected="selected">Behavior Task</option>
+								<option>Learning Task</option>
+							</select>
+							<span>&nbsp;</span>
+						</div>
+					</div>
+					<div id="discussionSessionTargetGroups" class="block">
+						<label>TARGET GROUPS</label>
+						<div class="editableContent">
+							<div class="displayView">
+								<ul class="blockContent">
+								</ul>
+								<div class="blockButtons">
+									<button id="discussionSessionTargetGroupsEditButton" class="defaultButton">
+										Change
+									</button>
+								</div>
+							</div>
+							<div class="editView">
+								<div class="styledSearch">
+									<input type="text" id="discussionSessionTargetGroupsSearchInput" />
+									<button id="discussionSessionTargetGroupsSearchButton" class="searchButton">
+										&nbsp;
+									</button>
+								</div>
+								<table class="blockTable">
+									<tbody>
+									</tbody>
+								</table>
+								<div class="blockButtons">
+									<button class="defaultButton" id="discussionSessionTargetGroupsCreateSpaceButton">
+										Create New Space
+									</button>
+								</div>
+								<div class="blockButtons">
+									<button class="defaultButton" id="discussionSessionTargetGroupsCancelButton">
+										Cancel
+									</button>
+									<button class="defaultButton" id="discussionSessionTargetGroupsSubmitButton">
+										Submit
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="blockDivider"> </div>
+					<button id="publishRecommendationButton" class="bigButton">
+						PUBLISH
+					</button>
+				</div>
+
+				<div class="rightPanel activeItem">
+					<div class="recommendationDetails">
+						<div id="discussionSessionTitle" class="block recommendationTitle">
+							<div class="editableContent">
+								<div class="displayView">
+									<label id="discussionSessionTitleLabel"></label>
+									<div class="blockButtons">
+										<button class="editButton" id="discussionSessionTitleEditButton">
+											&nbsp;
+										</button>
+									</div>
+								</div>
+								<div class="editView ">
+									<textarea id="discussionSessionTitleInput" class="textEdit" rows="1">How to motivate yourself</textarea>
+									<div class="blockButtons">
+										<button id="recommendationTitleCancelButton" class="defaultButton">
+											Cancel
+										</button>
+										<button id="recommendationTitleSubmitButton" class="defaultButton">
+											Submit
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="discussionSessionIssue" class="block">
+							<label>ISSUE</label>
+							<div class="editableContent">
+								<div class="displayView">
+									<div class="blockContent">
+									</div>
+									<div class="blockButtons">
+										<button class="editButton" id="discussionSessionIssueEditButton">
+											&nbsp;
+										</button>
+									</div>
+								</div>
+								<div class="editView">
+									<textarea id="discussionSessionIssueInput" class="textEdit" rows="2"></textarea>
+									<div class="blockButtons">
+										<button id="discussionSessionIssueCancelButton" class="defaultButton">
+											Cancel
+										</button>
+
+										<button id="discussionSessionIssueSubmitButton" class="defaultButton">
+											Submit
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="discussionSessionSolution" class="block">
+							<label>RECOMMENDED SOLUTION</label>
+							<div class="editableContent">
+								<div class="displayView">
+									<div class="blockContent">
+									</div>
+									<div class="blockButtons">
+										<button id="discussionSessionSolutionEditButton" class="editButton">
+											&nbsp;
+										</button>
+									</div>
+								</div>
+								<div class="editView">
+									<textarea id="discussionSessionSolutionInput" class="textEdit" rows="2"></textarea>
+									<div class="blockButtons">
+										<button id="discussionSessionSolutionCancelButton" class="defaultButton" >
+											Cancel
+										</button>
+										<button id="discussionSessionSolutionSubmitButton" class="defaultButton">
+											Submit
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="recommendationInfoTable">
+							<table class="tabsTable">
+								<tr>
+									<td id="tabDiscussionSessionMinutes">MINUTES</td>
+									<td id="tabDiscussionSessionEvidences" class="activeItem">EVIDENCES</td>
+									<td id="tabDiscussionSessionEvaluation">EVALUATION</td>
+								</tr>
+							</table>
+							<div id="discussionSessionMinutes" class="tableBody">
+								<div id="discussionSessionMinutesList" class="block">
+									<table class="blockTable">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<div id="discussionSessionEvidences" class="tableBody activeItem">
+								<div class="block">
+									<div class="descriptionText">
+										You can add evidences from your spaces or upload files.
+									</div>
+									<div class="blockButtons">
+										<button class="defaultButton" id="discussionSessionEvidencesUploadButton">
+											Create New
+										</button>
+										<button class="defaultButton" id="discussionSessionEvidencesBrowseButton">
+											Browse
+										</button>
+									</div>
+								</div>
+								<div id="discussionSessionEvidencesAttachedEvidences" class="block">
+									<label>Attached Evidences</label>
+									<label class="blockContent">(2 total)</label>
+									<table class="blockTable clickable">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						
+							<div id="discussionSessionEvaluation" class="tableBody">
+								<div id="discussionSessionEvaluationRatingText" class="block">
+									<label>Rating Description</label>
+									<div class="editableContent">
+										<div class="displayView">
+											<div class="blockContent">
+												Now that you used it, how well did it work this time?
+											</div>
+											<div class="blockButtons">
+												<button class="editButton" id="discussionSessionEvaluationRatingTextEditButton">
+													&nbsp;
+												</button>
+											</div>
+										</div>
+										<div class="editView">
+											<textarea id="discussionSessionEvaluationRatingTextInput" rows="1" >Now that you used it, how well did it work this time?</textarea>
+											<div class="blockButtons">
+												<button id="discussionSessionEvaluationRatingTextCancelButton" class="defaultButton" >
+													Cancel
+												</button>
+												<button id="discussionSessionEvaluationRatingTextSubmitButton" class="defaultButton">
+													Submit
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="discussionSessionEvaluationEffort" class="block">
+									<label>EFFORT</label>
+									<div class="editableContent">
+										<div class="displayView">
+											<div class="blockButtons">
+												<button class="editButton" id="discussionSessionEvaluationEffortEditButton">
+													&nbsp;
+												</button>
+											</div>
+											<div class="labeledInput">
+												<label>Type of effort:</label>
+												<span>Custom</span>
+											</div>
+											<div class="labeledInput">
+												<label>Measurement unit:</label>
+												<span>hours per day</span>
+											</div>
+											<div class="blockContent">
+												Lorem ipsum
+											</div>
+										</div>
+										<div class="editView">
+											<div class="labeledInput">
+												<label>Type of effort:</label>
+												<span>
+													<div class="styledSelect">
+														<select id="discussionSessionEvaluationEffortTypeSelect" size="1">
+															<option>Custom</option>
+														</select>
+														<span>&nbsp;</span>
+													</div>
+												</span>
+											</div>
+											<div class="labeledInput">
+												<label>Measurement unit:</label>
+												<span>
+													<div class="styledInput">
+														<input id="discussionSessionEvaluationEffortDisplayInput" type="text">
+													</div>
+												</span>
+											</div>
+											<textarea id="discussionSessionEvaluationEffortTextInput" rows="2"> </textarea>
+											<div class="blockButtons">
+												<button id="discussionSessionEvaluationEffortCancelButton" class="defaultButton" >
+													Cancel
+												</button>
+												<button id="discussionSessionEvaluationEffortSubmitButton" class="defaultButton">
+													Submit
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="discussionSessionEvaluationBenefit" class="block">
+									<label>BENEFIT</label>
+									<div class="editableContent">
+										<div class="displayView">
+											<div class="blockButtons">
+												<button class="editButton" id="discussionSessionEvaluationBenefitEditButton">
+													&nbsp;
+												</button>
+											</div>
+											<div class="labeledInput">
+												<label>Type of benefit:</label>
+												<span>Custom</span>
+											</div>
+											<div class="labeledInput">
+												<label>Measurement unit:</label>
+												<span>hours per day</span>
+											</div>
+											<div class="blockContent">
+												Lorem ipsum
+											</div>
+										</div>
+										<div class="editView">
+											<div class="labeledInput">
+												<label>Type of benefit:</label>
+												<span>
+													<div class="styledSelect">
+														<select id="discussionSessionEvaluationBenefitTypeSelect" size="1">
+															<option>Custom</option>
+														</select>
+														<span>&nbsp;</span>
+													</div>
+												</span>
+											</div>
+											<div class="labeledInput">
+												<label>Measurement unit:</label>
+												<span>
+													<div class="styledInput">
+														<input id="discussionSessionEvaluationBenefitDisplayInput" type="text">
+													</div>
+												</span>
+											</div>
+											<textarea id="discussionSessionEvaluationBenefitTextInput" rows="2"> </textarea>
+											<div class="blockButtons">
+												<button id="discussionSessionEvaluationBenefitCancelButton" class="defaultButton" >
+													Cancel
+												</button>
+												<button id="discussionSessionEvaluationBenefitSubmitButton" class="defaultButton">
+													Submit
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="clear: both;"> </div>
+				</div>
+			</div>
+		</div>
+
+		<div id="login" class="page activeItem">
+			<div id="upperLogo">
+				&nbsp;
+			</div>
+			<div id="lowerLogo">
+				&nbsp;
+			</div>
+			<div id="loginMask">
+				<div id="loginMaskErrorMessage" class="errorMessage">
+				</div>
+				<div class="block">
+					<label>Username</label>
+					<span>
+						<div class="styledInput">
+							<input id="loginMaskUsernameInput" type="text">
+						</div>
+					</span>
+				</div>
+				<div class="block">
+					<label>Password</label>
+					<span>
+						<div class="styledInput">
+							<input id="loginMaskPasswordInput" type="password">
+						</div>
+					</span>
+				</div>
+				<div class="block">
+					<input id="loginMaskRemeberMeCheckbox" type="checkbox" checked="checked">
+					<label>Remember me</label>
+				</div>
+				<button class="bigButton" id="loginButton">
+					Login
+				</button>
+			</div>
+		</div>
+
+		<div id="createDiscussionPopup" class="popup doubleColumn">
+			<div class="popupTitle">
+				Open Discussion
+			</div>
+			<div class="popupHint">
+				Opens a new discussion in order to create (or update) a recommendation.
+			</div>
+			<div id="createDiscussionPopupErrorMessage" class="errorMessage">
+			</div>
+			<div class="popupColumn">
+				<div class="block">
+					<label>Title</label>
+					<div class="styledInput">
+						<input id="createDiscussionPopupTitle" type="text">
+					</div>
+				</div>
+				<div id="createDiscussionPopupDiscussionGroups" class="block">
+					<label>DISCUSSION GROUP</label>
+					<div class="styledSearch">
+						<input type="text" id="createDiscussionPopupDiscussionGroupsSearchInput" />
+						<button id="createDiscussionPopupDiscussionGroupsSearchButton" class="searchButton">
+							&nbsp;
+						</button>
+					</div>
+					<table class="blockTable">
+						<tbody>
+							<tr>
+								<td>
+								<input type="checkbox" checked="checked">
+								</td>
+								<td><span class="title">ABC Team</span></td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" checked="checked"></td>
+								<td><span class="title">My Private Space</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="block">
+					<button class="defaultButton" id="createDiscussionPopupCreateSpaceButton">
+						Create New Space
+					</button>
+				</div>
+				<div style="clear: both;"> </div>
+			</div>
+			<div class="popupColumn">
+				<div id="createDiscussionPopupParticipants" class="block">
+					<label>Invited Participants</label>
+					<div class="blockContent">
+						alice, bob, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl, carl
+					</div>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton" id="createDiscussionPopupCancelButton">
+					Cancel
+				</button>
+				<button class="defaultButton" id="createDiscussionPopupOpenButton">
+					Open
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+
+		<div id="captureExperiencesEvidencesPopup" class="popup singleColumn">
+			<div class="popupTitle">
+				EVIDENCES
+			</div>
+			<div class="popupHint">
+				You can add evidences from your spaces or upload files.
+			</div>
+			<div class="block">
+				<div class="blockButtons">
+					<button class="defaultButton" id="captureExperiencesEvidencesPopupUploadButton">
+						Create New
+					</button>
+					<button class="defaultButton" id="captureExperiencesEvidencesPopupBrowseButton">
+						Browse
+					</button>
+				</div>
+			</div>
+			<div class="block" id="captureExperiencesEvidencesList">
+				<table class="blockTable clickable">
+					<tbody>
+						<tr>
+							<td><img src="img/data-unknown.png" /></td>
+							<td>Visualization</td>
+							<td>01.01.2013 15:12</td>
+							<td>&nbsp;</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton">
+					Close
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+
+		<div id="usageExperienceDetailsPopup" class="popup doubleColumn">
+			<div class="popupTitle">
+				Usage Experience Details
+			</div>
+			<div class="popupHint">
+				
+			</div>
+			<div class="popupColumn">
+				<div id="usageExperienceDetailsPublisher" class="block">
+					<label>PUBLISHER</label>
+					<div class="blockContent">
+						simon.schwantzer
+					</div>
+				</div>
+				<div id="usageExperienceDetailsPublishingDate" class="block">
+					<label>PUBLISHING DATE</label>
+					<div class="blockContent">
+						01.01.1970 00:00
+					</div>
+				</div>
+				<div id="usageExperienceDetailsStarRating" class="block">
+					<label>RATING</label>
+					<div class="blockContent">
+						<div class="starRating">
+							<span class="starFilled">&nbsp;</span>
+							<span>&nbsp;</span>
+							<span>&nbsp;</span>
+							<span>&nbsp;</span>
+							<span>&nbsp;</span>
+						</div>
+					</div>
+				</div>
+				<div id="usageExperienceDetailsEffort" class="block">
+					<label>MEASURED EFFORT</label>
+					<div class="descriptionText">
+						10 minutes/day
+					</div>
+				</div>
+				<div id="usageExperienceDetailsBenefit" class="block">
+					<label>MEASURED BENEFIT</label>
+					<div class="descriptionText">
+						20 minutes/day
+					</div>
+				</div>
+			</div>
+			<div class="popupColumn">
+				<div id="usageExperienceDetailsComment" class="block">
+					<label>COMMENT</label>
+					<div class="descriptionText">
+						here comes a comment..
+					</div>
+				</div>
+				<div>
+					<div id="usageExperiencedetailsAttachedEvidences" class="block">
+						<label>Attached Evidences</label>
+						<div class="blockContent">
+							0 evidences are available
+						</div>
+						<table class="blockTable clickable">
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton" id="usageExperienceDetailsButton">
+					Close
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+
+		<div id="updateUserStatusPopup" class="popup singleColumn">
+			<div class="popupTitle">
+				Update User Status
+			</div>
+			<div class="popupHint">
+				You can override the current user status for this recommendation.
+			</div>
+			<div class="block">
+				<label>User Status</label>
+				<div id="updateUserStatusSelect" class="styledSelect">
+					<select size="1">
+						<option selected="selected">Active</option>
+						<option>Solved</option>
+						<option>Ignore</option>
+					</select>
+					<span>&nbsp;</span>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton" id="updateUserStatusButtonCancel">
+					Cancel
+				</button>
+				<button class="defaultButton" id="updateUserStatusButtonSubmit">
+					Submit
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+
+		<div id="evidenceDetailsPopup" class="popup doubleColumn">
+			<div class="popupTitle">
+				Evidence Details
+			</div>
+			<div class="popupHint">
+				
+			</div>
+			<div class="popupColumn">
+				<div id="evidenceDetailsPublisher" class="block">
+					<label>PUBLISHER</label>
+					<div class="blockContent">
+						bob
+					</div>
+				</div>
+				<div id="evidenceDetailsPublishingDate" class="block">
+					<label>PUBLISHING DATE</label>
+					<div class="blockContent">
+						01.01.2001 00:00
+					</div>
+				</div>
+			</div>
+			<div class="popupColumn">
+				<div id="evidenceDetailsContent" class="block">
+					<label>CONTENT</label>
+					<div class="blockContent">
+						No details available.
+					</div>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton" id="evidenceDetailsButtonClose">
+					Close
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+
+		<div id="manageDiscussionPopup" class="popup singleColumn">
+			<div class="popupTitle">
+				Manage Discussion
+			</div>
+			<div class="popupHint">
+				You can select a new moderator for this discussion. 
+			</div>
+			<div class="popupColumn">
+				<div id="manageDiscussionPopupModerator" class="block">
+					<label>MODERATOR</label>
+					<div class="styledSelect">
+						<select size="1">
+							<option>alice</option>
+							<option>bob</option>
+						</select>
+						<span>&nbsp;</span>
+					</div>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton" id="manageDiscussionButtonClose">
+					Close
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+
+		<div id="recommendationSummaryPopup" class="popup tripleColumn moderatorView">
+			<div class="popupTitle">
+				Recommendation Summary
+			</div>
+			<div class="popupHint">
+				<div id="recommendationSummaryParticipantHint" class="viewDependent">
+					The moderator wants to publish the recommendation. Do you want to accept it?
+				</div>
+			</div>
+			<div id="recommendationSummaryErrorMessage" class="errorMessage">
+			</div>
+			<div class="popupColumn">
+				<div id="recommendationSummaryTitle" class="block">
+					<label>Title</label>
+					<div class="blockContent">
+						How to motivate yourself
+					</div>
+				</div>
+				<div id="recommendationSummaryIssue" class="block">
+					<label>Issue</label>
+					<div class="blockContent">
+						Fusce vulputate, mi eu viverra cursus, nisl ipsum mollis eros, a elementum leo mauris a purus. Nulla adipiscing congue urna at viverra.
+					</div>
+				</div>
+				<div id="recommendationSummaryRecommendedSolution" class="block">
+					<label>Recommended Solution</label>
+					<div class="blockContent">
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at ligula sed dui commodo sodales vitae nec orci. In commodo tellus id massa laoreet vehicula. Phasellus velit elit, mollis sit amet laoreet non, elementum aliquet nisl.
+					</div>
+				</div>
+			</div>
+			<div class="popupColumn">
+				<div id="recommendationSummaryRatingText" class="block">
+					<label>Rating Text</label>
+					<div class="blockContent">
+						Now that you used it, how well did it work this time? 
+					</div>
+				</div>
+				<div id="recommendationSummaryEffort" class="block">
+					<label>Effort</label>
+					<div class="labeledInput">
+						<label>Type:</label>
+						<span>Custom</span>
+					</div>
+					<div class="labeledInput">
+						<label>Unit:</label>
+						<span>minutes per day</span>
+					</div>
+					<div class="blockContent">
+						Minutes invested to applying the recommenation.
+					</div>
+				</div>
+				<div id="recommendationSummaryBenefit" class="block">
+					<label>Benefit</label>
+					<div class="labeledInput">
+						<label>Type:</label>
+						<span>Custom</span>
+					</div>
+					<div class="labeledInput">
+						<label>Unit:</label>
+						<span>minutes per day</span>
+					</div>
+					<div class="blockContent">
+						Minutes saved by applying the recommenation.
+					</div>
+				</div>
+			</div>
+			<div class="popupColumn">
+				<div id="recommendationSummaryReleaseRecommendation" class="block viewDependent">
+					<input id="recommendationSummaryReleaseRecommendationCheckbox" type="checkbox" checked="checked">
+					<span class="descriptionText">
+						Release this recommendation.
+					</span>
+				</div>
+				<div id="recommendationSummaryTargetGroups" class="block">
+					<label>Target Groups</label>
+					<div class="blockContent">
+						ABC Team
+					</div>
+				</div>
+				<div id="recommendationSummaryAgreement" class="block viewDependent">
+					<label>Agreement</label>
+					<table class="blockTable">
+						<thead>
+							<tr>
+								<td>Accepted</td><td>Abstained</td><td>Rejected</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>2</td><td>3</td><td>2</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="recommendationSummaryComment" class="block viewDependent">
+					<label>Publishing Comment</label>
+					<textarea rows="5">&nbsp;</textarea>
+				</div>
+			</div>
+
+			<div id="publisherButtons" class="buttonRow viewDependent">
+				<button class="defaultButton" id="recommendationSummaryCloseButton">
+					Close
+				</button>
+				<button class="defaultButton" id="recommendationSummaryPublishButton">
+					Publish
+				</button>
+			</div>
+			
+			<div id="participantButtons" class="buttonRow viewDependent">
+				<button class="defaultButton" id="recommendationSummaryRejectButton">
+					Reject
+				</button>
+				<button class="defaultButton" id="recommendationSummaryAbstainButton">
+					Abstain
+				</button>
+				<button class="defaultButton" id="recommendationSummaryAcceptButton">
+					Accept
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+		
+		<div id="deleteMinutesEntryPopup" class="popup singleColumn">
+			<div class="popupTitle">
+				Delete Entry
+			</div>
+			<div class="popupHint">
+				Do you want to delete the following entry?
+			</div>
+			<div id="deleteMinutesEntryPopupDisplay" class="block">
+				<label>10:20</label>
+				<div class="blockContent">
+					Simon: Sed imperdiet est nec nibh pulvinar pharetra. Nulla scelerisque vulputate sollicitudin. Fusce id iaculis quam. Etiam viverra laoreet sem. Pellentesque convallis, risus sed elementum mattis, leo dui congue massa, ac eleifend magna nibh in quam. Aliquam mattis molestie leo, id rhoncus lorem. Integer ut ornare nisl, ac blandit urna.
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton" id="deleteMinutesEntryCancelButton">Cancel</button>
+				<button class="defaultButton" id="deleteMinutesEntryDeleteButton">Delete</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+		
+		<div id="browseSpacesPopup" class="popup doubleColumn">
+			<div class="popupTitle">
+				Browse for Evidences
+			</div>
+			<div class="popupHint">
+				Select the data objects to attach. You can select the spaces you want to browse and apply additional filters.
+			</div>
+			<div class="popupColumn">
+				<div id="browseSpacesPopupSpacesList" class="block">
+					<label>Spaces to Browse</label>
+					<div class="styledSearch">
+						<input type="text" id="browseSpacesPopupSpacesListSearchInput" />
+						<button id="browseSpacesPopupSpacesListSearchButton" class="searchButton">
+							&nbsp;
+						</button>
+					</div>
+					<table class="blockTable">
+						<tbody>
+							<tr>
+								<td><input type="checkbox" checked="checked"></td>
+								<td><span class="title">ABC Team</span></td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" checked="checked"></td>
+								<td><span class="title">My Private Space</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="block">
+					<label>Publisher</label>
+					<div class="styledSelect">
+						<select id="browseSpacesPopupPublisherSelect">
+							<option selected="selected">All</option>
+							<option>alice</option>
+						</select>
+						<span>&nbsp;</span>
+					</div>
+				</div>
+				<div class="block">
+					<label>Publishing Date</label>
+					<div class="styledSelect">
+						<select id="browseSpacesPopupPublishingDateSelect">
+							<option selected="selected">Published within the last 24 hours.</option>
+							<option>Published within the last week.</option>
+							<option>Published within the last month.</option>
+							<option>Published anytime.</option>
+						</select>
+						<span>&nbsp;</span>
+					</div>
+				</div>
+			</div>
+			<div class="popupColumn">
+				<div id="browseSpacesPopupDataObjectList" class="block">
+					<label>Data Objects</label>
+					<div class="styledSearch">
+						<input type="text" id="browseSpacesPopupDataObjectListSearchInput" />
+						<button id="browseSpacesPopupDataObjectListSearchButton" class="searchButton">
+							&nbsp;
+						</button>
+					</div>
+					<table class="blockTable clickable">
+						<tbody>
+						</tbody>
+					</table>
+					<div class="blockContent">
+						0 item(s) selected.
+					</div>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button id="browseSpacesPopupCloseButton" class="defaultButton">Close</button>
+				<button id="browseSpacesPopupAttachButton" class="defaultButton">Attach</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+		
+		<div id="createNewEvidencePopup" class="popup singleColumn">
+			<div class="popupTitle">Create New Evidence</div>
+			<div class="popupHint">
+				Add a text and/or attach a file to be used as evidence.
+			</div>
+			<div id="createNewEvidencePopupErrorMessage" class="errorMessage">
+				lalala
+			</div>
+			<div class="popupColumn">
+				<div id="createNewEvidencePopupDescription" class="block">
+					<label>Description</label>
+					<textarea id="createNewEvidencePopupDescriptionInput" rows="5">&nbsp;</textarea>
+				</div>
+				<div id="createNewEvidencePopupAttachment" class="block">
+					<div class="blockContent">No file attached.</div>
+					<div class="editableContent">
+						<span class="displayView">
+							<button id="createNewEvidencePopupAttachmentAddButton" class="defaultButton">Add</button>
+						</span>
+						<span class="editView">
+							<button id="createNewEvidencePopupAttachmentRemoveButton" class="defaultButton">Remove</button>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button id="createNewEvidencePopupCancelButton" class="defaultButton">Cancel</button>
+				<button id="createNewEvidencePopupCreateButton" class="defaultButton">Create</button>
+			</div>
+			<div style="clear: both;">
+				<form id="createNewEvidencePopupUploadFileForm" style="display:none">
+					<input type="file" id="createNewEvidencePopupUploadFileInput" name="file">
+					<input type="text" id="createNewEvidencePopupUploadFileNameInput" name="filename">
+					<input type="text" id="createNewEvidencePopupUploadSpaceInput" name="discussion">
+				</form>
+			</div>
+		</div>
+		
+		<div id="updateRecommendationPopup" class="popup doubleColumn">
+			<div class="popupTitle">Recommendation Update</div>
+			<div class="popupHint">
+				Correct typos or change parts of texts.
+			</div>
+			<div id="updateRecommendationPopupErrorMessage" class="errorMessage"></div>
+			<div class="popupColumn">
+				<div id="updateRecommendationPopupRecommendationTitle" class="block">
+					<label>TITLE</label>
+					<div class="editableContent">
+						<div class="displayView">
+							<label id="updateRecommendationPopupRecommendationTitleLabel">votingTest</label>
+							<div class="blockButtons">
+								<button class="editButton" id="updateRecommendationPopupRecommendationTitleEditButton">
+									&nbsp;
+								</button>
+							</div>
+						</div>
+						<div class="editView ">
+							<textarea id="updateRecommendationPopupRecommendationTitleInput" class="textEdit" rows="1">How to motivate yourself</textarea>
+							<div class="blockButtons" >
+								<button id="updateRecommendationPopupRecommendationTitleCancelButton" class="defaultButton">
+									Cancel
+								</button>
+								<button id="updateRecommendationPopupRecommendationTitleSubmitButton" class="defaultButton">
+									Submit
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="updateRecommendationPopupRecommendationIssue" class="block">
+					<label>ISSUE</label>
+					<div class="editableContent">
+						<div class="displayView">
+							<div class="blockContent" id="updateRecommendationPopupRecommendationIssueLabel">sad dsa dsa fds dsa</div>
+							<div class="blockButtons">
+								<button class="editButton" id="updateRecommendationPopupRecommendationIssueEditButton">
+									&nbsp;
+								</button>
+							</div>
+						</div>
+						<div class="editView">
+							<textarea id="updateRecommendationPopupRecommendationIssueInput" class="textEdit" rows="2">lorem upsum</textarea>
+							<div class="blockButtons">
+								<button id="updateRecommendationPopupRecommendationIssueCancelButton" class="defaultButton">
+									Cancel
+								</button>
+
+								<button id="updateRecommendationPopupRecommendationIssueSubmitButton" class="defaultButton">
+									Submit
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="updateRecommendationPopupRecommendationSolution" class="block">
+					<label>RECOMMENDED SOLUTION</label>
+					<div class="editableContent">
+						<div class="displayView">
+							<div class="blockContent" id="updateRecommendationPopupRecommendationSolutionLabel">Lalalala na wie geht es uns denn heute?hg</div>
+							<div class="blockButtons">
+								<button id="updateRecommendationPopupRecommendationSolutionEditButton" class="editButton">
+									&nbsp;
+								</button>
+							</div>
+						</div>
+						<div class="editView">
+							<textarea id="updateRecommendationPopupRecommendationSolutionInput" class="textEdit" rows="2">lorem upsum</textarea>
+							<div class="blockButtons">
+								<button id="updateRecommendationPopupRecommendationSolutionCancelButton" class="defaultButton">
+									Cancel
+								</button>
+								<button id="updateRecommendationPopupRecommendationSolutionSubmitButton" class="defaultButton">
+									Submit
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="popupColumn">
+				<div id="updateRecommendationPopupRecommendationRatingText" class="block">
+					<label>Rating Description</label>
+					<div class="editableContent">
+						<div class="displayView">
+							<div class="blockContent" id="updateRecommendationPopupRecommendationRatingTextLabel">gubbel gubbel gubbellabbel labbel labbel</div>
+							<div class="blockButtons">
+								<button class="editButton" id="updateRecommendationPopupRecommendationRatingTextEditButton">
+									&nbsp;
+								</button>
+							</div>
+						</div>
+						<div class="editView">
+							<textarea id="updateRecommendationPopupRecommendationRatingTextInput" rows="1">Now that you used it, how well did it work this time?</textarea>
+							<div class="blockButtons">
+								<button id="updateRecommendationPopupRecommendationRatingTextCancelButton" class="defaultButton">
+									Cancel
+								</button>
+								<button id="updateRecommendationPopupRecommendationRatingTextSubmitButton" class="defaultButton">
+									Submit
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="updateRecommendationPopupRecommendationEffort" class="block">
+					<label>EFFORT</label>
+					<div class="editableContent">
+						<div class="displayView">
+							<div class="blockButtons">
+								<button class="editButton" id="updateRecommendationPopupRecommendationEffortEditButton">
+									&nbsp;
+								</button>
+							</div>
+							<div class="labeledInput">
+								<label>Type of effort:</label>
+								<span>Time Spent (hrs.)</span>
+							</div>
+							<div class="labeledInput">
+								<label>Measurement unit:</label>
+								<span>Time Spent (hrs.)</span>
+							</div>
+							<div class="blockContent">The hours you spent to test</div>
+						</div>
+						<div class="editView">
+							<div class="labeledInput">
+								<label>Type of effort:</label>
+								<span>Time Spent (hrs.)</span>
+							</div>
+							<div class="labeledInput">
+								<label>Measurement unit:</label>
+								<span>
+									<div class="styledInput">
+										<input id="updateRecommendationPopupRecommendationEffortDisplayInput" type="text">
+									</div>
+								</span>
+							</div>
+							<textarea id="updateRecommendationPopupRecommendationEffortTextInput" rows="2"> </textarea>
+							<div class="blockButtons">
+								<button id="updateRecommendationPopupRecommendationEffortCancelButton" class="defaultButton">
+									Cancel
+								</button>
+								<button id="updateRecommendationPopupRecommendationEffortSubmitButton" class="defaultButton">
+									Submit
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="updateRecommendationPopupRecommendationBenefit" class="block">
+					<label>BENEFIT</label>
+					<div class="editableContent">
+						<div class="displayView">
+							<div class="blockButtons">
+								<button class="editButton" id="updateRecommendationPopupRecommendationBenefitEditButton">
+									&nbsp;
+								</button>
+							</div>
+							<div class="labeledInput">
+								<label>Type of benefit:</label>
+								<span>Custom</span>
+							</div>
+							<div class="labeledInput">
+								<label>Measurement unit:</label>
+								<span>hours per day</span>
+							</div>
+							<div class="blockContent">
+								Lorem ipsum
+							</div>
+						</div>
+						<div class="editView">
+							<div class="labeledInput">
+								<label>Type of benefit:</label>
+								<span>Custom</span>
+							</div>
+							<div class="labeledInput">
+								<label>Measurement unit:</label>
+								<span>
+									<div class="styledInput">
+										<input id="updateRecommendationPopupRecommendationBenefitDisplayInput" type="text">
+									</div>
+								</span>
+							</div>
+							<textarea id="updateRecommendationPopupRecommendationBenefitTextInput" rows="2"> </textarea>
+							<div class="blockButtons">
+								<button id="updateRecommendationPopupRecommendationBenefitCancelButton" class="defaultButton" >
+									Cancel
+								</button>
+								<button id="updateRecommendationPopupRecommendationBenefitSubmitButton" class="defaultButton">
+									Submit
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button id="updateRecommendationPopupCancelButton" class="defaultButton">Cancel</button>
+				<button id="updateRecommendationPopupCreateButton" class="defaultButton">Update</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+		
+		
+		<div id="invitedPersonsPopup" class="popup singleColumn">
+			<div class="popupTitle">Participants</div>
+			<div class="popupHint">
+				List of persons invited to participate in this discussion.
+			</div>
+			<div class="popupColumn">
+				<div id="invitedPersonsPopupPersons" class="block">
+					<label>Participants</label>
+					<table class="blockTable">
+						<thead>
+							<tr>
+								<td>User</td>
+								<td>Status</td>
+							</tr>
+						</thead>
+						<tbody>
+						
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button id="invitedPersonsPopupCloseButton" class="defaultButton">Close</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+		
+		
+		<div id="createSpacePopup" class="popup doubleColumn">
+			<div class="popupTitle">
+				Create a new space
+			</div>
+			<div class="popupHint">
+				Create a new team space which can be the used to create a new discussion or as a target space for a recommendation.
+			</div>
+			<div id="createSpacePopupErrorMessage" class="errorMessage">
+			</div>
+			<div class="popupColumn">
+				<div class="block">
+					<label>Title</label>
+					<div class="styledInput">
+						<input id="createSpacePopupTitle" type="text">
+					</div>
+				</div>
+				<div id="createSpacePopupMembersList" class="block">
+					<label>Members</label>
+					<table class="blockTable">
+						<thead>
+							<tr>
+								<td>
+									Name
+								</td>
+								<td>
+									User ID
+								</td>
+								<td>
+									Moderator
+								</td>
+								<td>
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									Alice Adams
+								</td>
+								<td>
+									alice
+								</td>
+								<td>
+									<button>x</button>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Bob Bobson
+								</td>
+								<td>
+									bob
+								</td>
+								<td>
+									<input type="checkbox">
+								</td>
+								<td>
+									<button>x</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div style="clear: both;"> </div>
+			</div>
+			<div class="popupColumn">
+				<div class="block">			
+					<label>Add Member by ID</label>
+					<div class="styledInput">
+						<input id="createSpacePopupMemberInput" type="text">
+					</div>
+					<div class="buttonRow">
+						<button class="defaultButton" id="createSpacePopupAddMemberButton">
+							Add
+						</button>
+					</div>
+				</div>
+				<div id="createSpacePopupMembers" class="block">
+					<label>Recommended Members</label>
+					<div class="styledSearch">
+						<input type="text" id="createSpacePopupMembersSearchInput" />
+						<button id="createSpacePopupMembersSearchButton" class="searchButton">
+							&nbsp;
+						</button>
+					</div>
+					<table class="blockTable">
+						<tbody>
+							<tr>
+								<td>
+								<input type="checkbox" checked="checked">
+								</td>
+								<td><span class="title">Alice Adams</span></td>
+							</tr>
+							<tr>
+								<td><input type="checkbox" checked="checked"></td>
+								<td><span class="title">Bob Bobson</span></td>
+							</tr>
+						</tbody>
+					</table>
+					
+				</div>
+			</div>
+			<div class="buttonRow">
+				<button class="defaultButton" id="createSpacePopupCancelButton">
+					Cancel
+				</button>
+				<button class="defaultButton" id="createSpacePopupCreateButton">
+					Create
+				</button>
+			</div>
+			<div style="clear: both;"> </div>
+		</div>
+	</body>
+</html>
+
