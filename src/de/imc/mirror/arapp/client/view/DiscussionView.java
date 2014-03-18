@@ -329,8 +329,10 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 							} else if (!issueTextArea.getText().equals(issueLabel.getText())) {
 								String newIssue = issueTextArea.getText().replaceAll(" ", "");
 								if (newIssue.equals("")) {
+									newIssue = issueHintHTML;
 									issueLabel.getElement().setInnerHTML(issueHintHTML);
 								} else {
+									newIssue = issueTextArea.getText();
 									issueLabel.setText(issueTextArea.getText());
 								}
 								sendNewEntry(discussionEntryMessage.issueEntry(newIssue));
@@ -391,8 +393,10 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 							} else if (!solutionTextArea.getText().equals(solutionLabel.getText())) {
 								String newSolution = solutionTextArea.getText().replaceAll(" ", "");
 								if (newSolution.equals("")) {
+									newSolution = solutionHintHTML;
 									solutionLabel.getElement().setInnerHTML(solutionHintHTML);
 								} else {
+									newSolution = solutionTextArea.getText();
 									solutionLabel.setText(solutionTextArea.getText());
 								}
 								sendNewEntry(discussionEntryMessage.solutionEntry(newSolution));
@@ -555,7 +559,6 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 							evidencesLabel = child;
 						}
 					}
-//					evidencesLabel = elem.ge
 					break;
 				case EVIDENCESTAB:
 					evidencesTab = elem;
@@ -729,7 +732,6 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 						@Override
 						public void onClick(ClickEvent event) {
 							if (isModerator && participants.size() > 1) {
-								//TODO
 								if (!Window.confirm("Do you really want to leave without assigning a new Moderator for this discussion?")){
 									return;
 								}
