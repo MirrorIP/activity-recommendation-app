@@ -52,6 +52,7 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		CAPTUREEXPERIENCE("captureCaptureExperience"),
 		CAPTUREXPERIENCETAB("tabCaptureCaptureExperience"),
 		COMMENTAREA("captureCaptureExperienceCommentInput"),
+		ERRORMESSAGE("captureCaptureExperienceErrorMessage"),
 		EFFORTDIV("captureCaptureExperienceEffort"),
 		EFFORTINPUT("captureCaptureExperienceEffortInput"),
 		GROUPINFOLABEL("captureSummaryGroupInfo"),
@@ -114,6 +115,8 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 	
 	private Element starRatingDescription;
 	private Element starRatingStarsList;
+	
+	private Element errorMessage;
 	
 	private HTML captureExperienceTab;
 
@@ -403,13 +406,11 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							RecommendationObject recomm = recommObjects.get(recommId);
-							if (recomm.getTargetSpaces() == null || recomm.getTargetSpaces().size() == 0) {
-								Window.alert("This recommendation doesn't contain any information about the spaces it was published on." + 
-												"Therefore it is not possible to publish experiences.\nIf you want to publish experiences" +
-												" you have to create a new version of this recommendation.");
+							if (rating == -1) {
+								errorMessage.setInnerText(instance.errorMessage.notRated());
+								errorMessage.addClassName("activeItem");
 								return;
-							}
+							} 
 							if (commentArea.getText().length() > 0) {
 								comment = commentArea.getText();
 							} else {
@@ -426,8 +427,10 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 						}
 					});
 					break;
+				case ERRORMESSAGE:
+					errorMessage = elem;
 				default:
-					break;						
+					break;
 				}
 			}
 		}	
@@ -474,51 +477,45 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		resetInput();
 		this.recommId = id;
 		
-		
 		if (recomm.getTargetSpaces() == null || recomm.getTargetSpaces().size() == 0) {
 			markAsSolvedButton.setVisible(false);
 			ignoreButton.setVisible(false);
+			submitButton.setVisible(false);
+			errorMessage.setInnerHTML(instance.errorMessage.noTargetSpacesAvailableHTML());
+			errorMessage.addClassName("activeItem");
 		} else {
 			markAsSolvedButton.setVisible(true);
 			ignoreButton.setVisible(true);
+			submitButton.setVisible(true);
+			errorMessage.removeClassName("activeItem");
 		}
 
 		lastExperience.setInnerHTML(instance.infoMessage.captureNoExperiencesCaptured());
 
 		Map<String, Map<String, RecommendationStatus>> stati = instance.getRecommendationStati();
 		Map<String, RecommendationStatus> myStati = stati.get(instance.getBareJID());
-		String progress;
 
-		markAsSolvedButton.setText("Mark as Solved");
-		ignoreButton.setText("Ignore");
+		RecommendationStatus status = null;
 		
-		if (myStati != null) {
-			if (myStati.get(id) != null) {
-				RecommendationStatus status = myStati.get(id);
-				
-				activityList.getParentElement().removeClassName("activeItem");
-				ignoredList.getParentElement().removeClassName("activeItem");
-				solvedList.getParentElement().removeClassName("activeItem");
-				
-				if (status.getStatus() == Status.IGNORED) {
-					progress = "Ignored";
-					ignoredList.getParentElement().addClassName("activeItem");
-					ignoreButton.setText("Mark as Active");
-				} else if (status.getStatus() == Status.OPEN) {
-					progress = "Active";
-					activityList.getParentElement().addClassName("activeItem");
-				} else {
-					progress = "Solved";
-					solvedList.getParentElement().addClassName("activeItem");
-					markAsSolvedButton.setText("Mark as Active");
-				}
+		if (myStati != null && myStati.get(id) != null) {
+			status = myStati.get(id);
+			
+			activityList.getParentElement().removeClassName("activeItem");
+			ignoredList.getParentElement().removeClassName("activeItem");
+			solvedList.getParentElement().removeClassName("activeItem");
+			
+			if (status.getStatus() == Status.IGNORED) {
+				ignoredList.getParentElement().addClassName("activeItem");
+			} else if (status.getStatus() == Status.OPEN) {
+				activityList.getParentElement().addClassName("activeItem");
 			} else {
-				progress = "Active";
+				solvedList.getParentElement().addClassName("activeItem");
 			}
-		} else {
-			progress = "Active";
 		}
-		myProgressLabel.setInnerHTML(progress);
+		markAsSolvedButton.setText(instance.infoMessage.getSolvedButtonCaption(status == null? null: status.getStatus()));
+		ignoreButton.setText(instance.infoMessage.getIgnoreButtonCaption(status == null? null: status.getStatus()));
+		
+		myProgressLabel.setInnerHTML(instance.infoMessage.recommendationProgress(status == null? null:status.getStatus()));
 
 		Map<String, JavaScriptObject> spacesMap = instance.getCompleteSpacesMap();	
 		Map<String, List<String>> targetPersonsMap = new HashMap<String, List<String>>();
@@ -716,6 +713,7 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 			
 			evidencesLabel.setInnerText(instance.infoMessage.captureAttachedEvidences(0));
 		}
+		errorMessage.removeClassName("activeItem");
 		customId = null;
 		commentArea.setText("");
 		

@@ -30,4 +30,9 @@ public interface InfoMessage extends Messages {
 	String userList(@PluralCount List<String> users);
 	String recommendationUpdated();
 	String signedInAs(String user);
+	
+	String getSolvedButtonCaption(@Select RecommendationStatus.Status status);
+	String getIgnoreButtonCaption(@Select RecommendationStatus.Status status);
+	
+	String recommendationProgress(@Select RecommendationStatus.Status status);
 }

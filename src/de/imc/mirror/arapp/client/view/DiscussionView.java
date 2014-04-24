@@ -219,10 +219,6 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 	private boolean isModerator = false;
 	
 	private Button publishButton;
-
-	private final String issueHintHTML = "<i>Enter issue here...</i>";
-	private final String solutionHintHTML = "<i>Enter solution here...</i>";
-	private final String ratingText = "Now that you used it, how well did it work this time?";
 	
 	private String moderatorJid;
 	private String discussionSpaceId;
@@ -305,7 +301,7 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 						@Override
 						public void onClick(ClickEvent event) {
 							issuePanel.addClassName("editState");
-							if (issueLabel.getElement().getInnerHTML().equals(issueHintHTML)) {
+							if (issueLabel.getElement().getInnerHTML().equals(discussionEntryMessage.emptyIssueHtml())) {
 								issueTextArea.setText("");
 							} else {
 								issueTextArea.setText(issueLabel.getText());
@@ -324,13 +320,13 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 						@Override
 						public void onClick(ClickEvent event) {
 							issuePanel.removeClassName("editState");
-							if (issueTextArea.getText().replaceAll(" ", "").equals("") && issueHintHTML.contains(issueLabel.getText())) {
+							if (issueTextArea.getText().replaceAll(" ", "").equals("") && discussionEntryMessage.emptyIssueHtml().contains(issueLabel.getText())) {
 								return;
 							} else if (!issueTextArea.getText().equals(issueLabel.getText())) {
 								String newIssue = issueTextArea.getText().replaceAll(" ", "");
 								if (newIssue.equals("")) {
-									newIssue = issueHintHTML;
-									issueLabel.getElement().setInnerHTML(issueHintHTML);
+									newIssue = discussionEntryMessage.emptyIssueHtml();
+									issueLabel.getElement().setInnerHTML(discussionEntryMessage.emptyIssueHtml());
 								} else {
 									newIssue = issueTextArea.getText();
 									issueLabel.setText(issueTextArea.getText());
@@ -369,7 +365,7 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 						@Override
 						public void onClick(ClickEvent event) {
 							solutionPanel.addClassName("editState");
-							if (solutionLabel.getElement().getInnerHTML().equals(solutionHintHTML)) {
+							if (solutionLabel.getElement().getInnerHTML().equals(discussionEntryMessage.emptySolutionHtml())) {
 								solutionTextArea.setText("");
 							} else {
 								solutionTextArea.setText(solutionLabel.getText());
@@ -388,13 +384,13 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 						@Override
 						public void onClick(ClickEvent event) {
 							solutionPanel.removeClassName("editState");
-							if (solutionTextArea.getText().replaceAll(" ", "").equals("") && solutionHintHTML.contains(solutionLabel.getText())) {
+							if (solutionTextArea.getText().replaceAll(" ", "").equals("") && discussionEntryMessage.emptySolutionHtml().contains(solutionLabel.getText())) {
 								return;
 							} else if (!solutionTextArea.getText().equals(solutionLabel.getText())) {
 								String newSolution = solutionTextArea.getText().replaceAll(" ", "");
 								if (newSolution.equals("")) {
-									newSolution = solutionHintHTML;
-									solutionLabel.getElement().setInnerHTML(solutionHintHTML);
+									newSolution = discussionEntryMessage.emptySolutionHtml();
+									solutionLabel.getElement().setInnerHTML(discussionEntryMessage.emptySolutionHtml());
 								} else {
 									newSolution = solutionTextArea.getText();
 									solutionLabel.setText(solutionTextArea.getText());
@@ -647,7 +643,6 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 						@Override
 						public void onClick(ClickEvent event) {
 							targetGroupsPanel.removeClassName("editState");
-							//revert to old state of checkboxes;
 						}
 					});
 					break;
@@ -1291,12 +1286,12 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 	 */
 	private void updateInfosWithRecommendation(RecommendationObject recomm) {
 		if (recomm.getIssue().equals("")) {
-			issueLabel.getElement().setInnerHTML(issueHintHTML);
+			issueLabel.getElement().setInnerHTML(discussionEntryMessage.emptyIssueHtml());
 		} else {
 			issueLabel.setText(recomm.getIssue());
 		}
 		if (recomm.getRecommendedSolution().equals("")) {
-			solutionLabel.getElement().setInnerHTML(solutionHintHTML);
+			solutionLabel.getElement().setInnerHTML(discussionEntryMessage.emptySolutionHtml());
 		} else {
 			solutionLabel.setText(recomm.getRecommendedSolution());
 		}
@@ -1384,8 +1379,8 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 			ratingTextArea.setText(ratingDescription);
 			ratingLabel.setInnerHTML(ratingDescription);
 		} else {
-			ratingLabel.setInnerText(ratingText);
-			ratingTextArea.setText(ratingText);
+			ratingLabel.setInnerText(discussionEntryMessage.standardRatingText());
+			ratingTextArea.setText(discussionEntryMessage.standardRatingText());
 		}
 		
 		participants = recomm.getParticipants();
@@ -1588,13 +1583,13 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 	private RecommendationObject createRecommendationObject() {
 		
 		String issue;
-		if (!issueHintHTML.equals(issueLabel.getElement().getInnerHTML())) {
+		if (!discussionEntryMessage.emptyIssueHtml().equals(issueLabel.getElement().getInnerHTML())) {
 			issue = issueLabel.getText();
 		} else {
 			issue = "";
 		}
 		String solution;
-		if (!solutionHintHTML.equals(solutionLabel.getElement().getInnerHTML())) {
+		if (!discussionEntryMessage.emptySolutionHtml().equals(solutionLabel.getElement().getInnerHTML())) {
 			solution = solutionLabel.getText();
 		} else {
 			solution = "";
@@ -1955,10 +1950,10 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 			isModerator = true;
 			title.setText(discussionSpaceId);
 			
-			issueLabel.getElement().setInnerHTML(issueHintHTML);
-			solutionLabel.getElement().setInnerHTML(solutionHintHTML);
-			ratingLabel.setInnerText(ratingText);
-			ratingTextArea.setText(ratingText);
+			issueLabel.getElement().setInnerHTML(discussionEntryMessage.emptyIssueHtml());
+			solutionLabel.getElement().setInnerHTML(discussionEntryMessage.emptySolutionHtml());
+			ratingLabel.setInnerText(discussionEntryMessage.standardRatingText());
+			ratingTextArea.setText(discussionEntryMessage.standardRatingText());
 			benefit = null;
 			effort = null;
 			targetGroups = null;

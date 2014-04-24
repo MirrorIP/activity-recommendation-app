@@ -8,11 +8,6 @@ import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -28,6 +23,7 @@ import de.imc.mirror.arapp.client.EvidenceVisualisation;
 import de.imc.mirror.arapp.client.Experience;
 import de.imc.mirror.arapp.client.FileEvidence;
 import de.imc.mirror.arapp.client.Parser;
+import de.imc.mirror.arapp.client.view.popup.ShowImagePopup;
 
 public class ActivityRecommendation {
 	
@@ -141,7 +137,6 @@ public class ActivityRecommendation {
 				text = text.replace(url, "<a target=\"_blank\" href='" + url + "'>" + url + "</a>");
 			}
 		}
-//		text = text.replaceAll("\n", "<br>");
 		contentLabel.setInnerText(text);
 		
 		absolutePanel.getElement().appendChild(contentLabel);
@@ -157,6 +152,7 @@ public class ActivityRecommendation {
 			attachmentLabel.getStyle().setFloat(com.google.gwt.dom.client.Style.Float.LEFT);
 			attachmentLabel.getStyle().setMarginTop(10, Unit.PX);
 			attachmentLabel.getStyle().setMarginRight(10, Unit.PX);
+			attachmentLabel.setTitle(fe.getFileName());
 			attachmentLabel.setInnerHTML("Attachment: " + filename);
 
 			String[] array = fe.getFileName().split("\\.");
@@ -212,55 +208,13 @@ public class ActivityRecommendation {
 
 				Button.wrap(showButton).addClickHandler(new ClickHandler() {
 					
+					private ShowImagePopup popup;
 					@Override
 					public void onClick(ClickEvent event) {
-						if (img.getElement().hasAttribute("src") && img.getElement().getAttribute("src").startsWith("data:")) {
-							if (img.isVisible()) {
-								showButton.setInnerHTML("Show");
-								img.setVisible(false);
-							} else {
-								showButton.setInnerHTML("Hide");	
-								img.setVisible(true);
-							}
-						} else {
-							StringBuilder builder = new StringBuilder();
-							builder.append(GWT.getModuleBaseURL())
-									.append("server?")
-									.append("nameOnServer=")
-									.append(URL.encodeQueryString(fe.getFileNameWithPrefix()))
-									.append("&filename=")
-									.append(URL.encodeQueryString(fe.getFileName()))
-									.append("&location=")
-									.append(URL.encodeQueryString(fe.getLocation()))
-									.append("&auth=")
-									.append(URL.encodeQueryString(getLoginInfos()))
-									.append("&download=false");
-							RequestBuilder reqBuilder = new RequestBuilder(RequestBuilder.GET, builder.toString());
-							try {
-								img.setVisible(true);
-								reqBuilder.sendRequest(null, new RequestCallback() {
-									
-									@Override
-									public void onResponseReceived(Request request, Response response) {
-										String result = response.getText();
-										result = result.replaceAll("\\$", "+");
-										result = result.replaceAll("_", "/");	
-										img.getElement().setAttribute("src", "data:image/" + fileType + ";base64," + result);
-										showButton.setInnerHTML("Hide");
-									}
-									
-									@Override
-									public void onError(Request request, Throwable exception) {
-										Window.alert(exception.getMessage());
-										// TODO Auto-generated method stub
-										
-									}
-								});
-							} catch (RequestException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}	
+						if (popup == null) {
+							popup = new ShowImagePopup(fe);
 						}
+						popup.showPopup();
 					}
 				});
 				buttonRow.appendChild(showButton);
@@ -279,9 +233,5 @@ public class ActivityRecommendation {
 		var pass = $wnd.pass;
 		var loginInfos = user + ":" + pass;
 		return $wnd.Base64.encode(loginInfos);
-	}-*/;
-	
-	private native String getBase64(String toEncode) /*-{
-		return $wnd.Base64.encode(toEncode);
 	}-*/;
 }

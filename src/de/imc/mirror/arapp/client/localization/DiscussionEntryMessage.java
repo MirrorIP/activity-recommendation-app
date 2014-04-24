@@ -15,4 +15,8 @@ public interface DiscussionEntryMessage extends Messages{
 	String openMessage(String moderator, String timestamp);
 	String joinMessage(String userJid);
 	String publishMessage(String publisher, String timestamp, @Select String lastComment);
+	
+	String emptyIssueHtml();
+	String emptySolutionHtml();
+	String standardRatingText();
 }

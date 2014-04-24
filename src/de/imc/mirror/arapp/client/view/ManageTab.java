@@ -544,22 +544,6 @@ public class ManageTab extends RecommendationsOverviewView {
 					}
 				}
 				status = instance.infoMessage.recommendationStatus(recStatus==null?Status.OPEN:recStatus.getStatus());
-//				if (stati.containsKey(person) && stati.get(person) != null && stati.get(person).containsKey(id) && stati.get(person).get(id) != null) {
-////					RecommendationStatus recStatus = stati.get(person).get(id);
-//					if (recStatus.getStatus() == Status.IGNORED) {
-//						status = "ignore";
-//						ignored++;
-//					} else if (recStatus.getStatus() == Status.SOLVED) {
-//						status = "solved";
-//						solved++;
-//					} else {
-//						status = "open";
-//					}
-//					timestamp = recStatus.getTimestamp();
-//				} else {
-//					status = "open";
-//					timestamp = recomm.getTimestamp();
-//				}
 				
 				Element trElement = Document.get().createTRElement();
 				

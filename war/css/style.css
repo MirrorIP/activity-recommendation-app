@@ -548,6 +548,17 @@ body {
 	padding-left: 40px;
 }
 
+#captureCaptureExperience > .errorMessage {
+	color: #FF0000;
+	margin: 5px 0px 8px;
+	padding: 0px 3px 3px;
+	display: none;
+}
+
+#captureCaptureExperience > .errorMessage.activeItem {
+	display: block;
+}
+
 #captureCaptureExperienceCommentInput {
 	width: 496px;
 	min-height: 77px;

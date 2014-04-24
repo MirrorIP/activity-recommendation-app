@@ -566,7 +566,7 @@ public class ARApp implements EntryPoint {
 	 */
 	public void addSessionObject(String nodeId, String sessionXML) {
 		boolean startTimer = false;
-		if (!Document.get().getElementById("tabDiscussion").getClassName().contains("activeItem")) { //!discussionsMap.containsKey(nodeId) && 
+		if (!Document.get().getElementById("tabDiscussion").getClassName().contains("activeItem")) { 
 			startTimer = true;
 		}
 		discussionsMap.put(nodeId, sessionXML);
@@ -744,8 +744,7 @@ public class ARApp implements EntryPoint {
 				if (obj.getPublisher().equals(getBareJID())) {
 					manageTab.setDeleteStatus(obj);
 				}
-			} else if (obj.deleted()) { //only if 'deleted' not 'todelete'
-				//targetspaces
+			} else if (obj.deleted()) { 
 				List<String> targetSpaces = obj.getTargetSpaces();
 				if (targetSpaces != null && !targetSpaces.isEmpty()) {
 					List<String> spaces = new ArrayList<String>();
@@ -758,7 +757,6 @@ public class ARApp implements EntryPoint {
 						requestAllDataToDelete(spaces, obj.getCustomId());
 					}
 				}
-				//if manager request all recstatuses/exsperiences/recs
 			}
 		}
 	}

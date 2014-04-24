@@ -100,7 +100,8 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 					}
 				}
 				if (!getInfos(boundary, byteArray)) {
-					response.getOutputStream().write("400".getBytes());
+					response.sendError(404);
+//					response.getOutputStream().write("400".getBytes());
 					response.flushBuffer();
 				} else {
 					response.getOutputStream().write("200".getBytes());
@@ -155,9 +156,13 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 
 				httpCon.setRequestProperty("Authorization", "Basic " + auth);
 				
-				
 				httpCon.connect();
-				httpCon.getResponseCode();
+				if (httpCon.getResponseCode() != 200) {
+					httpCon.disconnect();
+					response.sendError(404);
+					response.flushBuffer();
+					return;
+				}
 				httpCon.getResponseMessage();
 				
 				InputStream in = httpCon.getInputStream();
@@ -232,9 +237,7 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 			httpCon.setRequestProperty("Content-type", "multipart/form-data");
 			httpCon.setRequestProperty("Authorization", "Basic " + auth);
 			httpCon.connect();
-//			System.out.println(httpCon.getResponseCode());
 			httpCon.getResponseCode();
-//			System.out.println(httpCon.getResponseMessage());
 			httpCon.getResponseMessage();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -261,9 +264,7 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 			}
 			out.close();
 			httpCon.connect();
-//			System.out.println(httpCon.getResponseCode());
 			httpCon.getResponseCode();
-//			System.out.println(httpCon.getResponseMessage());
 			httpCon.getResponseMessage();
 		} catch (Exception e) {
 			e.printStackTrace();

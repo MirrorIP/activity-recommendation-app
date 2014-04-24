@@ -28,4 +28,8 @@ public interface ErrorMessage extends Messages{
 	
 	String noDiscussionGroupChosen();
 	String titleAlreadyUsed();
+	
+	String noTargetSpacesAvailableHTML();
+	
+	String notRated();
 }
