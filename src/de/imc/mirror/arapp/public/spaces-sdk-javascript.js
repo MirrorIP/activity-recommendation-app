@@ -7,7 +7,7 @@ var SpacesSDK = (function() {
 	 * Version of the SDK. This value is set when the SDK is packaged.
 	 * @memberOf SpacesSDK 
 	 */
-	var VERSION = '1.3.0';
+	var VERSION = '1.3.2-SNAPSHOT';
 	
 	/**
 	 * Collection of utility functions for the SDK to be used internally.
@@ -2298,8 +2298,8 @@ var SpacesSDK = (function() {
 			var dataObjects = [];
 			connection.sendIQ(queryIq, function (resultIQ) {
 				var resultElement = resultIQ.getElementsByTagName('result')[0];
-				for (var i = 0; i < resultElement.children.length; i++) {
-					var dataObjectElement = resultElement.children[i];
+				for (var i = 0; i < resultElement.childNodes.length; i++) {
+					var dataObjectElement = resultElement.childNodes[i];
 					var dataObject = new DataObject(dataObjectElement);
 					dataObjects.push(dataObject);
 				}
@@ -4766,11 +4766,16 @@ var SpacesSDK = (function() {
 			connection.spaces.getSpacesList(function(res) {
 				var spaces = res;
 				var result = [];
+				if (spaces.length == 0) {
+					onSuccess(result);
+					return;
+				}
 				var checked = new Object();
 				var callBack = function(res2) {
 					if (!checked[res2.getId()]) {
 						checked[res2.getId()] = true;
 						result.push(res2);
+						
 						for (var i=0; i<spaces.length; i++) {
 							if (!checked[spaces[i].id]) return;
 						}
@@ -4781,11 +4786,11 @@ var SpacesSDK = (function() {
 					var number = i;
 					var errCallback = function(res) {
 						if (!checked[spaces[number].Id]) {
-						checked[spaces[number].id] = true;
-						for (var j=0; j<spaces.length; j++) {
-							if (!checked[spaces[j].id]) return;
-						}
-						onSuccess(result);
+							checked[spaces[number].id] = true;
+							for (var j=0; j<spaces.length; j++) {
+								if (!checked[spaces[j].id]) return;
+							}
+							onSuccess(result);
 						}
 					};
 					getAllSpaceInformation(spaces[i], callBack, errCallback);
