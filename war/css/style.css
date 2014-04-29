@@ -920,7 +920,6 @@ table .starRating > span {
 	overflow-y: auto;
 }
 
-
 #contentDiscussionSession .recommendationInfoTable > .tableBody {
 	margin: 0px 5px;
 }
@@ -951,11 +950,11 @@ table .starRating > span {
 	width: 650px;
 }
 
-.discussionSessionList > .blockTable td:first-child+td > div {
+.discussionSessionList > .blockTable td:first-child+ td > div {
 	display: inline;
 }
 
-.discussionSessionList > .blockTable td:first-child+td > button {
+.discussionSessionList > .blockTable td:first-child+ td > button {
 	width: 16px;
 	height: 16px;
 	background: url('../img/closeicon.png') no-repeat top center;
@@ -965,33 +964,31 @@ table .starRating > span {
 	display: none;
 }
 
-#discussionSessionMinutes .discussionSessionList > .blockTable td:first-child+td:hover {
+#discussionSessionMinutes .discussionSessionList > .blockTable td:first-child+ td:hover {
 	background-color: #dadada;
 }
 
-#discussionSessionMinutes .discussionSessionList > .blockTable td:first-child+td:hover > button {
+#discussionSessionMinutes .discussionSessionList > .blockTable td:first-child+ td:hover > button {
 	display: inline;
 }
 
-
 #discussionSessionChat .discussionSessionList > .blockTable td:first-child {
-	font-size:10px;
-	width: 180px;
+	font-size: 10px;
+	padding-right: 5px;
 	color: #DADADA;
 	background: none;
 	white-space: nowrap;
 }
 
-#discussionSessionChatList textarea{
-	width:572px;
+#discussionSessionChatList textarea {
+	width: 572px;
+	max-width: 572px;
 }
-#discussionSessionChatList textarea+button{
-	float:right;
-	margin:12px 5px 0;
-	height:30px;
+#discussionSessionChatList textarea+button {
+	float: right;
+	margin: 2px 5px 0;
+	height: 30px;
 }
-
-
 
 #discussionSessionEvidencesAttachedEvidences > .blockTable tr {
 	height: 30px;
@@ -1240,15 +1237,15 @@ table .starRating > span {
 	width: 20px;
 }
 
-#browseSpacesPopupDataObjectList > .blockTable td:first-child+td {
+#browseSpacesPopupDataObjectList > .blockTable td:first-child+ td {
 	width: 23px;
 }
 
-#browseSpacesPopupDataObjectList > .blockTable td:first-child+td+td {
+#browseSpacesPopupDataObjectList > .blockTable td:first-child+ td+ td {
 	width: 150px;
 }
 
-#browseSpacesPopupDataObjectList > .blockTable td:first-child+td+td+td {
+#browseSpacesPopupDataObjectList > .blockTable td:first-child+ td+ td+ td {
 	width: 75px;
 }
 
@@ -1293,7 +1290,7 @@ table .starRating > span {
 	width: 33%;
 }
 
-#createSpacePopupMembersList > .blockTable td:first-child+td {
+#createSpacePopupMembersList > .blockTable td:first-child+ td {
 	width: 33%;
 }
 
@@ -1310,7 +1307,6 @@ table .starRating > span {
 	cursor: pointer;
 	display: inline;
 }
-
 
 #loginButton {
 	display: block;
