@@ -1,4 +1,4 @@
-/* HTML element settings */
+/* HTML element settings  */
 
 body {
 	font: 130%/1.5 Verdana, Arial, Helvetica, sans-serif;
@@ -929,17 +929,17 @@ table .starRating > span {
 	width: 695px;
 }
 
-#discussionSessionMinutesList > .blockTable tr {
+.discussionSessionList > .blockTable tr {
 	height: 25px;
 	vertical-align: top;
 }
 
-#discussionSessionMinutesList > .blockTable td {
+.discussionSessionList > .blockTable td {
 	text-align: left;
 	border: none;
 }
 
-#discussionSessionMinutesList > .blockTable td:first-child {
+.discussionSessionList > .blockTable td:first-child {
 	width: 50px;
 	background: url('../img/minutes-list-item.png') no-repeat 0px 1px;
 	color: #ffffff;
@@ -947,15 +947,15 @@ table .starRating > span {
 	font-weight: bold;
 }
 
-#discussionSessionMinutesList > .blockTable td:first-child + td {
+.discussionSessionList > .blockTable td:first-child + td {
 	width: 650px;
 }
 
-#discussionSessionMinutesList > .blockTable td:first-child+td > div {
+.discussionSessionList > .blockTable td:first-child+td > div {
 	display: inline;
 }
 
-#discussionSessionMinutesList > .blockTable td:first-child+td > button {
+.discussionSessionList > .blockTable td:first-child+td > button {
 	width: 16px;
 	height: 16px;
 	background: url('../img/closeicon.png') no-repeat top center;
@@ -965,13 +965,33 @@ table .starRating > span {
 	display: none;
 }
 
-#discussionSessionMinutesList > .blockTable td:first-child+td:hover {
+#discussionSessionMinutes .discussionSessionList > .blockTable td:first-child+td:hover {
 	background-color: #dadada;
 }
 
-#discussionSessionMinutesList > .blockTable td:first-child+td:hover > button {
+#discussionSessionMinutes .discussionSessionList > .blockTable td:first-child+td:hover > button {
 	display: inline;
 }
+
+
+#discussionSessionChat .discussionSessionList > .blockTable td:first-child {
+	font-size:10px;
+	width: 180px;
+	color: #DADADA;
+	background: none;
+	white-space: nowrap;
+}
+
+#discussionSessionChatList textarea{
+	width:572px;
+}
+#discussionSessionChatList textarea+button{
+	float:right;
+	margin:12px 5px 0;
+	height:30px;
+}
+
+
 
 #discussionSessionEvidencesAttachedEvidences > .blockTable tr {
 	height: 30px;
