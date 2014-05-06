@@ -1320,3 +1320,11 @@ table .starRating > span {
 
 	display: block;
 }
+
+#discussionSessionChatList textarea+button{
+	float:right;
+	width:100px;
+	height:30px;
+	margin: 2px 12px 0;
+}
+
