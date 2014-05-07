@@ -38,8 +38,10 @@ import de.imc.mirror.arapp.client.Effort;
 import de.imc.mirror.arapp.client.Entry;
 import de.imc.mirror.arapp.client.Evidence;
 import de.imc.mirror.arapp.client.FileEvidence;
+import de.imc.mirror.arapp.client.HasChat;
 import de.imc.mirror.arapp.client.HasSpacesList;
 import de.imc.mirror.arapp.client.HasTimestamp;
+import de.imc.mirror.arapp.client.Muc;
 import de.imc.mirror.arapp.client.Parser;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.RecommendationObjectBuilder;
@@ -51,7 +53,7 @@ import de.imc.mirror.arapp.client.service.ARAppService;
 import de.imc.mirror.arapp.client.service.ARAppServiceAsync;
 import de.imc.mirror.arapp.client.view.popup.InvitedPersonsPopup;
 
-public class DiscussionView extends View implements HasEvidences, HasSpacesList{
+public class DiscussionView extends View implements HasEvidences, HasSpacesList, HasChat{
 	
 	protected enum ElementIds {
 		PARTICIPANTSLIST("discussionSessionParticipantsList"),
@@ -87,6 +89,12 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 		MINUTESTABBUTTON("tabDiscussionSessionMinutes"),
 		EVIDENCESTABBUTTON("tabDiscussionSessionEvidences"),
 		EVALUATIONTABSBUTTON("tabDiscussionSessionEvaluation"),
+		
+		CHATTABBUTTON("tabDiscussionSessionChat"),
+		
+		CHATTAB("discussionSessionChat"),
+		CHATLIST("discussionSessionChatList"),
+		CHATSENDBUTTON("discussionSessionChatSubmitButton"),
 		
 		MINUTESTAB("discussionSessionMinutes"),
 		MINUTESLIST("discussionSessionMinutesList"),
@@ -251,11 +259,21 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 	private Element evidencesLabel;
 	
 	private DiscussionEntryMessage discussionEntryMessage;
+	private Button chatTabButton;
+	private Element chatList;
+	private Button chatSendButton;
+	protected Element chatTab;
+	
+	private Muc muc;
+	
+	private boolean enableChat;
 
 	public DiscussionView(final ARApp instance) {
 		super(instance);	
 		discussionEntryMessage = GWT.create(DiscussionEntryMessage.class);
 		initialiseTime();
+		
+		enableChat = isChatEnabled();
 		build();
 	};
 
@@ -533,6 +551,11 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 							evaluationTab.addClassName("activeItem");
 							evidencesTab.removeClassName("activeItem");
 							minutesTab.removeClassName("activeItem");
+							
+							if (enableChat) {
+								chatTabButton.getElement().removeClassName("activeItem");
+								chatTab.removeClassName("activeItem");
+							}
 						}
 					});
 					break;
@@ -572,6 +595,11 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 							evidencesTab.addClassName("activeItem");
 							minutesTab.removeClassName("activeItem");
 							evaluationTab.removeClassName("activeItem");
+							
+							if (enableChat) {
+								chatTabButton.getElement().removeClassName("activeItem");
+								chatTab.removeClassName("activeItem");
+							}
 						}
 					});
 					break;
@@ -604,6 +632,11 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 							minutesTab.addClassName("activeItem");
 							evidencesTab.removeClassName("activeItem");
 							evaluationTab.removeClassName("activeItem");
+							
+							if (enableChat) {
+								chatTabButton.getElement().removeClassName("activeItem");
+								chatTab.removeClassName("activeItem");
+							}
 						}
 					});
 					break;
@@ -735,6 +768,9 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 								participants.remove(instance.getBareJID());
 								sendNewEntry(discussionEntryMessage.leaveMessage(instance.getDisplayNameForJid(instance.getBareJID())));
 								discussionSpaceId = null;
+							}
+							if (muc != null) {
+								muc.leave();
 							}
 							instance.leaveDiscussion();
 						}
@@ -979,6 +1015,78 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 						}
 						
 					});
+					break;
+				case CHATTABBUTTON:
+					if (enableChat) {
+						chatTabButton = Button.wrap(elem);
+						chatTabButton.addClickHandler(new ClickHandler() {
+	
+							@Override
+							public void onClick(ClickEvent event) {
+								chatTabButton.getElement().setClassName("activeItem");
+								minutesTabButton.getElement().removeClassName("activeItem");
+								evidencesTabButton.getElement().removeClassName("activeItem");
+								evaluationTabButton.getElement().removeClassName("activeItem");
+	
+								chatTab.addClassName("activeItem");
+								minutesTab.removeClassName("activeItem");
+								evidencesTab.removeClassName("activeItem");
+								evaluationTab.removeClassName("activeItem");
+							}
+						});
+					} else {
+						elem.getStyle().setDisplay(Display.NONE);
+					}
+					break;
+				case CHATTAB:
+					if (enableChat) {
+						chatTab = elem;
+					} else {
+						elem.getStyle().setDisplay(Display.NONE);
+					}
+					break;
+				case CHATLIST:
+					if (enableChat) {
+						chatList = elem.getElementsByTagName("tbody").getItem(0);
+					} else {
+						elem.getStyle().setDisplay(Display.NONE);
+					}
+					break;
+				case CHATSENDBUTTON:
+					if (enableChat) {
+						chatSendButton = Button.wrap(elem);
+						
+						final TextArea input = TextArea.wrap(chatSendButton.getElement().getPreviousSiblingElement());
+						input.addKeyDownHandler(new KeyDownHandler() {
+							
+							@Override
+							public void onKeyDown(KeyDownEvent event) {
+								if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+									String message = input.getText();
+									if (!message.replaceAll(" ", "").isEmpty()) {
+										muc.sendChatMessage(message);
+										input.setText("");
+									}
+									event.preventDefault();
+								}
+							}
+						});
+						
+						chatSendButton.addClickHandler(new ClickHandler() {
+													
+							@Override
+							public void onClick(ClickEvent event) {
+								String message = input.getText();
+								if (!message.replaceAll(" ", "").isEmpty()) {
+									muc.sendChatMessage(message);
+									input.setText("");
+								}
+							}
+						});
+					} else {
+						elem.getStyle().setDisplay(Display.NONE);
+					}
+					break;
 				}
 			}
 		}
@@ -1677,6 +1785,8 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 			publishObject(createRecommendationObject().toDataObject(), targetSpaces);
 		}
 		deleteSpace(discussionSpaceId);
+//		muc.deleteMuc();
+		
 		discussionSpaceId = null;
 		ref = null;
 	}
@@ -1780,6 +1890,31 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 				break;
 			}
 		});
+	}-*/;
+	
+	public void appendNewMessage(String message, String sender) {
+		String timeString = DateTimeFormat.getFormat("HH:mm").format(new Date());
+		
+		final Element trElement = Document.get().createTRElement();
+		
+		Element timeElement = Document.get().createTDElement();
+		timeElement.setInnerHTML(timeString + " " + sender);
+		
+		Element tdElement = Document.get().createTDElement();
+		
+		Element textElement = Document.get().createDivElement();
+		textElement.setInnerHTML(message);
+		
+		tdElement.appendChild(textElement);
+		
+		trElement.appendChild(timeElement);
+		trElement.appendChild(tdElement);
+		
+		chatList.insertFirst(trElement);
+	}
+	
+	private native boolean isChatEnabled() /*-{
+		return $wnd.enableChat;
 	}-*/;
 	
 	/**
@@ -2009,6 +2144,14 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList{
 			setModeratorRights();
 		}
 		getInvitedPersons(instance.getInvitedPersonsPopup(), id);
+	}
+	
+	public void initializeMuc(String id) {
+		if (enableChat) {
+			String nick = instance.getDisplayNameForJid(instance.getBareJID());
+			this.muc = new Muc(id, nick, this);
+			chatList.removeAllChildren();
+		}
 	}
 	
 

@@ -2,6 +2,7 @@ package de.imc.mirror.arapp.client.view;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.shared.GWT;
@@ -300,18 +301,6 @@ public class LoginPage extends View{
 	private void removeNode(String nodeId) {
 		instance.removeNode(nodeId);
 	}
-	
-	/**
-	 * Checks if for a given jid there was already a request to the server to get its full name.
-	 * @param jid the jid to check.
-	 * @return true if a displayname was already saved and therefor a request was already sent.
-	 */
-	private boolean alreadyRequestedFullName(String jid) {
-		if (instance.getDisplayNameForJid(jid) != null) {
-			return true;
-		}
-		return false;
-	}
 
 	/**
 	 * Saves a given displayname for a given jid. If these two are both the barejid only the userId will be saved as the displayname. 
@@ -366,6 +355,7 @@ public class LoginPage extends View{
 		$wnd.spaceHandler.getAllSpaces(function(result){				
 				var persistenceAvailable = $wnd.connection.getNetworkInformation().getPersistenceServiceJID();
 				var spaceIds = [];
+				var jids = @java.util.HashSet::new()();
 				
 				if (result.length > 0) {
 					that.@de.imc.mirror.arapp.client.view.LoginPage::countUp()();
@@ -373,7 +363,12 @@ public class LoginPage extends View{
 					for (var i = 0; i<result.length; i++) {
 						spaceIds.push(result[i].getId());
 						$wnd.dataHandler.registerSpace(result[i].getId());
-						that.@de.imc.mirror.arapp.client.view.LoginPage::getFullNames(Lcom/google/gwt/core/client/JavaScriptObject;)(result[i]);
+						
+						var users = result[i].getMembers();
+						for (var j in users) {
+							jids.@java.util.Set::add(Ljava/lang/Object;)(users[j].getJID());
+						}					
+						
 						that.@de.imc.mirror.arapp.client.view.LoginPage::addSpace(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(result[i].getId(), result[i].getName(), result[i]);
 					}
 					var modelFilter1 = new $wnd.SpacesSDK.filter.DataModelFilter('mirror:application:activityrecommendationapp:recommendation');
@@ -397,8 +392,9 @@ public class LoginPage extends View{
 					
 					});
 				} else {
-					that.@de.imc.mirror.arapp.client.view.LoginPage::showStartView()();
+					jids.@java.util.Set::add(Ljava/lang/Object;)($wnd.connection.getCurrentUser().getBareJID());
 				}
+				that.@de.imc.mirror.arapp.client.view.LoginPage::getFullNames(Ljava/util/Set;)(jids);
 				
 			},
 			function(err){
@@ -411,34 +407,28 @@ public class LoginPage extends View{
 	 * This method will request and save all fullnames for all members of the given space.
 	 * @param space the space to get the fullnames for its members.
 	 */
-	private native void getFullNames(JavaScriptObject space) /*-{
+	private native void getFullNames(Set<String> jids) /*-{
 		var that = this;
 		var xmppConnection = $wnd.connection.getXMPPConnection();
-		var members = space.getMembers();
-		for (var i=0; i<members.length; i++) {
+		var iter = jids.@java.util.Set::iterator()();
+		while (iter.@java.util.Iterator::hasNext()()) {
 			that.@de.imc.mirror.arapp.client.view.LoginPage::countUp()();
-		}
-		for (var i in members) {
-			var jid = members[i].getJID();
-			if (!that.@de.imc.mirror.arapp.client.view.LoginPage::alreadyRequestedFullName(Ljava/lang/String;)(jid)){
-				that.@de.imc.mirror.arapp.client.view.LoginPage::saveDisplayNameForJid(Ljava/lang/String;Ljava/lang/String;)(jid, jid);
-				xmppConnection.vcard.get(function(result) {
-					var nameElement = result.getElementsByTagName("FN");
-					if (nameElement && nameElement != null && nameElement[0] && nameElement[0] != null) {
-						var requestedJid = result.getAttribute("from");
-						var name = requestedJid;
-						if (nameElement[0].firstChild && nameElement[0].firstChild.nodeValue) name = nameElement[0].firstChild.nodeValue;
-						else if (nameElement[0].textContent) name = nameElement[0].textContent;
-						else if (nameElement[0].innerText) name = nameElement[0].innerText;
-						that.@de.imc.mirror.arapp.client.view.LoginPage::saveDisplayNameForJid(Ljava/lang/String;Ljava/lang/String;)(requestedJid, name);
-					}
-					that.@de.imc.mirror.arapp.client.view.LoginPage::countDown()();
-				}, jid, function(error) {
-					that.@de.imc.mirror.arapp.client.view.LoginPage::countDown()();
-				});
-			} else {
+			var jid = iter.@java.util.Iterator::next()();
+			that.@de.imc.mirror.arapp.client.view.LoginPage::saveDisplayNameForJid(Ljava/lang/String;Ljava/lang/String;)(jid, jid);
+			xmppConnection.vcard.get(function(result) {
+				var nameElement = result.getElementsByTagName("FN");
+				if (nameElement && nameElement != null && nameElement[0] && nameElement[0] != null) {
+					var requestedJid = result.getAttribute("from");
+					var name = requestedJid;
+					if (nameElement[0].firstChild && nameElement[0].firstChild.nodeValue) name = nameElement[0].firstChild.nodeValue;
+					else if (nameElement[0].textContent) name = nameElement[0].textContent;
+					else if (nameElement[0].innerText) name = nameElement[0].innerText;
+					that.@de.imc.mirror.arapp.client.view.LoginPage::saveDisplayNameForJid(Ljava/lang/String;Ljava/lang/String;)(requestedJid, name);
+				}
 				that.@de.imc.mirror.arapp.client.view.LoginPage::countDown()();
-			}
+			}, jid, function(error) {
+				that.@de.imc.mirror.arapp.client.view.LoginPage::countDown()();
+			});
 		}
 	}-*/;
 	

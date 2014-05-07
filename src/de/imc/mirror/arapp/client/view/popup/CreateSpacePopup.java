@@ -174,8 +174,10 @@ public class CreateSpacePopup extends View {
 								}
 								if (users.contains(user)) {
 									checkBoxes.get(user).setValue(true);
+									updateMembersList();
+								} else {
+									getFullNames(user);
 								}
-								updateMembersList();
 							} else {
 								errorMessage.setInnerText(instance.errorMessage.wrongUserIdForm());
 								errorMessage.addClassName("activeItem");
@@ -260,9 +262,9 @@ public class CreateSpacePopup extends View {
 		}		
 		var config = new $wnd.SpacesSDK.SpaceConfiguration($wnd.SpacesSDK.Type.TEAM, title, spaceMembers, $wnd.SpacesSDK.PersistenceType.ON, null);
 		$wnd.spaceHandler.createSpace(config, function(space) {
+					$wnd.dataHandler.registerSpace(space.getId());
 					instance.@de.imc.mirror.arapp.client.ARApp::addSpace(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)(space.getId(), title, space);
 				}, function(){
-					$wnd.console.log("moep");
 				});
 	}-*/;
 	
@@ -277,14 +279,10 @@ public class CreateSpacePopup extends View {
 			Element nameTD = Document.get().createTDElement();
 			
 			String name = instance.getDisplayNameForJid(user);
-			if (name != null) {
-				nameTD.setInnerText(name);
+			if (name.contains("@")) {
+				nameTD.setInnerText(name.split("@")[0]);
 			} else {
-				if (user.contains("@")) {
-					nameTD.setInnerText(user.split("@")[0]);
-				} else {
-					nameTD.setInnerText(user);
-				}
+				nameTD.setInnerText(name);
 			}
 			
 			Element idTD = Document.get().createTDElement();
@@ -375,6 +373,25 @@ public class CreateSpacePopup extends View {
 
 	private native String getDomain() /*-{
 		return $wnd.connection.getConfiguration().getDomain();
+	}-*/;
+	
+	private native void getFullNames(String jid) /*-{
+		var that = this;
+		var xmppConnection = $wnd.connection.getXMPPConnection();
+		xmppConnection.vcard.get(function(result) {
+			var nameElement = result.getElementsByTagName("FN");
+			if (nameElement && nameElement != null && nameElement[0] && nameElement[0] != null) {
+				var requestedJid = result.getAttribute("from");
+				var name = requestedJid;
+				if (nameElement[0].firstChild && nameElement[0].firstChild.nodeValue) name = nameElement[0].firstChild.nodeValue;
+				else if (nameElement[0].textContent) name = nameElement[0].textContent;
+				else if (nameElement[0].innerText) name = nameElement[0].innerText;
+				that.@de.imc.mirror.arapp.client.view.View::instance.@de.imc.mirror.arapp.client.ARApp::setDisplayNameForJid(Ljava/lang/String;Ljava/lang/String;)(requestedJid, name.split("@")[0]);
+			}
+			that.@de.imc.mirror.arapp.client.view.popup.CreateSpacePopup::updateMembersList()();
+		}, jid, function(error) {
+			that.@de.imc.mirror.arapp.client.view.popup.CreateSpacePopup::updateMembersList()();
+		});
 	}-*/;
 	
 	

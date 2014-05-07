@@ -34,6 +34,7 @@
   <script src="spaces-sdk-javascript.js"/>
   <script src="strophe.disco.js"/>
   <script src="strophe.pubsub.js"/>
+  <script src="strophe.muc.js"/>
   <script src="strophe.spaces.js"/>
   <script src="strophe.register.js"/>
   <script src="strophe.x.js"/>

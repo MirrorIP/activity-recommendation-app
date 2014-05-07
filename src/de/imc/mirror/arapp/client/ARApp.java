@@ -342,6 +342,8 @@ public class ARApp implements EntryPoint {
 		if (discussionView != null) {
 			this.discussionId = id;
 			discussionView.setDiscussionSpaceId(id);
+			discussionView.initializeMuc(id);
+			
 			Document.get().getElementById("contentDiscussion").removeClassName("activeItem");
 			Document.get().getElementById("contentDiscussionSession").addClassName("activeItem");
 		}
@@ -357,6 +359,7 @@ public class ARApp implements EntryPoint {
 			this.discussionId = id;
 			discussionView.setDiscussionGroup(discussionGroup);
 			discussionView.setDiscussionSpaceId(id);
+			discussionView.initializeMuc(id);
 	
 			Document.get().getElementById("tabManage").removeClassName("activeItem");
 			Document.get().getElementById("contentManage").removeClassName("activeItem");
@@ -497,7 +500,11 @@ public class ARApp implements EntryPoint {
 		if (jid.contains("/")) {
 			jid = jid.split("/")[0];
 		}
-		return displayNames.get(jid);
+		if (displayNames.get(jid) == null || displayNames.get(jid).equals("")) {
+			return jid;
+		} else {
+			return displayNames.get(jid);
+		}
 	}
 	
 	/**
