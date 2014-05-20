@@ -1,4 +1,4 @@
-package de.imc.mirror.arapp.client;
+package de.imc.mirror.arapp.client.Interfaces;
 
 public interface HasChat {
 

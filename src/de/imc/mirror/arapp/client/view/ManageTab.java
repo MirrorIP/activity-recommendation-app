@@ -26,10 +26,10 @@ import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.Entry;
 import de.imc.mirror.arapp.client.Evidence;
 import de.imc.mirror.arapp.client.Experience;
-import de.imc.mirror.arapp.client.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.RecommendationPanel;
 import de.imc.mirror.arapp.client.RecommendationStatus;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationStatus.Status;
 import de.imc.mirror.arapp.client.view.popup.UpdateUserStatusPopup;
 

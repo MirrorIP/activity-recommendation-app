@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 
 import de.imc.mirror.arapp.client.Entry;
-import de.imc.mirror.arapp.client.HasTimestamp;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.view.DiscussionView;
 
 public class DeleteEntryPopup {

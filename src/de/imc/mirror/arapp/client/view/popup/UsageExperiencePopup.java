@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.HTML;
 import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.Evidence;
 import de.imc.mirror.arapp.client.Experience;
-import de.imc.mirror.arapp.client.HasTimestamp;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.view.View;
 
 public class UsageExperiencePopup extends View{

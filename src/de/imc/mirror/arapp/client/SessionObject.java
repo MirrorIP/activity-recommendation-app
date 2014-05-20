@@ -12,6 +12,8 @@ import com.google.gwt.xml.client.Node;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
 
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
+
 public class SessionObject {
 	
 	/**

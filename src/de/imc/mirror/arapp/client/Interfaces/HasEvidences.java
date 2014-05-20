@@ -1,6 +1,8 @@
-package de.imc.mirror.arapp.client;
+package de.imc.mirror.arapp.client.Interfaces;
 
 import java.util.List;
+
+import de.imc.mirror.arapp.client.Evidence;
 
 public interface HasEvidences {
 	

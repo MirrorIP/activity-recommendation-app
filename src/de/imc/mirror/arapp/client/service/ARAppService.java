@@ -20,4 +20,5 @@ public interface ARAppService extends RemoteService {
 	void deleteFiles(String discussionId);
 	void deleteFilesOnFileService(Map<String, String> list, String auth);
 	Map<String, Long> startingTimes(List<String> discussions);
+	boolean isFileServiceAvailable();
 }

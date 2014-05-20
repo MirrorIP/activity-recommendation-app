@@ -3,6 +3,8 @@ package de.imc.mirror.arapp.client;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
+
 public class Entry implements HasTimestamp{
 	
 	private String timestamp;

@@ -15,4 +15,5 @@ public interface ARAppServiceAsync {
 	void deleteFiles(String discussionId, AsyncCallback<Void> callback);
 	void startingTimes(List<String> discussions, AsyncCallback<Map<String, Long>> callback);
 	void deleteFilesOnFileService(Map<String, String> list, String auth, AsyncCallback<Void> callback);
+	void isFileServiceAvailable(AsyncCallback<Boolean> callback);
 }

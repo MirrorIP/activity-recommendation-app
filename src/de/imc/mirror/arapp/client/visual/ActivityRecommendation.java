@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.xml.client.NodeList;
 
+import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.Benefit;
 import de.imc.mirror.arapp.client.Effort;
 import de.imc.mirror.arapp.client.Evidence;
@@ -120,7 +121,7 @@ public class ActivityRecommendation {
 	
 
 	
-	public static void buildTextEvidence(EvidenceVisualisation instance, Evidence ev, com.google.gwt.xml.client.Element elem)  {
+	public static void buildTextEvidence(EvidenceVisualisation instance, Evidence ev, com.google.gwt.xml.client.Element elem, ARApp arappInstance)  {
 		
 		AbsolutePanel absolutePanel = new AbsolutePanel();
 		
@@ -154,71 +155,72 @@ public class ActivityRecommendation {
 			attachmentLabel.getStyle().setMarginRight(10, Unit.PX);
 			attachmentLabel.setTitle(fe.getFileName());
 			attachmentLabel.setInnerHTML("Attachment: " + filename);
+			absolutePanel.getElement().appendChild(attachmentLabel);
 
 			String[] array = fe.getFileName().split("\\.");
 			final String fileType = array[array.length - 1].toLowerCase();
 			Element buttonRow = Document.get().createDivElement();
 			buttonRow.setClassName("buttonRow");
-			
-			Element downloadButton = Document.get().createPushButtonElement();
-			downloadButton.setClassName("defaultButton");
-			downloadButton.getStyle().setMarginTop(10, Unit.PX);
-			downloadButton.setInnerHTML("Download");
-			Button.wrap(downloadButton).addClickHandler(new ClickHandler() {
-				
-				@Override
-				public void onClick(ClickEvent event) {
-					StringBuilder builder = new StringBuilder();
-					builder.append(GWT.getModuleBaseURL())
-							.append("server?")
-							.append("nameOnServer=")
-							.append(URL.encodeQueryString(fe.getFileNameWithPrefix()))
-							.append("&filename=")
-							.append(URL.encodeQueryString(fe.getFileName()))
-							.append("&location=")
-							.append(URL.encodeQueryString(fe.getLocation()))
-							.append("&auth=")
-							.append(URL.encodeQueryString(getLoginInfos()))
-							.append("&download=true");
-					Window.open(builder.toString(), null, null);
-				}
-			});
-			
-			
-			absolutePanel.getElement().appendChild(attachmentLabel);
-			buttonRow.appendChild(downloadButton);
-			Element clearElement = Document.get().createDivElement();
-			clearElement.getStyle().setClear(Clear.BOTH);
-			absolutePanel.getElement().appendChild(clearElement);
-			absolutePanel.getElement().appendChild(buttonRow);
-
-			if (fileType.equals("png") || fileType.equals("gif") || fileType.equals("jpg")) {
-
-				final Image img = new Image("./img/loader.gif");
-				img.getElement().getStyle().setMarginTop(10, Unit.PX);
-				img.setVisible(false);
-				img.setWidth("auto");
-				img.setHeight("auto");
-				
-				final Element showButton = Document.get().createPushButtonElement();
-				showButton.getStyle().setMarginTop(10, Unit.PX);
-				showButton.getStyle().setMarginLeft(10, Unit.PX);
-				showButton.setClassName("defaultButton");
-				showButton.setInnerHTML("Show");
-
-				Button.wrap(showButton).addClickHandler(new ClickHandler() {
+			if (arappInstance.isFileServiceAvailable()) {
+				Element downloadButton = Document.get().createPushButtonElement();
+				downloadButton.setClassName("defaultButton");
+				downloadButton.getStyle().setMarginTop(10, Unit.PX);
+				downloadButton.setInnerHTML("Download");
+				Button.wrap(downloadButton).addClickHandler(new ClickHandler() {
 					
-					private ShowImagePopup popup;
 					@Override
 					public void onClick(ClickEvent event) {
-						if (popup == null) {
-							popup = new ShowImagePopup(fe);
-						}
-						popup.showPopup();
+						StringBuilder builder = new StringBuilder();
+						builder.append(GWT.getModuleBaseURL())
+								.append("server?")
+								.append("nameOnServer=")
+								.append(URL.encodeQueryString(fe.getFileNameWithPrefix()))
+								.append("&filename=")
+								.append(URL.encodeQueryString(fe.getFileName()))
+								.append("&location=")
+								.append(URL.encodeQueryString(fe.getLocation()))
+								.append("&auth=")
+								.append(URL.encodeQueryString(getLoginInfos()))
+								.append("&download=true");
+						Window.open(builder.toString(), null, null);
 					}
 				});
-				buttonRow.appendChild(showButton);
-				absolutePanel.add(img);
+				
+				
+				buttonRow.appendChild(downloadButton);
+				Element clearElement = Document.get().createDivElement();
+				clearElement.getStyle().setClear(Clear.BOTH);
+				absolutePanel.getElement().appendChild(clearElement);
+				absolutePanel.getElement().appendChild(buttonRow);
+	
+				if (fileType.equals("png") || fileType.equals("gif") || fileType.equals("jpg")) {
+	
+					final Image img = new Image("./img/loader.gif");
+					img.getElement().getStyle().setMarginTop(10, Unit.PX);
+					img.setVisible(false);
+					img.setWidth("auto");
+					img.setHeight("auto");
+					
+					final Element showButton = Document.get().createPushButtonElement();
+					showButton.getStyle().setMarginTop(10, Unit.PX);
+					showButton.getStyle().setMarginLeft(10, Unit.PX);
+					showButton.setClassName("defaultButton");
+					showButton.setInnerHTML("Show");
+	
+					Button.wrap(showButton).addClickHandler(new ClickHandler() {
+						
+						private ShowImagePopup popup;
+						@Override
+						public void onClick(ClickEvent event) {
+							if (popup == null) {
+								popup = new ShowImagePopup(fe);
+							}
+							popup.showPopup();
+						}
+					});
+					buttonRow.appendChild(showButton);
+					absolutePanel.add(img);
+				}
 			}
 		}		
 

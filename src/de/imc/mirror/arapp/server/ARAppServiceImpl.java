@@ -16,6 +16,7 @@ import java.util.Set;
 
 import javax.activation.FileTypeMap;
 import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,11 +30,54 @@ import de.imc.mirror.arapp.client.service.ARAppService;
 public class ARAppServiceImpl extends RemoteServiceServlet implements
 		ARAppService {
 	
+	private static boolean fileserviceAvailable = false;
+
+	private static String fileServiceURL;
 
 	private static final long serialVersionUID = 1L;
 	
 	private Map<String, Long> startingTimes = new HashMap<String, Long>();
 	private Map<String, Set<EvidenceFile>> evidenceFiles = new HashMap<String, Set<EvidenceFile>>();
+	
+
+	public void init(ServletConfig servletConfig) throws ServletException {
+		super.init(servletConfig);
+		
+		String fileserviceLocation = servletConfig.getInitParameter("fileServiceHost");		
+		if (fileserviceLocation == null || fileserviceLocation.length() == 0) {
+			return;
+		} else if (fileserviceLocation.endsWith("/")) {
+			fileserviceLocation.substring(0, fileserviceLocation.length() - 1);
+		}
+		String fileServicePath = servletConfig.getInitParameter("fileServicePath");
+		if (fileServicePath == null || fileServicePath.length() == 0) {
+			return;
+		}
+		int fileServiceMethod = Integer.parseInt(servletConfig.getInitParameter("useHTTPS"));
+		String method;
+		if (fileServiceMethod == 1) {
+			method = "https://";
+		} else {
+			method = "http://";
+		}
+		
+		int fileservicePort = Integer.parseInt(servletConfig.getInitParameter("fileservicePort"));
+		StringBuilder builder = new StringBuilder();
+		builder.append(method).append(fileserviceLocation);
+		if (fileservicePort != -1 && fileservicePort != 80) {
+			builder.append(":").append(fileservicePort);
+		}
+		builder.append("/").append(fileServicePath);
+		if (!fileServicePath.endsWith("/")) {
+			builder.append("/");
+		}
+		fileServiceURL = builder.toString();
+		fileserviceAvailable = true;
+	}
+	
+	public boolean isFileServiceAvailable() {
+		return fileserviceAvailable;
+	}
 	
 	public Long getTime() {
 		return new Date().getTime();
@@ -65,6 +109,9 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	public void saveFilesOnSpaces(String discussionId, String auth, List<String> spaceIds) {
+		if (!fileserviceAvailable) {
+			return;
+		}
 		Set<EvidenceFile> files = evidenceFiles.get(discussionId);
 		for (String spaceId:spaceIds) {
 			for (EvidenceFile file:files) {
@@ -73,37 +120,40 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 	
-	public Boolean fileAlreadyExists(String discussionId, String filename) {
-		Set<EvidenceFile> files = evidenceFiles.get(discussionId);
-		if (files != null) {
-			for (EvidenceFile file:files) {
-				if (file.getFilename().equals(filename)) {
+	public Boolean fileAlreadyExists(String discussionId, String filename) {		
+		Set<EvidenceFile> files = evidenceFiles.get(discussionId);		
+		if (files != null) {			
+			for (EvidenceFile file:files) {				
+				if (file.getFilename().equals(filename)) {					
 					return true;
 				}
 			}
-		}
+		}		
 		return false;
 	}
 	
 	@Override
     protected void service(final HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getMethod().equals("POST")) {
-			if (request.getContentType().contains("multipart/form-data")) {
-				String boundary = request.getContentType().split("boundary=")[1];
-				InputStream in = request.getInputStream();
-				int length;
+		if (!fileserviceAvailable) {
+			return;
+		}
+		if (request.getMethod().equals("POST")) {			
+			if (request.getContentType().contains("multipart/form-data")) {				
+				String boundary = request.getContentType().split("boundary=")[1];				
+				InputStream in = request.getInputStream();				
+				int length;				
 				byte[] cbuf = new byte[1024];
-				List<Byte> byteArray = new ArrayList<Byte>();
+				List<Byte> byteArray = new ArrayList<Byte>();				
 				while ((length = in.read(cbuf, 0, 1024)) != -1) {
 					for (int i=0; i<length; i++) {
 						byteArray.add(cbuf[i]);
 					}
-				}
-				if (!getInfos(boundary, byteArray)) {
+				}				
+				if (!getInfos(boundary, byteArray)) {					
 					response.sendError(404);
 //					response.getOutputStream().write("400".getBytes());
 					response.flushBuffer();
-				} else {
+				} else {					
 					response.getOutputStream().write("200".getBytes());
 					response.flushBuffer();
 				}
@@ -116,15 +166,16 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 		super.service(request, response);
     }
 	
-	private void saveFileLocal(List<Byte> content, String filename, String discussion) {
+	private void saveFileLocal(List<Byte> content, String filename, String discussion) {		
 		if (!evidenceFiles.containsKey(discussion) || evidenceFiles.get(discussion) == null) {
 			Set<EvidenceFile> files = new HashSet<EvidenceFile>();
 			evidenceFiles.put(discussion, files);
-		}
+		}		
 		Set<EvidenceFile> files = evidenceFiles.get(discussion);
 		EvidenceFile evFile = new EvidenceFile(content, filename);
 		files.add(evFile);
 		evidenceFiles.put(discussion, files);
+		
 	} 
 	
 	private void getFile(String auth, String nameOnServer, String filename, String location, boolean download, HttpServletResponse response) {
@@ -145,17 +196,14 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 			if (bytes == null) {
 				location = URLEncoder.encode(location, "UTF-8");
 				String filenameEnc = URLEncoder.encode(nameOnServer, "UTF-8");	
-				String urlString = "http://localhost:8080/fileservice/" + location + "/" + filenameEnc;
-				URL url = new URL(urlString);
-				
+				String urlString = fileServiceURL + location + "/" + filenameEnc;
+				URL url = new URL(urlString);				
 				HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 				httpCon.setDoInput(true);
 				httpCon.setDoOutput(true);
 				httpCon.setRequestMethod("GET");
 				httpCon.setRequestProperty("Content-type", fileType.getContentType(filename));
-
-				httpCon.setRequestProperty("Authorization", "Basic " + auth);
-				
+				httpCon.setRequestProperty("Authorization", "Basic " + auth);				
 				httpCon.connect();
 				if (httpCon.getResponseCode() != 200) {
 					httpCon.disconnect();
@@ -218,6 +266,9 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	public void deleteFilesOnFileService(Map<String, String> list, String auth) {
+		if (!fileserviceAvailable) {
+			return;
+		}
 		for (String filename:list.keySet()) {
 			deleteFileOnFileService(list.get(filename), auth, filename);
 		}
@@ -227,9 +278,8 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 		try {		
 			space = URLEncoder.encode(space, "UTF-8");
 			filename = URLEncoder.encode(filename, "UTF-8");	
-			String urlString = "http://localhost:8080/fileservice/" + space + "/" + filename;
-			URL url = new URL(urlString);
-			
+			String urlString = fileServiceURL + space + "/" + filename;
+			URL url = new URL(urlString);			
 			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
 			httpCon.setDoInput(true);
 			httpCon.setDoOutput(true);
@@ -248,7 +298,7 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 		try {		
 			space = URLEncoder.encode(space, "UTF-8");
 			String filename = URLEncoder.encode(file.getFilename(), "UTF-8");	
-			String urlString = "http://localhost:8080/fileservice/" + space + "/" + filename;
+			String urlString = fileServiceURL + space + "/" + filename;
 			URL url = new URL(urlString);
 			
 			HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
@@ -271,7 +321,7 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 		}
 	}
 	
-	private boolean getInfos(String boundaryString, List<Byte> array) {
+	private boolean getInfos(String boundaryString, List<Byte> array) {		
 		byte[] seperator = "\r\n\r\n".getBytes();
 		byte[] endseperator = ("\r\n--" + boundaryString).getBytes();
 		byte[] boundary = boundaryString.getBytes();
@@ -359,8 +409,8 @@ public class ARAppServiceImpl extends RemoteServiceServlet implements
 										filecontent = content.subList(0, k);
 									}
 									
-									if (filecontent != null && filename != null && discussion != null) {
-										saveFileLocal(filecontent, filename, discussion);
+									if (filecontent != null && filename != null && discussion != null) {										
+										saveFileLocal(filecontent, filename, discussion);										
 										return true;
 									}
 									i= i + header.size() + k;

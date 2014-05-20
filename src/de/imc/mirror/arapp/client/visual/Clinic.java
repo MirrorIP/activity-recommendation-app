@@ -7,7 +7,7 @@ import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 
 import de.imc.mirror.arapp.client.EvidenceVisualisation;
-import de.imc.mirror.arapp.client.HasTimestamp;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 
 public class Clinic extends EvidenceVisualisation {
 	

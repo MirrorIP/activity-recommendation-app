@@ -20,6 +20,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.localization.ErrorMessage;
 import de.imc.mirror.arapp.client.localization.InfoMessage;
 import de.imc.mirror.arapp.client.service.ARAppService;
@@ -88,6 +89,7 @@ public class ARApp implements EntryPoint {
 	private boolean timerRunning = false;
 	
 	private boolean isLoggedIn = false;
+	private boolean isFileServiceAvailable = false;
 	
 	private List<Element> showChangeElements;
 	
@@ -154,6 +156,22 @@ public class ARApp implements EntryPoint {
 			}
 		};
 		timer.scheduleRepeating(50);
+		
+
+		final ARAppServiceAsync service = GWT.create(ARAppService.class);
+		
+		final AsyncCallback<Boolean> callback = new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onFailure(Throwable arg0) {
+			}
+
+			@Override
+			public void onSuccess(Boolean arg0) {
+				isFileServiceAvailable = arg0;
+			}
+		};
+		service.isFileServiceAvailable(callback);
 		
 		new LoginPage(this);
 	}
@@ -766,6 +784,10 @@ public class ARApp implements EntryPoint {
 				}
 			}
 		}
+	}
+	
+	public boolean isFileServiceAvailable() {
+		return isFileServiceAvailable;
 	}
 
 	public native boolean persistenceServiceAvailable() /*-{

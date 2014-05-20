@@ -7,6 +7,8 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.XMLParser;
 
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
+
 public class RecommendationStatus implements HasTimestamp{
 	
 	public enum Status{

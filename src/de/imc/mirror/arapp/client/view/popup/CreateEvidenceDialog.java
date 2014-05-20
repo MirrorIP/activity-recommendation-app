@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -27,9 +28,9 @@ import com.google.gwt.xml.client.XMLParser;
 import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.Evidence;
 import de.imc.mirror.arapp.client.FileEvidence;
-import de.imc.mirror.arapp.client.HasEvidences;
-import de.imc.mirror.arapp.client.HasTimestamp;
 import de.imc.mirror.arapp.client.Parser;
+import de.imc.mirror.arapp.client.Interfaces.HasEvidences;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.service.ARAppService;
 import de.imc.mirror.arapp.client.service.ARAppServiceAsync;
 import de.imc.mirror.arapp.client.view.View;
@@ -80,6 +81,7 @@ public class CreateEvidenceDialog extends View{
 	
 	private DialogBox loaderDialog;
 	
+	private Element attachment;
 	
 	public CreateEvidenceDialog(final ARApp instance) {
 		super(instance);
@@ -144,7 +146,7 @@ public class CreateEvidenceDialog extends View{
 						@Override
 						public void onClick(ClickEvent event) {
 							if (!descriptionTextArea.getText().isEmpty()) {
-								if (!upload.getFilename().equals("")) {
+								if (instance.isFileServiceAvailable() && !upload.getFilename().equals("")) {
 									final ARAppServiceAsync service = GWT.create(ARAppService.class);
 
 									String filename = upload.getFilename();
@@ -194,6 +196,7 @@ public class CreateEvidenceDialog extends View{
 					});
 					break;
 				case ATTACHMENT:
+					attachment = elem;
 					NodeList<Element> elems = elem.getElementsByTagName("div");
 					boolean hasLabel = false;
 					boolean hasEditableContent = false;
@@ -301,6 +304,12 @@ public class CreateEvidenceDialog extends View{
 	 * @param callingView the view which opens this popup.
 	 */
 	public void showPopup(HasEvidences callingView) {
+		if (instance.isFileServiceAvailable()) {
+			attachment.getStyle().setVisibility(Visibility.VISIBLE);
+		} else {
+			attachment.getStyle().setVisibility(Visibility.HIDDEN);
+		}
+		
 		errorMessage.removeClassName("activeItem");
 		this.callingView = callingView;
 		formPanel.reset();

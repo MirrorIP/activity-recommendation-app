@@ -20,9 +20,9 @@ import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.Benefit;
 import de.imc.mirror.arapp.client.Effort;
 import de.imc.mirror.arapp.client.Entry;
-import de.imc.mirror.arapp.client.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.RecommendationObjectBuilder;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.view.ManageTab;
 
 public class UpdateRecommendationPopup {

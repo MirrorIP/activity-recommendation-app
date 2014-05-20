@@ -28,11 +28,11 @@ import com.google.gwt.user.client.ui.TextBox;
 import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.DiscussionPanel;
 import de.imc.mirror.arapp.client.Entry;
-import de.imc.mirror.arapp.client.HasDetailPanel;
-import de.imc.mirror.arapp.client.HasTimestamp;
 import de.imc.mirror.arapp.client.Parser;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.SessionObject;
+import de.imc.mirror.arapp.client.Interfaces.HasDetailPanel;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.service.ARAppService;
 import de.imc.mirror.arapp.client.service.ARAppServiceAsync;
 

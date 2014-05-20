@@ -13,6 +13,30 @@
 	<servlet>
 	  <servlet-name>serverTimeServlet</servlet-name>
 	  <servlet-class>de.imc.mirror.arapp.server.ARAppServiceImpl</servlet-class>
+	  <init-param>
+			<param-name>fileServiceHost</param-name>
+			<param-value>
+				localhost
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>fileServicePath</param-name>
+			<param-value>
+				fileservice
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>useHTTPS</param-name>
+			<param-value>
+				0
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>fileservicePort</param-name>
+			<param-value>
+				8080
+			</param-value>
+		</init-param>
 	</servlet>
 	
 	<servlet-mapping>

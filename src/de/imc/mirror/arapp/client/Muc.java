@@ -2,6 +2,8 @@ package de.imc.mirror.arapp.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import de.imc.mirror.arapp.client.Interfaces.HasChat;
+
 public class Muc {
 	
 	private static final String MUCSERVICE = "spacemucs." + getDomain();
@@ -92,7 +94,7 @@ public class Muc {
 			return false;
 		}
 		if (id == msg.attributes.getNamedItem("from").nodeValue.split("@")[0]) {
-			callingView.@de.imc.mirror.arapp.client.HasChat::appendNewMessage(Ljava/lang/String;Ljava/lang/String;)(msg.textContent, sender);
+			callingView.@de.imc.mirror.arapp.client.Interfaces.HasChat::appendNewMessage(Ljava/lang/String;Ljava/lang/String;)(msg.textContent, sender);
 		}
 		return true;
 	}-*/;

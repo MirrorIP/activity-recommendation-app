@@ -28,10 +28,10 @@ import com.google.gwt.user.client.ui.TextBox;
 
 import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.Experience;
-import de.imc.mirror.arapp.client.HasDetailPanel;
-import de.imc.mirror.arapp.client.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.RecommendationPanel;
+import de.imc.mirror.arapp.client.Interfaces.HasDetailPanel;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationObject.TaskType;
 
 public abstract class RecommendationsOverviewView extends View implements HasDetailPanel{

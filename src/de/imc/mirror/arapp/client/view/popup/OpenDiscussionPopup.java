@@ -24,10 +24,10 @@ import com.google.gwt.user.client.ui.SimpleCheckBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 import de.imc.mirror.arapp.client.ARApp;
-import de.imc.mirror.arapp.client.HasSpacesList;
-import de.imc.mirror.arapp.client.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.SessionObject;
+import de.imc.mirror.arapp.client.Interfaces.HasSpacesList;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.view.View;
 
 public class OpenDiscussionPopup extends View implements HasSpacesList{

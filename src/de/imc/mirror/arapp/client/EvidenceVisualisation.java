@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.xml.client.NodeList;
 
 import de.imc.mirror.arapp.client.Evidence.Namespace;
+import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.visual.ActivityRecommendation;
 import de.imc.mirror.arapp.client.visual.Clinic;
 import de.imc.mirror.arapp.client.visual.Cromar;
@@ -52,7 +53,7 @@ public class EvidenceVisualisation extends DialogBox {
 	private Label dateLabel;
 	private Element content;
 
-	private ARApp instance;
+	public ARApp instance;
 	
 	public EvidenceVisualisation(ARApp instance) {
 		this.instance = instance;
@@ -150,7 +151,7 @@ public class EvidenceVisualisation extends DialogBox {
 			ActivityRecommendation.buildExperience(this, elem);
 			break;
 		case ACTIVITYRECOMMENDATIONAPPTEXTEVIDENCE:
-			ActivityRecommendation.buildTextEvidence(this, ev, elem);
+			ActivityRecommendation.buildTextEvidence(this, ev, elem, instance);
 			break;
 		case CROMARRECOMMENDATION:
 			Cromar.buildCromarEvidence(this, elem);
