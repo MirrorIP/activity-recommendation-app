@@ -621,7 +621,7 @@ public class LoginPage extends View{
 		config.setTimeout(5000);
 
 		config.setSecureConnection(true);
-		config.setHost($wnd.host);
+		config.setHost($wnd.domain);
 		$wnd.name = name;
 		$wnd.pass = pass;
 		
