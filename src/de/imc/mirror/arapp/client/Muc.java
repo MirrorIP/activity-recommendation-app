@@ -13,7 +13,10 @@ public class Muc {
 	private HasChat callingView;
 	
 	public Muc(String mucId, String nick, HasChat callingView) {
-		this.mucId = mucId;
+		if (mucId.contains(" ")) {
+			mucId = mucId.replaceAll(" ", "+");
+		}
+		this.mucId = mucId.toLowerCase();
 		this.nick = nick;
 		this.callingView = callingView;
 		createOrJoinChat();

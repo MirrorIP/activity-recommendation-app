@@ -280,17 +280,15 @@ public class CreateSpacePopup extends View {
 			
 			String name = instance.getDisplayNameForJid(user);
 			if (name.contains("@")) {
-				nameTD.setInnerText(name.split("@")[0]);
-			} else {
-				nameTD.setInnerText(name);
+				name = name.split("@")[0];
 			}
 			
 			Element idTD = Document.get().createTDElement();
-			if (user.contains("@")) {
-				idTD.setInnerText(user.split("@")[0]);
-			} else {
-				idTD.setInnerText(user);
+			String userString = user;
+			if (userString.contains("@")) {
+				userString = userString.split("@")[0];
 			}
+
 			
 			Element checkBoxTD = Document.get().createTDElement();
 			SimpleCheckBox moderatorCheckBox = SimpleCheckBox.wrap(Document.get().createCheckInputElement());
@@ -332,12 +330,34 @@ public class CreateSpacePopup extends View {
 				removeTD.appendChild(removeButton);
 			}
 
-			trHTML.getElement().appendChild(nameTD);
-			trHTML.getElement().appendChild(idTD);
-			trHTML.getElement().appendChild(checkBoxTD);
-			trHTML.getElement().appendChild(removeTD);
 			
 			membersList.appendChild(trHTML.getElement());
+			
+
+			trHTML.getElement().appendChild(nameTD);
+			trHTML.getElement().appendChild(idTD);
+			
+			int preferredWidth = nameTD.getClientWidth();
+			nameTD.setInnerText(name);
+			if (nameTD.getClientWidth() > preferredWidth) {
+				nameTD.setTitle(name);
+				while (nameTD.getClientWidth() > preferredWidth) {
+					name = name.substring(0, name.length() - 1);
+					nameTD.setInnerText(name);
+				}
+				nameTD.setInnerText(name.substring(0, name.length() - 3) + "...");
+			}
+			idTD.setInnerText(userString);
+			if (idTD.getClientWidth() > preferredWidth) {
+				idTD.setTitle(userString);
+				while (idTD.getClientWidth() > preferredWidth) {
+					userString = userString.substring(0, userString.length() - 1);
+					idTD.setInnerText(userString);
+				}
+				idTD.setInnerText(userString.substring(0, userString.length() - 3) + "...");
+			}
+			trHTML.getElement().appendChild(checkBoxTD);
+			trHTML.getElement().appendChild(removeTD);
 		}
 	}
 	
