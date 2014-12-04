@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.shared.GWT;
@@ -96,8 +95,7 @@ public class ARApp implements EntryPoint {
 	private CreateSpacePopup createSpacePopup;
 
 	public ErrorMessage errorMessage;
-	public InfoMessage infoMessage;
-	
+	public InfoMessage infoMessage;	
 
 	
 	public native void log(String t) /*-{
@@ -136,7 +134,6 @@ public class ARApp implements EntryPoint {
 					for (Element elem:showChangeElements) {
 						String opacity = elem.getStyle().getOpacity();
 						if (opacity == null || opacity.equals("")) {
-							opacity = "1.0";
 						}
 						double opac = Double.parseDouble(opacity);
 						if (opac <= 0.5) {
@@ -171,10 +168,25 @@ public class ARApp implements EntryPoint {
 				isFileServiceAvailable = arg0;
 			}
 		};
-		service.isFileServiceAvailable(callback);
 		
-		new LoginPage(this);
+		service.isFileServiceAvailable(callback);
+		String loginData = Window.Location.getParameter("user");
+		if (loginData != null && !loginData.isEmpty()) {
+			String loginString = getLoginDataDecoded(loginData);
+			if (loginString.contains(":") && loginString.split(":").length == 2) {
+				String username = loginString.split(":")[0];
+				String password = loginString.split(":")[1];
+				new LoginPage(this, username, password);
+				return;
+			}
+		}
+		new LoginPage(this); 
 	}
+
+	private native String getLoginDataDecoded(String encoded) /*-{
+		var decoded = $wnd.Base64.decode(encoded);
+		return decoded;
+	}-*/;
 	
 	/**
 	 * If the user logged in successfully this method initialises all necessary elements of the page and all necessary classes.
@@ -191,8 +203,11 @@ public class ARApp implements EntryPoint {
 		final Element contentDiscussion = Document.get().getElementById("contentDiscussion");
 		final Element contentDiscussionSession = Document.get().getElementById("contentDiscussionSession");
 
-		if (Cookies.getCookie("ARAppLastTab") != null) {
-			String lastTab = Cookies.getCookie("ARAppLastTab");
+		if ((Window.Location.getHash() != null && !Window.Location.getHash().isEmpty()) || Cookies.getCookie("ARAppLastTab") != null) {
+			String tabToShow = Window.Location.getHash();
+			if (tabToShow == null || tabToShow.isEmpty()) {
+				tabToShow = Cookies.getCookie("ARAppLastTab");
+			}
 			captureTabButton.getElement().removeClassName("activeItem");
 			manageTabButton.getElement().removeClassName("activeItem");
 			synchronized(showChangeElements) {
@@ -206,13 +221,13 @@ public class ARApp implements EntryPoint {
 			contentDiscussion.removeClassName("activeItem");
 			contentDiscussionSession.removeClassName("activeItem");
 
-			if ("DiscussionTab".equals(lastTab)) {
+			if ("#discussion".equalsIgnoreCase(tabToShow)) {
 				contentDiscussion.addClassName("activeItem");
 				discussionTabButton.getElement().addClassName("activeItem");
 				synchronized(showChangeElements) {
 					removeShowChangeElement(discussionTabButton.getElement());
 				}
-			} else if ("ManageTab".equals(lastTab)) {
+			} else if ("#manage".equalsIgnoreCase(tabToShow)) {
 				contentManage.addClassName("activeItem");
 				manageTabButton.getElement().addClassName("activeItem");
 			} else {
@@ -239,7 +254,7 @@ public class ARApp implements EntryPoint {
 					contentDiscussionSession.removeClassName("activeItem");
 					contentDiscussion.removeClassName("activeItem");
 					
-					Cookies.setCookie("ARAppLastTab", "CaptureTab");
+					Cookies.setCookie("ARAppLastTab", "#capture");
 				}
 			});
 		}
@@ -261,7 +276,7 @@ public class ARApp implements EntryPoint {
 					contentDiscussion.removeClassName("activeItem");
 					contentDiscussionSession.removeClassName("activeItem");
 					
-					Cookies.setCookie("ARAppLastTab", "ManageTab");
+					Cookies.setCookie("ARAppLastTab", "#manage");
 				}
 			});
 		}
@@ -283,7 +298,7 @@ public class ARApp implements EntryPoint {
 					contentCapture.removeClassName("activeItem");
 					contentManage.removeClassName("activeItem");
 					
-					Cookies.setCookie("ARAppLastTab", "DiscussionTab");
+					Cookies.setCookie("ARAppLastTab", "#discussion");
 				}
 			});
 		}
@@ -347,6 +362,36 @@ public class ARApp implements EntryPoint {
 		createSpacePopup = new CreateSpacePopup(this);
 		
 		previouslyLoggedIn = true;
+
+		String gexp = Window.Location.getParameter("gexp");
+		String rid = null;
+		if (gexp != null) {
+			rid = gexp;
+		} else {
+			rid = Window.Location.getParameter("rid");
+		}
+		if (rid != null) {
+			captureTabButton.getElement().removeClassName("activeItem");
+			manageTabButton.getElement().removeClassName("activeItem");
+			synchronized(showChangeElements) {
+				if (!showChangeElements.contains(discussionTabButton.getElement())) {
+					discussionTabButton.getElement().removeClassName("activeItem");
+				}
+			}
+			
+			contentCapture.removeClassName("activeItem");
+			contentManage.removeClassName("activeItem");
+			contentDiscussion.removeClassName("activeItem");
+			contentDiscussionSession.removeClassName("activeItem");
+			
+			contentCapture.addClassName("activeItem");
+			captureTabButton.getElement().addClassName("activeItem");	
+			experienceTab.showDetails(rid);
+			
+			if (gexp != null) {
+				experienceTab.showGroupExperiencesTab();
+			}
+		}
 		
 		Document.get().getElementById("login").removeClassName("activeItem");
 		Document.get().getElementById("main").addClassName("activeItem");
@@ -392,9 +437,14 @@ public class ARApp implements EntryPoint {
 	 * Hides the discussionview.
 	 */
 	public void leaveDiscussion() {
-		this.discussionId = null;
-		Document.get().getElementById("contentDiscussion").addClassName("activeItem");
-		Document.get().getElementById("contentDiscussionSession").removeClassName("activeItem");		
+		if (this.discussionId != null) {
+			discussionView.leaveDiscussion();
+			this.discussionId = null;
+			Document.get().getElementById("tabManage").addClassName("activeItem");
+			Document.get().getElementById("tabDiscussion").removeClassName("activeItem");
+			Document.get().getElementById("contentManage").addClassName("activeItem");
+			Document.get().getElementById("contentDiscussionSession").removeClassName("activeItem");
+		}
 	}
 	
 	/**
@@ -695,7 +745,58 @@ public class ARApp implements EntryPoint {
     			experienceList.put(experience.getCustomId(), experience);
     		}
     	}
-		experiences.put(ref, experienceList);
+    	if (experience.getToDelete()) {
+    		experienceList.remove(experience.getCustomId());
+    	}
+    	if (!experienceList.isEmpty()) {
+    		experiences.put(ref, experienceList);
+    	}
+
+		if (experienceTab != null && isLoggedIn) {
+			experienceTab.update();
+		}
+		if (manageTab != null && isLoggedIn) {
+			manageTab.update();
+		}
+		if (persistenceServiceAvailable()) {
+			if (experience.getToDelete()) { 
+				RecommendationObject obj = recomms.get(experience.getRecommendationId());
+				List<String> targetSpaces;
+				if (obj != null) {
+					targetSpaces = obj.getTargetSpaces();
+				} else {
+					targetSpaces = new ArrayList<String>();
+					targetSpaces.addAll(spacesMap.keySet());
+				}
+				if (targetSpaces != null && !targetSpaces.isEmpty()) {
+						List<String> spaces = new ArrayList<String>();
+						for (String space:targetSpaces) {
+							if (isModeratorOfSpace(space)) {
+								spaces.add(space);
+							}
+						}
+						spaces.add(getBareJID().split("@")[0]);
+						if (!spaces.isEmpty()) {
+							requestAllDataToDelete(spaces, experience.getCustomId());
+						}
+					}
+			}
+		}
+	}
+	
+	public void removeExperience(Experience exp) {
+		Map<String, Experience> experienceList;
+    	if (experiences.get(exp.getRecommendationId()) == null) {
+    		return;
+    	} else {
+    		experienceList = experiences.get(exp.getRecommendationId());
+    		if (experienceList.get(exp.getCustomId()) == null) {
+    			return;
+    		} else {
+    			experienceList.remove(exp.getCustomId());
+    		}
+    	}
+		experiences.put(exp.getRecommendationId(), experienceList);
 
 		if (experienceTab != null && isLoggedIn) {
 			experienceTab.update();
@@ -794,7 +895,7 @@ public class ARApp implements EntryPoint {
 		return $wnd.connection.getNetworkInformation().getPersistenceServiceJID() != null;
 	}-*/;
 	
-	private native void requestAllDataToDelete(List<String> spaces, String customId) /*-{
+	public native void requestAllDataToDelete(List<String> spaces, String customId) /*-{
 		var that = this;
 		var size = spaces.@java.util.List::size()();
 		var spaceIds = [];
@@ -818,18 +919,13 @@ public class ARApp implements EntryPoint {
 			var idsToDelete = [];
 			var elems = @java.util.ArrayList::new()();
 			for (var i=0; i<result.length; i++) {
-				var elem = result[i].getElement();
-								
-				if (elem.tagName === "recommendation") {
-					if (elem.getAttribute("customId") === customId) {
-						idsToDelete.push(elem.getAttribute("id"));
-					}
-				} else {
-					if (elem.getAttribute("ref") === customId) {
-						idsToDelete.push(elem.getAttribute("id"));
-						if (elem.tagName === "experience") {
-							elems.@java.util.List::add(Ljava/lang/Object;)(result[i].toString());
-						}
+				var elem = result[i].getElement();								
+				if (elem.getAttribute("customId") === customId) {
+					idsToDelete.push(elem.getAttribute("id"));
+				} else if (elem.getAttribute("ref") === customId) {
+					idsToDelete.push(elem.getAttribute("id"));
+					if (elem.tagName === "experience") {
+						elems.@java.util.List::add(Ljava/lang/Object;)(result[i].toString());
 					}
 				}
 			}
@@ -944,6 +1040,7 @@ public class ARApp implements EntryPoint {
 	 * @param instance An instance of this class.
 	 */
 	public native void logout() /*-{
+		this.@de.imc.mirror.arapp.client.ARApp::leaveDiscussion()();
 		if ($wnd.connection && $wnd.connection != null) {
 			if ($wnd.loginListener && $wnd.loginListener != null) {
 				$wnd.connection.removeConnectionStatusListener($wnd.loginListener);
@@ -953,6 +1050,7 @@ public class ARApp implements EntryPoint {
 			}
 			$wnd.connection.disconnect();
 		}
+		
 		$wnd.document.cookie = "ARAppLogin=; expires=Thu, 01-Jan-1970 00:00:01 GMT;";
 		$wnd.dataHandler = null;
 		$wnd.spaceHandler = null;
@@ -974,9 +1072,15 @@ public class ARApp implements EntryPoint {
 		displayNames = new HashMap<String, String>();
 		discussionId = null;
 		
-		manageTab.reset();
-		experienceTab.reset();
-		discussionTab.reset();
+		if (manageTab != null) {
+			manageTab.reset();
+		}
+		if (experienceTab != null) {
+			experienceTab.reset();
+		}
+		if (discussionTab != null) {
+			discussionTab.reset();
+		}
 		
 		isLoggedIn = false;
 		

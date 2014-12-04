@@ -29,8 +29,10 @@ import de.imc.mirror.arapp.client.Experience;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.RecommendationPanel;
 import de.imc.mirror.arapp.client.RecommendationStatus;
+import de.imc.mirror.arapp.client.Interfaces.ExperiencesTab;
 import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationStatus.Status;
+import de.imc.mirror.arapp.client.view.experiencesTab.ManageTabExperiences;
 import de.imc.mirror.arapp.client.view.popup.UpdateUserStatusPopup;
 
 public class ManageTab extends RecommendationsOverviewView {
@@ -60,6 +62,8 @@ public class ManageTab extends RecommendationsOverviewView {
 		MINUTESMANAGE("manageMinutes"),
 		
 		MINUTESLIST("manageMinutesList"),
+		
+		RECOMMENDATIONID("manageSummaryRecommendationId"),
 		
 		REMOVEBUTTON("manageRemoveRecommendationButton");
 		
@@ -114,9 +118,17 @@ public class ManageTab extends RecommendationsOverviewView {
 	private Element progressStatisticsLabel;
 
 	private Element evidencesLabel;
+	
+	private Element recommendationIdLabel;
+	
+	private ExperiencesTab allExperiences;
+
+	private Element viewExperience;
+	private HTML viewExperiencesTab; 
 
 	public ManageTab(ARApp instance) {
 		super(instance);
+		allExperiences = new ManageTabExperiences(instance);
 	}
 	
 	protected void build() {
@@ -335,6 +347,9 @@ public class ManageTab extends RecommendationsOverviewView {
 							}
 						}
 					});
+					break;
+				case RECOMMENDATIONID:
+					recommendationIdLabel = getBlockContentChild(elem);	
 				}
 			}
 		}	
@@ -425,6 +440,8 @@ public class ManageTab extends RecommendationsOverviewView {
 		if (newRec == null) return;
 		recomm = newRec;
 		super.showDetails(id);
+		recommendationIdLabel.setInnerText(recomm.getCustomId());
+		allExperiences.reset();
 		
 
 		if (!instance.getBareJID().equals(recomm.getPublisher())) {
@@ -449,9 +466,9 @@ public class ManageTab extends RecommendationsOverviewView {
 		if (exps != null) {
 			List<Experience> expList = new ArrayList<Experience>();
 			expList.addAll(exps.values());
-			showExperiences(expList, true);
+			allExperiences.showExperienceDetails(expList, recomm);
 		} else {
-			showExperiences(new ArrayList<Experience>(), true);
+			allExperiences.showExperienceDetails(new ArrayList<Experience>(), recomm);
 		}
 		
 		minutesList.removeAllChildren();

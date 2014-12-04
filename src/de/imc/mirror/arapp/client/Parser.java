@@ -361,7 +361,6 @@ public class Parser {
 		List<Experience> result = new ArrayList<Experience>();
 		for (int i=0; i<nodes.getLength(); i++) {
 	    	Element element = (Element) nodes.item(i);
-	    	
 	    	String ref = element.getAttribute("ref");
 	    	String publisher = element.getAttribute("publisher");
 	    	String timestamp = element.getAttribute("timestamp");
@@ -377,6 +376,18 @@ public class Parser {
 	    	
 	    	Experience experience = new Experience(publisher, ref, timestamp, id);
 	    	experience.setCustomId(customId);
+	    	if (element.hasAttribute("toDelete")) {
+	    		experience.setToDelete();
+	    	}
+	    	if (element.hasAttribute("sharingLevel")) {
+	    		String level = element.getAttribute("sharingLevel");
+	    		try {
+	    			int sharingLevel = Integer.parseInt(level);
+		    		experience.setSharingLevel(sharingLevel);
+	    		} catch (NumberFormatException e) {
+	    			//ignore as if no sharinglevel was set;
+	    		}
+	    	}
 	    	
 	    	NodeList ratingNode = element.getElementsByTagName("rating");
 	    	if (ratingNode.getLength() > 0) {

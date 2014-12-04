@@ -47,9 +47,22 @@ public class LoginPage extends View{
 	
 	private boolean rememberMe;
 	
-	public LoginPage(final ARApp instance){
+	public LoginPage(final ARApp instance, String username, String password){
 		super(instance);
-		build();
+		if (username != null && password != null) {
+			rememberMe = false;
+			Cookies.removeCookie("ARAppLogin");
+			build();
+			nameField.setText(username);
+			passField.setText(password);
+			loginToServer();
+		} else {
+			build();
+		}
+	}
+	
+	public LoginPage(final ARApp instance) {
+		this(instance, null, null);
 	}
 	
 	protected void build() {		

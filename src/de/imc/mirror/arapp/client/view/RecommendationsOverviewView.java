@@ -12,7 +12,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,12 +21,10 @@ import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 
 import de.imc.mirror.arapp.client.ARApp;
-import de.imc.mirror.arapp.client.Experience;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.RecommendationPanel;
 import de.imc.mirror.arapp.client.Interfaces.HasDetailPanel;
@@ -49,13 +46,7 @@ public abstract class RecommendationsOverviewView extends View implements HasDet
 		SEARCHBUTTON("captureSearchInputButton", "manageSearchInputButton"),
 		SOLUTION("captureSolution", "manageSolution"),
 		TITLELABEL("captureRecommendationTitle", "manageRecommendationTitle"),
-		TYPESELECT("captureTypeSelect", "manageTypeSelect"),
-		VIEWEXPERIENCEBENEFIT("captureMyExperiencesBenefit", "manageViewExperiencesBenefit"),
-		VIEWEXPERIENCEEFFORT("captureMyExperiencesEffort", "manageViewExperiencesEffort"),
-		VIEWEXPERIENCERATING("captureMyExperiencesRating", "manageViewExperiencesRating"),
-		VIEWEXPERIENCESRATIOPANEL("captureMyExperienceRatioPanel", "manageViewExperiencesRatioPanel"),
-		VIEWEXPERIENCESRATIO("captureMyExperienceRatio", "manageViewExperiencesRatio"),
-		VIEWEXPERIENCETABLE("captureMyExperiencesExperiences", "manageViewExperiencesExperiences");
+		TYPESELECT("captureTypeSelect", "manageTypeSelect");
 		
 		private String captureId;
 		private String manageId;
@@ -107,26 +98,9 @@ public abstract class RecommendationsOverviewView extends View implements HasDet
 	protected Element publisherLabel;
 	protected Element publishingDateLabel;
 
-	protected Element viewExperience;
-	protected HTML viewExperiencesTab; 
-
-	protected Element averageStarRatingStarsList;
-	protected Element averageRatingLabel;
-	protected Element averageStarRatingLabel;
-	protected Element averageExperiencesSummary;
-
-	protected Element experienceBenefitRating;
-	protected Element experienceBenefitRatingLabel;
-	protected Element experienceBenefitRatingRating;	
-	protected Element experienceEffortRating;		
-	protected Element experienceEffortRatingLabel;	
-	protected Element experienceEffortRatingRating;
-	protected Element averageExperiencesExperiencesListBody;
 	private Element activityTask;
 	private Element learningTask;
 	private Element behaviorTask;
-	private Element ratioLabel;
-	private Element ratioPanel;
 	
 	protected RecommendationsOverviewView(ARApp instance) {
 		super(instance);
@@ -145,6 +119,7 @@ public abstract class RecommendationsOverviewView extends View implements HasDet
 	 */
 	public void showDetails(String id){
 		RecommendationObject recomm = recommObjects.get(id);
+		recomms.get(id).setActive();
 		if (recomm == null) {
 			return;
 		}
@@ -180,19 +155,6 @@ public abstract class RecommendationsOverviewView extends View implements HasDet
 
 		publisherLabel.setInnerHTML(instance.getDisplayNameForJid(recomm.getPublisher()));
 		publishingDateLabel.setInnerHTML(recomm.getFormattedTimestamp(HasTimestamp.LONGDATE));
-
-		if (averageExperiencesExperiencesListBody != null) {
-			averageExperiencesExperiencesListBody.removeAllChildren();
-		}
-		if (averageStarRatingStarsList != null) {
-			for (int i=0; i<averageStarRatingStarsList.getChildCount(); i++) {
-				Element child = (Element)averageStarRatingStarsList.getChild(i);
-				if (!"span".equalsIgnoreCase(child.getTagName())) continue;
-				child.removeClassName("starFilled");				
-			} 
-		}
-		averageExperiencesSummary.setInnerHTML("");
-		averageStarRatingLabel.setInnerHTML("");
 	}
 	
 	/**
@@ -215,23 +177,6 @@ public abstract class RecommendationsOverviewView extends View implements HasDet
 				errors = true;
 			} else {
 			switch (id) {
-				case VIEWEXPERIENCERATING:
-					NodeList<Element> elements = elem.getElementsByTagName("div");
-					for (int j=0; j<elements.getLength(); j++) {
-						Element child = elements.getItem(j);
-						if ("descriptionText".equals(child.getClassName())) {
-							averageRatingLabel = child;
-						} else if ("starRating".equals(child.getClassName())) {
-							averageStarRatingStarsList = child;
-							averageStarRatingLabel = child.getElementsByTagName("label").getItem(0);
-						}
-					}
-					break;
-				case VIEWEXPERIENCETABLE:
-					averageExperiencesSummary = elem.getElementsByTagName("div").getItem(0);	
-			//		averageExperiencesExperiencesListHead = child.getElementsByTagName("thead").getItem(0);
-					averageExperiencesExperiencesListBody = elem.getElementsByTagName("tbody").getItem(0);
-					break;
 				case SEARCHBOX:
 					searchBox = TextBox.wrap(elem);
 					searchBox.addKeyDownHandler(new KeyDownHandler() {
@@ -324,36 +269,6 @@ public abstract class RecommendationsOverviewView extends View implements HasDet
 							behaviorTask = child;						
 						}
 					}
-					break;
-				case VIEWEXPERIENCEBENEFIT:
-					experienceBenefitRating = elem;
-					elems = elem.getElementsByTagName("div");
-					for (int j=0; j<elems.getLength(); j++) {
-						Element child = elems.getItem(j);
-						if (child.getClassName().contains("descriptionText")) {
-							experienceBenefitRatingLabel = child;
-						} else if ("block".equals(child.getClassName())) {
-							experienceBenefitRatingRating = child;
-						}
-					}
-					break;
-				case VIEWEXPERIENCEEFFORT:
-					experienceEffortRating = elem;
-					elems = elem.getElementsByTagName("div");
-					for (int j=0; j<elems.getLength(); j++) {
-						Element child = elems.getItem(j);
-						if (child.getClassName().contains("descriptionText")) {
-							experienceEffortRatingLabel = child;
-						} else if ("block".equals(child.getClassName())) {
-							experienceEffortRatingRating = child;
-						}
-					}
-					break;
-				case VIEWEXPERIENCESRATIOPANEL:
-					ratioPanel = elem;
-					break;
-				case VIEWEXPERIENCESRATIO:
-					ratioLabel = elem;
 					break;
 				}
 			}
@@ -628,233 +543,6 @@ public abstract class RecommendationsOverviewView extends View implements HasDet
 
 	@Override
 	protected abstract void build();
-	
-	protected double getAverageRating(List<Experience> experiences) {
-		if (experiences == null || experiences.size() == 0) {
-			return 0;
-		} else {
-			int amount = 0;
-			double absolute = 0;
-			for (Experience experience:experiences) {
-				if (experience.getRating() != -1) {
-					amount++;
-					absolute += experience.getRating();
-				}
-			}
-			if (amount == 0) {
-				return 0;
-			}
-			absolute = absolute/amount;
-			absolute = Math.rint(10*absolute) / 10;
-			return absolute;		
-		}
-	}
-	
-	protected void showExperiences(List<Experience> experiences, boolean publisher) {
-		averageRatingLabel.setInnerText(recommObjects.get(recommId).getRatingDescription());
-		double average = getAverageRating(experiences);
-		if (Double.isNaN(average)) {
-			average = 0;
-		}
-		int absolute = (int)Math.rint(average);
-		int amount = 0;
-		for (int i=0; i<averageStarRatingStarsList.getChildCount(); i++) {
-			Element child = (Element)averageStarRatingStarsList.getChild(i);
-			if (!"span".equalsIgnoreCase(child.getTagName())) continue;
-			if (amount<absolute) {
-				child.setClassName("starFilled");
-			}
-			amount++;
-			if (amount >= absolute) {
-				break;
-			}
-		} 
-		
-		showBenefit(experiences);
-		showEffort(experiences);
-		showRatio(experiences);
-		
-		
-		Collections.sort(experiences, HasTimestamp.COMPAREAGAINSTTIMESTAMP);
-		
-		averageStarRatingLabel.setInnerText(instance.infoMessage.averageRating(average));
-		
-		averageExperiencesExperiencesListBody.removeAllChildren();
-		int commentAmount = 0;
-		
-		if (experiences.size() > 0) {
-			for (Experience exp:experiences) {
-				final Experience ex = exp;
-				
-				Element root = Document.get().createTRElement();
-				
-				HTML.wrap(root).addClickHandler(new ClickHandler() {
-					
-					@Override
-					public void onClick(ClickEvent event) {
-						instance.getUsageExperiencePopup().showPopup(ex);
-					}
-				});
-				
-				Element starTdElement = Document.get().createTDElement();
-				Element divElement = Document.get().createDivElement();
-				divElement.setClassName("starRating");
-				for (int i=0; i<5; i++) {
-					Element spanElement = Document.get().createSpanElement();
-					spanElement.setInnerHTML("&nbsp;");
-					if (i<exp.getRating()) {
-						spanElement.setClassName("starFilled");
-					}
-					divElement.appendChild(spanElement);
-				}
-				starTdElement.appendChild(divElement);
-				
-				Element dateTdElement = Document.get().createTDElement();
-				dateTdElement.setInnerHTML(exp.getFormattedTimestamp(HasTimestamp.SHORTDATE));
-				
-				
-				Element commentTdElement = Document.get().createTDElement();
-				commentTdElement.setInnerHTML(exp.getComment());
-				
-				if (exp.getComment() != null && !"".equals(exp.getComment())) {
-					commentAmount++;
-				}
-	
-				root.appendChild(starTdElement);
-				root.appendChild(dateTdElement);
-				
-				if (publisher) {
-					Element publisherTdElement = Document.get().createTDElement();
-					String publisherString = exp.getPublisher();
-					publisherString = instance.getDisplayNameForJid(publisherString);
-					publisherTdElement.setInnerHTML(publisherString);
-					root.appendChild(publisherTdElement);
-				}
-				
-				root.appendChild(commentTdElement);
-				
-				averageExperiencesExperiencesListBody.appendChild(root);
-			}
-			averageExperiencesSummary.setInnerText(instance.infoMessage.experiencesAmount(experiences.size(), commentAmount));
-		} else {
-			averageExperiencesSummary.setInnerText(instance.infoMessage.noExperiencesYet());
-		}
-		
-	}
-	
-	protected void showEffort(List<Experience> experiences) {
-		int totalEffort = 0;
-		int efforts = 0;
-
-		RecommendationObject rec = recommObjects.get(recommId);
-		if (rec.getEffortRating() == null) {
-			experienceEffortRating.getStyle().setDisplay(Display.NONE);
-			return;
-		} else {
-			experienceEffortRating.getStyle().clearDisplay();		
-		}
-		if (experiences != null && experiences.size() > 0) {
-			for (Experience ex:experiences) {
-				if (ex.getEffort() != null && ex.getEffort().getValue() >= 0) {
-					totalEffort += ex.getEffort().getValue();
-					efforts++;
-				}
-			}
-		}
-		
-		experienceEffortRatingLabel.setInnerHTML(rec.getEffortRating().getDescription());
-
-		Element displayLabel = Document.get().createLabelElement();
-		displayLabel.setInnerHTML(rec.getEffortRating().getDisplay());
-		displayLabel.addClassName("unitText");
-		
-		Element spaceSpan = Document.get().createSpanElement();
-		spaceSpan.setInnerHTML("&nbsp;&nbsp;");
-		
-		Element ratingSpan = Document.get().createSpanElement();
-		
-		ratingSpan.setInnerText(instance.infoMessage.averageProperty(efforts, totalEffort/efforts, totalEffort));
-		
-		experienceEffortRatingRating.removeAllChildren();
-		
-		experienceEffortRatingRating.appendChild(ratingSpan);
-		experienceEffortRatingRating.appendChild(spaceSpan);
-		experienceEffortRatingRating.appendChild(displayLabel);
-		
-	}
-
-	protected void showBenefit(List<Experience> experiences) {
-		int totalBenefit = 0;
-		int benefits = 0;	
-		
-		RecommendationObject rec = recommObjects.get(recommId);
-		if (rec.getBenefitRating() == null) {
-			experienceBenefitRating.getStyle().setDisplay(Display.NONE);
-			return;
-		} else {
-			experienceBenefitRating.getStyle().clearDisplay();
-		}
-		if (experiences != null && experiences.size() > 0) {
-			for (Experience ex:experiences) {
-				if (ex.getBenefit() != null && ex.getBenefit().getValue() >= 0) {
-					totalBenefit += ex.getBenefit().getValue();
-					benefits++;
-				}				
-			}
-		}
-		
-		experienceBenefitRatingLabel.setInnerHTML(rec.getBenefitRating().getDescription());		
-
-		Element displayLabel = Document.get().createLabelElement();
-		displayLabel.setInnerHTML(rec.getBenefitRating().getDisplay());
-		displayLabel.addClassName("unitText");
-
-		Element spaceSpan = Document.get().createSpanElement();
-		spaceSpan.setInnerHTML("&nbsp;&nbsp;");
-		
-		Element ratingSpan = Document.get().createSpanElement();
-		
-		ratingSpan.setInnerText(instance.infoMessage.averageProperty(benefits, totalBenefit/benefits, totalBenefit));
-		
-		experienceBenefitRatingRating.removeAllChildren();
-		
-		experienceBenefitRatingRating.appendChild(ratingSpan);
-		experienceBenefitRatingRating.appendChild(spaceSpan);
-		experienceBenefitRatingRating.appendChild(displayLabel);
-	}
-
-	
-	protected void showRatio(List<Experience> experiences) {
-		int totalEffort = 0;
-		int totalBenefit = 0;
-
-		RecommendationObject rec = recommObjects.get(recommId);
-		if (rec.getEffortRating() == null || rec.getBenefitRating() == null) {
-			ratioPanel.getStyle().setDisplay(Display.NONE);
-			return;
-		} else {
-			ratioPanel.getStyle().clearDisplay();		
-		}
-		if (experiences != null && experiences.size() > 0) {
-			for (Experience ex:experiences) {
-				if (ex.getEffort() != null && ex.getEffort().getValue() >= 0) {
-					totalEffort += ex.getEffort().getValue();
-				}
-				if (ex.getBenefit() != null && ex.getBenefit().getValue() >= 0) {
-					totalBenefit += ex.getBenefit().getValue();
-				}
-			}
-		}
-		
-		StringBuilder builder = new StringBuilder();
-		if (totalEffort > 0) {
-			double ratio = (double)((totalBenefit * 10) / totalEffort)/10;
-			builder.append(ratio);
-		} else {
-			builder.append(instance.infoMessage.notAvailable());
-		}
-		ratioLabel.setInnerHTML(builder.toString());		
-	}
 
 	protected Element getBlockContentChild(Element elem) {
 		int childCount = elem.getChildCount();

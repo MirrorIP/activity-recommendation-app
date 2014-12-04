@@ -135,6 +135,7 @@
 								<tr>
 									<td id="tabCaptureCaptureExperience" class="activeItem">CAPTURE EXPERIENCES</td>
 									<td id="tabCaptureMyExperiences">MY EXPERIENCES</td>
+									<td id="tabCaptureGroupExperiences">GROUP EXPERIENCES</td>
 								</tr>
 							</table>
 
@@ -154,6 +155,18 @@
 										<span>&nbsp;</span>
 										<span>&nbsp;</span>
 									</div>
+								</div>
+								
+								<div id="captureCaptureExperienceSharingLevel" class="block">
+									<label>SHARING LEVEL</label>
+									<div class="descriptionText">
+										<div class="level1">Everybody may see the experience including your name.</div>
+										<div class="level2">Everybody may see the experience excluding your name. The moderator will see your name.</div>
+										<div class="level3 activeItem">The experience will only appear in statistics and the moderator may see it.</div>
+										<div class="level4">Only the moderator and you will see the experience including your name.</div>
+										<div class="level5">Only you can see the experience.</div>
+									</div>
+									<input type="range" min="1" max="5">
 								</div>
 								<div id="captureCaptureExperienceEffort" class="block">
 									<label>EFFORT</label>
@@ -232,6 +245,87 @@
 											<tr>
 												<td>RATING</td>
 												<td>DATE</td>
+												<td>COMMENT</td>
+												<td></td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>
+												<div class="starRating">
+													<span class="starFilled">&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+												</div></td>
+												<td>31.10.2013 14:35</td>
+												<td>This is not as easy as it sounds. Most of the paperwork...</td>
+											</tr>
+											<tr>
+												<td>
+												<div class="starRating">
+													<span class="starFilled">&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+													<span>&nbsp;</span>
+												</div></td>
+												<td>31.10.2013 14:34</td>
+												<td>My desk is totally clean. I'll ignore this.</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							
+							<div id="captureGroupExperiences" class="tableBody">
+								<div id="captureGroupExperiencesRating" class="block">
+									<label>AVERAGE RATING</label>
+									<div class="descriptionText">
+										Now that you used it, how well did it work this time?
+									</div>
+									<div class="starRating">
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<span>&nbsp;</span>
+										<label>(0)</label>
+									</div>
+								</div>
+								<div id="captureGroupExperiencesEffort" class="block">
+									<label>EFFORT</label>
+									<div class="descriptionText"></div>
+									<div class="block" style="padding-left:0px;"></div>
+								</div>
+								<div id="captureGroupExperiencesBenefit" class="block">
+									<label>BENEFIT</label>
+									<div class="descriptionText"></div>
+									<div class="block" style="padding-left:0px;"></div>
+								</div>
+								<div id="captureGroupExperienceRatioPanel" class="block">
+									<label>BENEFIT-EFFORT-RATIO</label>
+									<div class="descriptionText">
+										Ratio between Benefit and Effort.
+									</div>
+									<div class="block" style="padding-left:0px;">
+										<span>Benefit/Effort</span>
+										<span>&nbsp;&nbsp;</span>
+										<span id="captureGroupExperienceRatio"></span>
+									</div>
+								</div>
+								<div id="captureGroupExperiencesExperiences" class="block">
+									<label>EXPERIENCES</label>
+									<div class="descriptionText">
+										(0 total, 0 comments)
+									</div>
+									<table class="blockTable clickable">
+										<thead>
+											<tr>
+												<td>RATING</td>
+												<td>DATE</td>
+												<td>USER</td>
 												<td>COMMENT</td>
 											</tr>
 										</thead>
@@ -548,7 +642,10 @@
 								<label> BEHAVIOR TASK </label>
 							</div>
 						</div>
-
+						<div id="manageSummaryRecommendationId" class="block">
+							<label>ID</label>
+							<div class="blockContent"></div>
+						</div>
 						<div id="manageSummaryPublisher" class="block">
 							<label>PUBLISHER</label>
 							<div class="blockContent"></div>
@@ -1277,6 +1374,9 @@
 				</div>
 			</div>
 			<div class="buttonRow">
+				<button class="defaultButton" id="usageExperienceDetailsDeleteButton">
+					delete
+				</button>
 				<button class="defaultButton" id="usageExperienceDetailsButton">
 					Close
 				</button>

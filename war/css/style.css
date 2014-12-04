@@ -566,6 +566,14 @@ body {
 	margin-left: 5px;
 }
 
+#captureCaptureExperienceSharingLevel > .descriptionText > div {
+	display:none;
+}
+
+#captureCaptureExperienceSharingLevel > .descriptionText > .activeItem {
+	display:block;
+}
+
 #captureCaptureExperienceEvidencesNumber {
 	display: inline-block;
 	width: 250px;
@@ -616,6 +624,10 @@ body {
 	width: 120px;
 }
 
+#captureGroupExperiencesExperiences > .blockTable td:first-child {
+	width: 120px;
+}
+
 .clickable  tbody tr:hover {
 	background-color: #ebf3f9;
 	cursor: pointer;
@@ -626,6 +638,15 @@ body {
 }
 
 #captureMyExperiencesExperiences > .blockTable tbody  td + td + td {
+	text-align: left;
+}
+
+
+#captureGroupExperiencesExperiences > .blockTable td:first-child + td {
+	width: 80px;
+}
+
+#captureGroupExperiencesExperiences > .blockTable tbody  td + td + td {
 	text-align: left;
 }
 

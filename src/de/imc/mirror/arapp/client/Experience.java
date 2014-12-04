@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -14,6 +15,8 @@ import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 public class Experience implements HasTimestamp{
 	
 	private int rating;
+	private int sharingLevel;
+	private boolean toDelete;
 	private String comment;
 	private Benefit benefit;
 	private Effort effort;
@@ -150,6 +153,10 @@ public class Experience implements HasTimestamp{
 	public String getRecommendationId() {
 		return recommendationId;
 	}
+	
+	public void anonymizeExperience() {
+		this.publisher = "Anonymous";
+	}
 
 	/**
 	 * @return the publisher of this experience
@@ -171,6 +178,14 @@ public class Experience implements HasTimestamp{
 	public List<Evidence> getEvidences() {
 		return evidences;
 	}
+	
+	public void setSharingLevel(int level) {
+		this.sharingLevel = level;
+	}
+	
+	public int getSharingLevel() { 
+		return sharingLevel;
+	}
 
 	@Override
 	public String getTimestamp() {
@@ -186,6 +201,14 @@ public class Experience implements HasTimestamp{
 		return dateFormat.format(TIMESTAMPFORMAT.parseStrict(timestamp));
 	}
 	
+	public void setToDelete() {
+		this.toDelete = true;
+	}
+	
+	public boolean getToDelete() {
+		return toDelete;
+	}
+	
 	public String toString() {
 		String namespace = "mirror:application:activityrecommendationapp:experience";
 		Document doc = XMLParser.createDocument();
@@ -196,6 +219,12 @@ public class Experience implements HasTimestamp{
 		root.setAttribute("timestamp", timestamp);
 		root.setAttribute("modelVersion", "1.0");
 		root.setAttribute("cdmVersion", "2.0");
+		if (toDelete) {
+			root.setAttribute("toDelete", "true");
+		}
+		if (sharingLevel > 0 && sharingLevel <= 5) {
+			root.setAttribute("sharingLevel", sharingLevel + "");
+		}
 		
 		Element creationInfo = Parser.createElement("creationInfo", namespace);
 		Element personElement = Parser.createElement("person", namespace);
@@ -240,17 +269,38 @@ public class Experience implements HasTimestamp{
 			root.appendChild(properties);
 		}
 
-		Element relatedObjects = Parser.createElement("relatedObjects", namespace);
-		for (Evidence ev:evidences) {
-			Element objectElem = Parser.createElement("object", namespace);
-			String cdata = ev.toString();
-			objectElem.appendChild(doc.createTextNode(cdata));
-			objectElem.setAttribute("id", ev.getId());
-			relatedObjects.appendChild(objectElem);
+		if (evidences.size() > 0) {
+			Element relatedObjects = Parser.createElement("relatedObjects", namespace);
+			for (Evidence ev:evidences) {
+				Element objectElem = Parser.createElement("object", namespace);
+				String cdata = ev.toString();
+				objectElem.appendChild(doc.createTextNode(cdata));
+				objectElem.setAttribute("id", ev.getId());
+				relatedObjects.appendChild(objectElem);
+			}
+			root.appendChild(relatedObjects);	
 		}
-		root.appendChild(relatedObjects);			
 		
 		return root.toString();
 	}
+	
+
+	/**
+	 * Parses the recommendationobject to an dataobject.
+	 * @return the recommendationobject as a Dataobject.
+	 */
+	public native JavaScriptObject toDataObject() /*-{
+		var expString = this.@de.imc.mirror.arapp.client.Experience::toString()();
+		var xmlDoc;
+		if (window.DOMParser){
+			var parser = new DOMParser();
+		  	xmlDoc = parser.parseFromString(expString, 'text/xml');
+		} else { // Internet Explorer
+			xmlDoc = new ActiveXObject('MSXML.DOMDocument');
+			xmlDoc.async = false;
+			xmlDoc.loadXML(expString);
+		}
+		return new $wnd.SpacesSDK.DataObject(xmlDoc.childNodes[0]);
+	}-*/;
 
 }

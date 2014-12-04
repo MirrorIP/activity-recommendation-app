@@ -399,9 +399,6 @@ public class RecommendationObject implements HasTimestamp {
 		if (previousRevision != null) {
 			root.setAttribute("ref", previousRevision);
 		}
-//		if (updatesObject != null) {
-//			root.setAttribute("updates", updatesObject);
-//		}
 		if (type != null) {
 			root.setAttribute("tasktype", type.getId());
 		}

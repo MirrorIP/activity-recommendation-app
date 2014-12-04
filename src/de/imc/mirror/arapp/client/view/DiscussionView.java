@@ -1604,8 +1604,10 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList,
 		
 		trElement.appendChild(timeElement);
 		trElement.appendChild(tdElement);
-		
-		minutesList.insertFirst(trElement);
+
+		minutesList.appendChild(trElement);
+		minutesList.setScrollTop(minutesList.getScrollHeight());
+//		minutesList.insertFirst(trElement);
 	}
 	
 	/**
@@ -1910,7 +1912,8 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList,
 		trElement.appendChild(timeElement);
 		trElement.appendChild(tdElement);
 		
-		chatList.insertFirst(trElement);
+		chatList.appendChild(trElement);
+//		chatList.insertFirst(trElement);
 	}
 	
 	private native boolean isChatEnabled() /*-{
@@ -2152,6 +2155,10 @@ public class DiscussionView extends View implements HasEvidences, HasSpacesList,
 			this.muc = new Muc(id, nick, this);
 			chatList.removeAllChildren();
 		}
+	}
+	
+	public void leaveDiscussion() {
+		muc.leave();
 	}
 	
 

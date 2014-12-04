@@ -2,10 +2,13 @@ package de.imc.mirror.arapp.client.view.popup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -16,6 +19,7 @@ import com.google.gwt.user.client.ui.HTML;
 import de.imc.mirror.arapp.client.ARApp;
 import de.imc.mirror.arapp.client.Evidence;
 import de.imc.mirror.arapp.client.Experience;
+import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.view.View;
 
@@ -29,7 +33,8 @@ public class UsageExperiencePopup extends View{
 		EFFORT("usageExperienceDetailsEffort"),
 		BENEFIT("usageExperienceDetailsBenefit"),
 		COMMENT("usageExperienceDetailsComment"),
-		EVIDENCES("usageExperiencedetailsAttachedEvidences");
+		EVIDENCES("usageExperiencedetailsAttachedEvidences"),
+		DELETEBUTTON("usageExperienceDetailsDeleteButton");
 		
 		private String id;
 				
@@ -52,8 +57,11 @@ public class UsageExperiencePopup extends View{
 	private Element comment;
 	private Element evidencesLabel;
 	private Element evidencesTable;
+	private Element deleteButton;
 	
 	private DialogBox dia;
+	
+	private Experience shownExperience;
 	
 	
 	public UsageExperiencePopup(final ARApp instance) {
@@ -85,6 +93,7 @@ public class UsageExperiencePopup extends View{
 						@Override
 						public void onClick(ClickEvent event) {
 							dia.hide();
+							shownExperience = null;
 						}
 					});
 					break;
@@ -114,6 +123,59 @@ public class UsageExperiencePopup extends View{
 				case COMMENT:
 					comment = elem.getElementsByTagName("div").getItem(0);
 					break;
+				case DELETEBUTTON:
+					deleteButton = elem;
+					Button.wrap(deleteButton).addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							if (!shownExperience.getPublisher().startsWith(instance.getBareJID())) {
+								return;
+							}
+							String recId = shownExperience.getRecommendationId();
+							Map<String, RecommendationObject> recs = instance.getRecommendationsForUser();
+							List<String> spaces = new ArrayList<String>(instance.getSpacesMap().values());
+							if (recs != null && recs.size()>0) {
+								RecommendationObject rec = recs.get(recId);
+								if (rec != null && rec.getTargetSpaces() != null && rec.getTargetSpaces().size() > 0) {
+									spaces = rec.getTargetSpaces();
+								}				
+							}
+							List<String> spaceIds = new ArrayList<String>();
+							Map<String, JavaScriptObject> realSpaces = instance.getCompleteSpacesMap();
+							for (String id:spaces) {
+								JavaScriptObject space = realSpaces.get(id);
+								if (space != null && isModeratorOfSpace(space, instance.getBareJID())) {
+									spaceIds.add(id);
+								}
+							}
+							spaceIds.add(instance.getBareJID().split("@")[0]);
+							if (!spaceIds.isEmpty()) {
+								instance.requestAllDataToDelete(spaceIds, shownExperience.getCustomId());	
+							}
+							spaces.removeAll(spaceIds);
+							if (!spaces.isEmpty()) {
+								shownExperience.setToDelete();
+								for (String id:spaces) {
+									publishExperience(id, shownExperience);
+								}
+							}
+							instance.removeExperience(shownExperience);
+							dia.hide();
+							shownExperience = null;
+						}					
+
+						private native void publishExperience(String spaceId, Experience experience) /*-{
+							var dataObject = experience.@de.imc.mirror.arapp.client.Experience::toDataObject()();
+							$wnd.dataHandler.publishDataObject(dataObject, spaceId, function() {
+							}, function() {
+							});
+						}-*/;
+						
+						private native boolean isModeratorOfSpace(JavaScriptObject space, String userId) /*-{
+							return space.isModerator(userId);
+						}-*/;
+					});
 				}
 			}
 		}
@@ -131,6 +193,7 @@ public class UsageExperiencePopup extends View{
 	 * @param exp the experience to show the details of.
 	 */
 	public void showPopup(Experience exp) {
+		shownExperience = exp;
 		publisher.setInnerHTML(instance.getDisplayNameForJid(exp.getPublisher()));
 		date.setInnerHTML(exp.getFormattedTimestamp(HasTimestamp.LONGDATE));
 		if (exp.getEffort() != null) {
@@ -147,6 +210,12 @@ public class UsageExperiencePopup extends View{
 			comment.setInnerText(exp.getComment());
 		} else {
 			comment.setInnerText("-");
+		}
+		
+		if (!shownExperience.getPublisher().startsWith(instance.getBareJID())) {
+			deleteButton.getStyle().setDisplay(Display.NONE);
+		} else {
+			deleteButton.getStyle().clearDisplay();
 		}
 		
 		evidencesTable.removeAllChildren();

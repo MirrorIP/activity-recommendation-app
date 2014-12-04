@@ -324,6 +324,7 @@ public class PublishRecommendationWizard {
 				errorMessage.removeClassName("activeItem");
 				publishButton.setVisible(true);
 			}
+			commentTextArea.setText("");
 		} else {
 			dia.getWidget().getElement().removeClassName("moderatorView");
 			dia.getWidget().getElement().addClassName("participantView");			

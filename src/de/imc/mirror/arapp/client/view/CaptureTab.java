@@ -10,6 +10,9 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.InputElement;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -34,11 +37,14 @@ import de.imc.mirror.arapp.client.FileEvidence;
 import de.imc.mirror.arapp.client.RecommendationObject;
 import de.imc.mirror.arapp.client.RecommendationPanel;
 import de.imc.mirror.arapp.client.RecommendationStatus;
+import de.imc.mirror.arapp.client.Interfaces.ExperiencesTab;
 import de.imc.mirror.arapp.client.Interfaces.HasEvidences;
 import de.imc.mirror.arapp.client.Interfaces.HasTimestamp;
 import de.imc.mirror.arapp.client.RecommendationStatus.Status;
 import de.imc.mirror.arapp.client.service.ARAppService;
 import de.imc.mirror.arapp.client.service.ARAppServiceAsync;
+import de.imc.mirror.arapp.client.view.experiencesTab.CaptureTabGroupExperiences;
+import de.imc.mirror.arapp.client.view.experiencesTab.CaptureTabMyExperiences;
 
 public class CaptureTab extends RecommendationsOverviewView implements HasEvidences{
 	
@@ -70,9 +76,13 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		SOLVEDELEMENT("captureSolvedSection"),
 		SOLVEDSECTION("captureSolvedSectionHeader"),
 		SUBMITBUTTON("captureCaptureExperienceSubmitButton"),
+
+		VIEWMYEXPERIENCE("captureMyExperiences"),
+		VIEWMYEXPERIENCESTAB("tabCaptureMyExperiences"),
+		VIEWGROUPEXPERIENCE("captureGroupExperiences"),
+		VIEWGROUPEXPERIENCESTAB("tabCaptureGroupExperiences"),
 		
-		VIEWEXPERIENCE("captureMyExperiences"),
-		VIEWEXPERIENCESTAB("tabCaptureMyExperiences");
+		SHARINGLEVEL("captureCaptureExperienceSharingLevel");
 		
 		private String id;
 		
@@ -85,6 +95,7 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		}
 	};
 	
+	private int chosenSharingLevel = 3;
 	private int rating;
 	private String comment;
 	private Effort effort;
@@ -118,6 +129,8 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 	
 	private Element errorMessage;
 	
+	private Element sharingLevel;
+	
 	private HTML captureExperienceTab;
 
 	private Element captureExperience;
@@ -130,9 +143,21 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 	private Button markAsSolvedButton;
 	private Button ignoreButton;
 	
+	private ExperiencesTab myExperiences;
+	private ExperiencesTab groupExperiences;
+
+	protected Element viewMyExperience;
+	protected HTML viewMyExperiencesTab; 
+
+	protected Element viewGroupExperience;
+	protected HTML viewGroupExperiencesTab; 
+	
 	public CaptureTab(ARApp instance) {
 		super(instance);
 		attachedEvidences = new ArrayList<Evidence>();
+		
+		myExperiences = new CaptureTabMyExperiences(instance);
+		groupExperiences = new CaptureTabGroupExperiences(instance);
 	}
 			
 	protected void build() {
@@ -219,33 +244,50 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							if (viewExperiencesTab == null || viewExperience == null || captureExperience == null) return;
+							if (viewMyExperiencesTab == null || viewMyExperience == null || viewGroupExperiencesTab == null || viewGroupExperience == null || captureExperience == null) return;
 							captureExperienceTab.getElement().setClassName("activeItem");
-							viewExperiencesTab.getElement().removeClassName("activeItem");
-							viewExperience.removeClassName("activeItem");
+							viewMyExperiencesTab.getElement().removeClassName("activeItem");
+							viewMyExperience.removeClassName("activeItem");
+							viewGroupExperiencesTab.getElement().removeClassName("activeItem");
+							viewGroupExperience.removeClassName("activeItem");
 							captureExperience.addClassName("activeItem");
 						}
 					});
 					break;
-				case VIEWEXPERIENCESTAB:
-					viewExperiencesTab = HTML.wrap(elem);
-					viewExperiencesTab.addClickHandler(new ClickHandler() {
+				case VIEWMYEXPERIENCESTAB:
+					viewMyExperiencesTab = HTML.wrap(elem);
+					viewMyExperiencesTab.addClickHandler(new ClickHandler() {
 						
 						@Override
 						public void onClick(ClickEvent event) {
-							if (captureExperienceTab == null || viewExperience == null || captureExperience == null) return;
+							if (captureExperienceTab == null || viewMyExperience == null || viewGroupExperiencesTab == null || viewGroupExperience == null || captureExperience == null) return;
 							captureExperienceTab.getElement().removeClassName("activeItem");
-							viewExperiencesTab.getElement().setClassName("activeItem");
+							viewMyExperiencesTab.getElement().setClassName("activeItem");
 							captureExperience.removeClassName("activeItem");
-							viewExperience.addClassName("activeItem");
+							viewMyExperience.addClassName("activeItem");
+							viewGroupExperiencesTab.getElement().removeClassName("activeItem");
+							viewGroupExperience.removeClassName("activeItem");
+						}
+					});
+					break;
+				case VIEWGROUPEXPERIENCESTAB:
+					viewGroupExperiencesTab = HTML.wrap(elem);
+					viewGroupExperiencesTab.addClickHandler(new ClickHandler() {
+						
+						@Override
+						public void onClick(ClickEvent event) {
+							showGroupExperiencesTab();
 						}
 					});
 					break;
 				case CAPTUREEXPERIENCE:
 					captureExperience = elem;
 					break;
-				case VIEWEXPERIENCE:
-					viewExperience = elem;
+				case VIEWMYEXPERIENCE:
+					viewMyExperience = elem;
+					break;
+				case VIEWGROUPEXPERIENCE:
+					viewGroupExperience = elem;
 					break;
 				case MYPROGRESSLABEL:
 					myProgressLabel = getBlockContentChild(elem);
@@ -427,8 +469,24 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 						}
 					});
 					break;
+				case SHARINGLEVEL:
+					sharingLevel = elem.getElementsByTagName("input").getItem(0);
+					TextArea.wrap(sharingLevel).addChangeHandler(new ChangeHandler() {
+						
+						@Override
+						public void onChange(ChangeEvent event) {
+							Element elem = sharingLevel.getPreviousSiblingElement();
+							String value = InputElement.as(sharingLevel).getValue();
+							elem.getElementsByTagName("div").getItem(Integer.parseInt(value)-1).addClassName("activeItem");
+							elem.getElementsByTagName("div").getItem(chosenSharingLevel-1).removeClassName("activeItem");
+							sharingLevel.setAttribute("value", value);
+							chosenSharingLevel = Integer.parseInt(value);
+						}
+					});
+					break;
 				case ERRORMESSAGE:
 					errorMessage = elem;
+					break;
 				default:
 					break;
 				}
@@ -441,6 +499,16 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		if (errors) {
 			Window.alert(errorBuilder.toString());
 		}
+	}
+	
+	public void showGroupExperiencesTab() {
+		if (captureExperienceTab == null || viewGroupExperience == null || viewMyExperiencesTab == null || viewMyExperience == null || captureExperience == null) return;
+		captureExperienceTab.getElement().removeClassName("activeItem");
+		viewGroupExperiencesTab.getElement().setClassName("activeItem");
+		captureExperience.removeClassName("activeItem");
+		viewGroupExperience.addClassName("activeItem");
+		viewMyExperiencesTab.getElement().removeClassName("activeItem");
+		viewMyExperience.removeClassName("activeItem");
 	}
 	
 	public void attachEvidences(List<Evidence> attachEvidences) {
@@ -475,6 +543,8 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		
 		super.showDetails(id);
 		resetInput();
+		myExperiences.reset();
+		groupExperiences.reset();
 		this.recommId = id;
 		
 		if (recomm.getTargetSpaces() == null || recomm.getTargetSpaces().size() == 0) {
@@ -577,23 +647,34 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		} else {
 			benefitDiv.setAttribute("style", "display:none;");
 		}
-		
+		boolean isModeratorOfRecommendation = recomm.getParticipants().contains(instance.getBareJID());
 		Map<String, Experience> exps = instance.getExperiencesForRecommendation(id);
 		if (exps != null && exps.size() > 0) {
 			List<Experience> userExps = new ArrayList<Experience>();
+			List<Experience> experiences = new ArrayList<Experience>();
 			
 			for (Experience exp:exps.values()) {
 				if (exp.getPublisher().contains(instance.getBareJID())) {
 					userExps.add(exp);
+					experiences.add(exp);
+				} else if (exp.getSharingLevel() > 0 && exp.getSharingLevel() <= 5) {
+					int acceptableLevel = isModeratorOfRecommendation? 4:3;
+					if (exp.getSharingLevel() <= acceptableLevel) {
+						experiences.add(exp);
+					}
+				} else {
+					experiences.add(exp);
 				}
 			}
 						
-			showExperiences(userExps, false);
-			if (userExps.size() > 0) {
-				lastExperience.setInnerHTML(userExps.get(0).getFormattedTimestamp(HasTimestamp.LONGDATE));
+			myExperiences.showExperienceDetails(userExps, recomm);
+			groupExperiences.showExperienceDetails(experiences, recomm);
+			if (experiences.size() > 0) {
+				lastExperience.setInnerHTML(experiences.get(0).getFormattedTimestamp(HasTimestamp.LONGDATE));
 			}
 		} else {
-			showExperiences(new ArrayList<Experience>(), false);
+			myExperiences.showExperienceDetails(new ArrayList<Experience>(), recomm);
+			groupExperiences.showExperienceDetails(new ArrayList<Experience>(), recomm);
 		}
 	}
 	
@@ -742,7 +823,7 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		} else {
 			experience.setCustomId(ARApp.uuid());
 		}
-		
+		experience.setSharingLevel(chosenSharingLevel);
 		if (rating != -1) {
 			experience.setRating(rating);
 		}
@@ -765,16 +846,21 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 		List<String> recommendationTargetSpaces = rec.getTargetSpaces();
 		List<String> targetIds = new ArrayList<String>();
 		List<String> targetSpaces = new ArrayList<String>();
-		if (recommendationTargetSpaces != null) {
-			targetIds.addAll(recommendationTargetSpaces);
-			targetSpaces.addAll(recommendationTargetSpaces);
-		}		
 
-		targetIds.removeAll(spaceIds);
-		targetSpaces.removeAll(targetIds);
-		
-		if (targetSpaces.size() == 0) {
-			return;
+		if (chosenSharingLevel == 5) {
+			targetSpaces.add(instance.getBareJID().split("@")[0]);
+		} else {
+			if (recommendationTargetSpaces != null) {
+				targetIds.addAll(recommendationTargetSpaces);
+				targetSpaces.addAll(recommendationTargetSpaces);
+			}		
+	
+			targetIds.removeAll(spaceIds);
+			targetSpaces.removeAll(targetIds);
+			
+			if (targetSpaces.size() == 0) {
+				return;
+			}
 		}
 		boolean fileEvidenceAttached = false;
 		for (Evidence ev:attachedEvidences) {
@@ -805,27 +891,47 @@ public class CaptureTab extends RecommendationsOverviewView implements HasEviden
 					}
 				}
 			}
-			publishExperience(id, experience.toString());
+			if (chosenSharingLevel == 5) {
+				publishExperienceOnPrivateSpace(experience);
+				break;
+			} else {
+				publishExperience(id, experience);
+			}
 		}
 		resetInput();
 	}
+	
+
+	/**
+	 * This method publishes the recommendation on the own private space. If it is not available it will be created first.
+	 * @param instance an instance of the class DiscussionView.
+	 */
+	public native void publishExperienceOnPrivateSpace(Experience experience) /*-{
+		var that = this;
+		$wnd.spaceHandler.getDefaultSpace(function(result){
+			if (!result || result == null) {
+				$wnd.spaceHandler.createDefaultSpace(function(res) {
+					var config = res.generateSpaceConfiguration();
+					config.setPersistenceType($wnd.SpacesSDK.PersistenceType.ON);
+					$wnd.spaceHandler.configureSpace(res.getId(), config, function(){}, function(){});
+					$wnd.dataHandler.registerSpace(res.getId());
+					var dataObject = experience.@de.imc.mirror.arapp.client.Experience::toDataObject()();					
+					$wnd.dataHandler.publishDataObject(dataObject, res.getId(), function() {}, function() {});
+				}, function(error){});
+			} else {
+					var dataObject = experience.@de.imc.mirror.arapp.client.Experience::toDataObject()();
+					$wnd.dataHandler.publishDataObject(dataObject, result.getId(), function() {}, function() {});
+			}
+			}, function(error){});
+	}-*/;
 	
 	/**
 	 * This method publishes an experience.
 	 * @param spaceId The id of the space to publish the experience on.
 	 * @param experienceString The experience as a String.
 	 */
-	private native void publishExperience(String spaceId, String experienceString) /*-{
-		var xmlDoc;
-		if (window.DOMParser){
-			var parser = new DOMParser();
-		  	xmlDoc = parser.parseFromString(experienceString, 'text/xml');
-		} else { // Internet Explorer
-			xmlDoc = new ActiveXObject('MSXML.DOMDocument');
-			xmlDoc.async = false;
-			xmlDoc.loadXML(experienceString);
-		}
-		var dataObject = new $wnd.SpacesSDK.DataObject(xmlDoc.childNodes[0]);
+	private native void publishExperience(String spaceId, Experience experience) /*-{
+		var dataObject = experience.@de.imc.mirror.arapp.client.Experience::toDataObject()();
 		$wnd.dataHandler.publishDataObject(dataObject, spaceId, function() {
 //			alert("Experience published successfully");
 //			instance.@de.imc.mirror.arapp.client.view.CaptureTab::reset()();
